@@ -6,7 +6,7 @@ This project configures multiple peripherals to work together in low power EM2 m
 
 Peripherals used: ADC, LETimer, LDMA, GPIO, PRS, EMU, SPI
 
-## SDK version ##
+## Gecko SDK version ##
 
 v2.7
 
