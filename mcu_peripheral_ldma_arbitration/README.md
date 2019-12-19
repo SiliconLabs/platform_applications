@@ -6,7 +6,7 @@ This project demonstrates various arbitration configurations of multiple transfe
 
 Peripherals used: LDMA, TIMER, WTIMER
 
-## SDK version ##
+## Gecko SDK version ##
 
 v2.7
 

@@ -17,6 +17,11 @@ This repo contains example projects that demonstrate the peripherals of Silicon 
 
 ## Examples ##
 
+- EM3 Sleep with Micrium Using the Cryotimer
+- Linked DMA (LDMA) Arbitration
+- Using Autonomous Peripherals in Low Power EM2 Mode
+- Simple Cryotimer Example
+
 ## Documentation ##
 
 Official documentation can be found at our [Developer Documentation](https://docs.silabs.com/#section-mcu-wireless) page.

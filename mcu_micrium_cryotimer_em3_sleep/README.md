@@ -1,4 +1,4 @@
-# EM3 Sleep with Micrium using the cryotimer #
+# EM3 Sleep with Micrium Using the Cryotimer #
 
 ## Summary ##
 

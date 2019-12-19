@@ -6,7 +6,7 @@ This project generates a 0.5 Hz squarewave on PA11 while in EM3 and wakes on an 
 
 Peripherals used: CRYOTIMER, EMU
 
-## SDK version ##
+## Gecko SDK version ##
 
 v2.7
 
