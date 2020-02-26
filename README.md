@@ -17,6 +17,7 @@ This repo contains example projects that demonstrate the peripherals of Silicon 
 
 ## Examples ##
 
+- Auto Detection of Sensor Activity in Low Power EM2 Mode
 - EM3 Sleep with Micrium Using the Cryotimer
 - Linked DMA (LDMA) Arbitration
 - Using Autonomous Peripherals in Low Power EM2 Mode
