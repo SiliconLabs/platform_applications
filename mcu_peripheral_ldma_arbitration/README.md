@@ -47,7 +47,7 @@ The number in the row indicates the channel that is active, each row represents 
 
 ## .sls Projects Used ##
 
-mcu_peripheral_low_energy_gg11.sls
+mcu_peripheral_ldma_p2m_arbitration_gg11.sls
 
 ## How to Port to Another Part ##
 
