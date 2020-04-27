@@ -58,7 +58,7 @@ C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v2.7.
 
 ## .sls Projects Used ##
 
-mcu_em2_sensor_alive_check.sls
+mcu_em2_sensor_alive_check_fg12.sls
 
 ## How to Port to Another Part ##
 

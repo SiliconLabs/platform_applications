@@ -41,7 +41,7 @@ Different behaviors can be observed by varying:
 
 Virtual COM is used to display results:
 
-![VCOM output when running the example](mcu_peripheral_ldma_vcom_output.png)
+![VCOM output when running the example](./doc/mcu_peripheral_ldma_vcom_output.png)
 
 The number in the row indicates the channel that is active, each row represents a transfer of 32 words.  Foe example, first three rows indicates 32 words were transferred on ch2, then 32  words on ch3, then 32 words on ch2.
 
