@@ -1,7 +1,7 @@
 <table border="0">
   <tr>
     <td align="left" valign="middle">
-    <h1>EFM32 and EFR32 Series 1 Examples</h1>
+    <h1>EFM32 and EFR32 Platform Application Examples</h1>
   </td>
   <td align="left" valign="middle">
     <a href="https://www.silabs.com/mcu/32-bit">
@@ -11,9 +11,9 @@
   </tr>
 </table>
 
-# Silicon Labs MCU Series 1 Examples #
+# Silicon Labs Platform Application Examples #
 
-This repo contains example projects that demonstrate the peripherals of Silicon Labs EFM32 and EFR32 series one parts.
+This repo contains example projects that demonstrate various applicaitons using the peripherals of Silicon Labs EFM32 and EFR32 parts.
 
 ## Examples ##
 
