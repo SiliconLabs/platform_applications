@@ -22,6 +22,7 @@ This repo contains example projects that demonstrate various applicaitons using 
 - Linked DMA (LDMA) Arbitration
 - Using Autonomous Peripherals in Low Power EM2 Mode
 - Simple Cryotimer Example
+- Periodic and One-Shot Sleeptimer Examples for Series 0, 1, and 2
 - EFR32 Series 2 SPI Flash Read Bandwidth Test
 
 ## Documentation ##
