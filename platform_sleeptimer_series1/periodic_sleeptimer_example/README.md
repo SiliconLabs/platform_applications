@@ -42,9 +42,9 @@ The following is the program flow corresponding to the LEDs:
    described in Step 3 will repeat.
 
 ## .sls Projects Used
-* mcu_sleeptimer_periodic_gg11.sls
-* mcu_sleeptimer_periodic_pg1.sls
-* mcu_sleeptimer_periodic_tg11.sls
+* gg11_mcu_sleeptimer_periodic.sls
+* pg1_mcu_sleeptimer_periodic.sls
+* tg11_mcu_sleeptimer_periodic.sls
 
 ## How to Port to Another Part
 Right click on the project and select "Properties" and navigate to "C/C++ 
