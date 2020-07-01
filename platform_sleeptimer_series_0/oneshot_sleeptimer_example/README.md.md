@@ -49,9 +49,9 @@ The following is the program flow corresponding to the LEDs:
 5. Steps 2-4 can be repeated.
 
 ## .sls Projects Used
-* mcu_sleeptimer_oneshot_gg.sls
-* mcu_sleeptimer_oneshot_hg.sls
-* mcu_sleeptimer_oneshot_lg.sls
+* gg_mcu_sleeptimer_oneshot.sls
+* hg_mcu_sleeptimer_oneshot.sls
+* lg_mcu_sleeptimer_oneshot.sls
 
 ## How to Port to Another Part
 Right click on the project and select "Properties" and navigate to "C/C++ 
