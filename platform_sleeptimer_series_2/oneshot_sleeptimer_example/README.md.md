@@ -49,8 +49,8 @@ The following is the program flow corresponding to the LEDs:
 5. Steps 2-4 can be repeated.
 
 ## .sls Projects Used
-* mcu_sleeptimer_oneshot_gxg21.sls
-* mcu_sleeptimer_oneshot_xg22.sls
+* xg21_mcu_sleeptimer_oneshot.sls
+* xg22_mcu_sleeptimer_oneshot.sls
 
 ## main.c Used
 * xg21_main.c

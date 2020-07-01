@@ -44,8 +44,8 @@ The following is the program flow corresponding to the LEDs:
    described in Step 3 will repeat.
    
 ## .sls Projects Used
-* mcu_sleeptimer_periodic_xg21.sls
-* mcu_sleeptimer_periodic_xg22.sls
+* xg21_mcu_sleeptimer_periodic.sls
+* xg22_mcu_sleeptimer_periodic.sls
 
 ## main.c Used
 * xg21_main.c
