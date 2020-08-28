@@ -1,5 +1,6 @@
 /***************************************************************************//**
- BSP Dynamic Tick using cryotimer
+ * @file bsp_tick_rtcc.c
+ * @brief BSP Dynamic Tick using cryotimer
  *******************************************************************************
  * # License
  * <b>Copyright 2018 Silicon Laboratories Inc. www.silabs.com</b>

@@ -1,5 +1,6 @@
 /***************************************************************************//**
-OS config file
+ * @file os_cfg.h
+ * @brief OS config file
  *******************************************************************************
  * # License
  * <b>Copyright 2018 Silicon Laboratories Inc. www.silabs.com</b>
