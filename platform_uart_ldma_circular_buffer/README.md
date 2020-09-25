@@ -21,8 +21,6 @@ v3.0
 
 Connect the GG11 STK's PC1 pin (RX signal) to CP2102N-EK's TXD pin.
 
-The final connections should looks like so:
-
 Open up a serial terminal device such as Tera Term, and open the port connected to the CP2102N device. 
 
 Import the included .sls file to Studio then build and flash the project to the SLSTK3701A STK.
