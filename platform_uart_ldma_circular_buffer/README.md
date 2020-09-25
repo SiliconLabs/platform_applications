@@ -19,14 +19,9 @@ v3.0
 
 ## Setup ##
 
-Connect the GG11 STK's pins with the CP2102N-EK.
+Connect the GG11 STK's PC1 pin (RX signal) to CP2102N-EK's TXD pin.
 
 The final connections should looks like so:
-
-| GG11     | CP2102N |
-|----------|---------|
-| PC1 (RX) | TXD     |
-| PC0 (TX) | RXD     |
 
 Open up a serial terminal device such as Tera Term, and open the port connected to the CP2102N device. 
 
@@ -38,7 +33,9 @@ C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v3.0
 
 ## How the Project Works ##
 
-The application sits in EM1 until an interrupt occurs. After typing into Tera Term and pressing enter, the serial signal from the USB is converted by the CP2102N into a UART signal that is readable by the GG11. The application then receives a data byte from the UART and transfers it to the UART's FIFO. The LDMA is configured to start a transfer as soon as it sees data available in the FIFO. AFter the LDMA transfers BUFFER_SIZE/2 bytes of data to the RX buffer, the LDMA interrupts. In the interrupt handler, the application updates the stop index of the circular buffer.
+The application sits in EM1 until an interrupt occurs. After typing into Tera Term, the serial data from the USB is converted by the CP2102N into a UART signal that is stored into the GG11's USART RX FIFO. The LDMA is configured to start a transfer as soon as it sees data available in the FIFO. AFter the LDMA transfers BUFFER_SIZE/2 bytes of data to the circular buffer, the LDMA triggers an interrupt. In the interrupt handler, the application updates the stop index of the circular buffer to either 0 or BUFFER_SIZE/2.
+
+In the case where less than BUFFER_SIZE/2 data bytes are received, the LDMA interrupt will not trigger. This presents an issue to the user: the circular buffer contains updated data, but the stop index is not updated. To fix this, the RX Timeout feature triggers an interrupt after 256 baud times if a new UART frame isn't received after a end of frame event. The interrupt handler updates the stop index according to the number of LDMA transfers that occured.
 
 ## .sls Projects Used ##
 
