@@ -37,7 +37,7 @@ In the case where less than BUFFER_SIZE/2 data bytes are received, the LDMA inte
 
 ## .sls Projects Used ##
 
-gg11_stepper_motor.sls
+gg11_uart_ldma_circular_buffer.sls
 
 ## How to Port to Another Part ##
 
