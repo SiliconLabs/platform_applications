@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
+  <descriptors name="soc_empty">
+    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.super:3.0.0._640221274"/>
+    <properties key="universalConfig.generationDirectory" value="C:\Users\daschwar\SimplicityStudio\v5_workspace\platform_i2c_to_nvm3_test"/>
+    <properties key="universalConfig.allowedToolchainComponent" value="iar segger gcc"/>
+    <properties key="projectCommon.boardIds" value="brd4184a:0.0.0.A01"/>
+    <properties key="projectCommon.partId" value="mcu.arm.efr32.bg22.efr32bg22c224f512im40"/>
+    <properties key="projectCommon.toolchainId" value="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904"/>
+    <properties key="universalConfig.projectTypeIds" value="com.silabs.ss.framework.ide.project.core.cdtMbsProjectType"/>
+    <properties key="projectCommon.importModeId" value="LINK_LIBRARIES"/>
+  </descriptors>
+</model:MDescriptors>
