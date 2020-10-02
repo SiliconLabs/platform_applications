@@ -24,6 +24,7 @@ This repo contains example projects that demonstrate various applicaitons using 
 - Simple Cryotimer Example
 - Periodic and One-Shot Sleeptimer Examples for Series 0, 1, and 2
 - EFR32 Series 2 SPI Flash Read Bandwidth Test
+- Guitar and ukulele tuner for the SLSTK3701A
 
 ## Documentation ##
 
