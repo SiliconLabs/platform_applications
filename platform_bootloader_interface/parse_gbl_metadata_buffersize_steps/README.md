@@ -1,0 +1,110 @@
+
+# Parse GBL Metadata in BufferSize Steps #
+
+## Summary ##
+
+This project demonstrates how to use Application Parser Interface described in UG266. 
+After pressing push button1, the GBL image in the storage slot  is first verified and the metadata in the stored image is parsed in BufferSize Steps using image parser function of the gecko bootloader interface API. Once the metadata is parsed, the raw metadata is transmitted over VCOM(USART0).
+
+Modules used:
+HFRCO  - 19 MHz
+USART0 - Asynchronous Mode, 1152008N1
+
+## Gecko SDK version ##
+
+v3.0
+
+## Hardware Required ##
+
+* Board:  Silicon Labs EFR32xG21 2.4 GHz 10 dBm Board (BRD4181A) + 
+        Wireless Starter Kit Mainboard
+	* Device: EFR32MG21A010F1024IM32
+		* PD2 - LED0
+		* PD3 - LED1
+		* PB0 - Push Button PB0
+		* PB1 - Push Button PB1
+
+## Setup ##
+
+Clone the repository with this project from GitHub onto your local machine.
+
+Place parse_gbl_metadata_buffersize_steps folder in the following location: 
+C:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v#.#\platform\bootloader\sample-apps.
+
+From within the Simplicity Studio IDE, select Import -> MCU Project... from the Project menu. Click the Browse button and navigate to the parse_gbl_metadata_buffersize_steps folder in the SDK, then to the SimplicityStudio folder, select the .slsproj file for the board, click the Next button twice, and then click Finish.
+
+## How the Project Works ##
+
+When PushButton1 is pressed, GBL Image in slot0 is verified, decrypted/decompressed/parsed in BufferSize Steps where BufferSize is configurable in project and then raw metadata is transmitted over USART0(VCOM) .
+
+**Below are the steps to perform the test:**
+
+ 1. Perform erase on the device before starting the test. 
+   Below is the Simplicity Commander CLI command:
+    >     Run: commander device pageerase --region @mainflash --region @userdata <--region @bootloader> <--region @lockbits>
+
+    Note: Series 2 devices dont have dedicated bootloader and lockbits area. Also EFx32xG1 devices dont have dedicated bootloader area.
+
+**Bootloader Project:**
+
+ 2. Import bootloader-storage-internal-single-512k project in the SDK and enable secturity features i.e., signing, encryption and secureboot. 
+ 
+ 3. Build the bootloader-storage-internal-single-512k project and flash the bootloader project at the start address of bootloader area.
+    >     Run: commander flash <bootloader_project>.s37 --address <start_address>
+    
+    * For series 1 devices without dedicated bootloader area(e.g. EFR32xG1) : Flash bootloader-storage-internal-single-512k-combined.s37 (i.e., FSB+SSB at 0x0000) 
+    * For series 1 devices with dedicated bootloader area(e.g. EFR32xG13): Flash bootloader-storage-internal-single-512k-combined.s37 (i.e., FSB+SSB at 0xFE10000) 
+    * For series 2 devices(e.g. EFR32xG21):  Flash bootloader-storage-internal-single-512k.s37 (i.e., SSB at 0x0000) 
+ 
+**Security Keys:**
+
+ 4. Generate singing keys. Execute the following command to generate a key-pair for signing.
+    >     Run: commander gbl keygen --type ecc-p256 --outfile signing-key
+
+ 5. Generate encryption key. Execute the following command to generate an encryption key.
+    >     Run: commander gbl keygen --type aes-ccm --outfile encryption-key
+
+ 6. Write the encryption key and public key to the EFR32.
+    >     Run: commander flash --tokengroup znet --tokenfile encryption-key --tokenfile signing-key-tokens.txt.
+
+**Application Project:**
+ 
+ 7. Import and build parse_gbl_metadata_buffersize_steps project to generate .s37/.hex files.
+ 
+ 8. Sign the application image to enable secure boot of the application image.
+    >     Run: commander convert <application_project>.s37 --secureboot --keyfile signing-key --outfile <application_project_signed>.s37
+	
+ 9. Flash signed application image at the start address of application area.
+    >     Run: commander flash <application_project_signed>.s37 --address <start_address>
+    - For series 1 devices without dedicated bootloader area(e.g. EFR32xG1) : start address of application area varies from device to device (see linker script of bootloader)
+    - For series 1 devices with dedicated bootloader area(e.g. EFR32xG13): Default start of application area - 0x0000
+    - For series 2 devices:  
+        * For EFR32xG21: Default start of application area -  0x40000
+        * For EFR32xG22: Default start of application area -  0x60000
+       
+**OTA image:**
+
+ 10. Create a signed and encrypted GBL file using metadata binary file. (waveform_test1 & waveform_test2 files in metadata_test_files folder can be used for testing)
+     >     Run: commander gbl create <waveform_metadata>.gbl -- metadata <waveform_test1>.bin --sign signing-key --encrypt encryption-key
+
+ 11. Flash *waveform_metadata*.gbl at the start address of Slot0.
+     >     Run: commander flash <waveform_metadata>.gbl.bin --address <slot0_start_address>
+     * For all series 1 / series 2 (xG21,xG22) devices: Start address of slot0 for default bootloader-storage-internal-single-512k project - 0x44000
+     
+     Note: To flash a GBL image add .bin extension to the GBL file Ii.e., *OTA_image*.gbl.bin. To perform OTA/OTW upgrade .bin extension is not needed.
+
+**Test:**
+
+ 12. Connect the radio board to a terminal program (1152008N1) and PressButton1 for GBL image verification and parsing. Status of application can be seen in the terminal application.
+ 
+**Resources:**
+  
+ * For more details about gecko bootloader refer UG266.
+ * For more details about Simplicity Commander CLI refer UG162.
+    
+## Porting to Another EFx32 Series 1 or Series 2 Device ##
+
+Apart from any issues of pin availability on a given radio board, this code should run as-is on any series1 or series 2 radio board having gecko bootloader support.
+
+To change the target board, navigate to Project -> Properties -> C/C++ Build -> Board/Part/SDK. Start typing in the Boards
+search box and locate the desired radio board, then click Apply to change the project settings, and go from there.
