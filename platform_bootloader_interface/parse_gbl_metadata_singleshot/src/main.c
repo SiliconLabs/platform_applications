@@ -128,7 +128,6 @@ void GPIO_ODD_IRQHandler(void)
   else {
     printf("GBL signature verification failed, ERROR: 0x%08" PRIx32 "\n\r", ret);
   }
-
 }
 
 /**************************************************************************//**

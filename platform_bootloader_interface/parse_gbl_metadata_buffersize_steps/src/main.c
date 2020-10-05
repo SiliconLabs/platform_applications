@@ -52,7 +52,7 @@ static const uint32_t OTA_slot0_address =0x44000;
 static const uint32_t OTA_slot0_size = 196608;
 
 // BufferSize for the parser function
-static const uint32_t bufferSize = 128U;
+static const uint32_t bufferSize = 64U;
 
 // Enable debug print
 #define HAL_VCOM_ENABLE        1
@@ -130,7 +130,6 @@ void GPIO_ODD_IRQHandler(void)
   {
     printf("GBL signature verification failed, ERROR: 0x%08" PRIx32 "\n\r", ret);
   }
-
 }
 
 /**************************************************************************//**
