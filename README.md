@@ -15,17 +15,6 @@
 
 This repo contains example projects that demonstrate various applicaitons using the peripherals of Silicon Labs EFM32 and EFR32 parts.
 
-## Examples ##
-
-- Auto Detection of Sensor Activity in Low Power EM2 Mode
-- EM3 Sleep with Micrium Using the Cryotimer
-- Linked DMA (LDMA) Arbitration
-- Using Autonomous Peripherals in Low Power EM2 Mode
-- Simple Cryotimer Example
-- Periodic and One-Shot Sleeptimer Examples for Series 0, 1, and 2
-- EFR32 Series 2 SPI Flash Read Bandwidth Test
-- Guitar and ukulele tuner for the SLSTK3701A
-
 ## Documentation ##
 
 Official documentation can be found at our [Developer Documentation](https://docs.silabs.com/#section-mcu-wireless) page.
