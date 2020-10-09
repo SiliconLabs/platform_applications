@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ASCII"?>
+<document:XMLDocument xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:document="http://www.silabs.com/config/document/document.ecore">
+  <documentObject id="bgx" version="1.0">
+    <propertyValue propertyId="bgx.customer.address" value="&#xA;&#xA;,  &#xA;"/>
+    <propertyValue propertyId="bgx.customer.contactname" value=" "/>
+    <propertyValue propertyId="bgx.gpio.gpio0.direction.selection" value="4"/>
+    <propertyValue propertyId="bgx.gpio.gpio0.driveStrength.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio0.function" value="3"/>
+    <propertyValue propertyId="bgx.gpio.gpio0.function.selection" value="3"/>
+    <propertyValue propertyId="bgx.gpio.gpio0.mode.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio0.programString" value="0 stdio olo pp drvst"/>
+    <propertyValue propertyId="bgx.gpio.gpio1.direction.selection" value="4"/>
+    <propertyValue propertyId="bgx.gpio.gpio1.driveStrength.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio1.function" value="3"/>
+    <propertyValue propertyId="bgx.gpio.gpio1.function.selection" value="3"/>
+    <propertyValue propertyId="bgx.gpio.gpio1.mode.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio1.programString" value="1 stdio olo pp drvst"/>
+    <propertyValue propertyId="bgx.gpio.gpio4.direction.selection" value="4"/>
+    <propertyValue propertyId="bgx.gpio.gpio4.driveStrength.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio4.function" value="6"/>
+    <propertyValue propertyId="bgx.gpio.gpio4.function.selection" value="6"/>
+    <propertyValue propertyId="bgx.gpio.gpio4.mode.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio4.programString" value="4 str_active olo pp drvst"/>
+    <propertyValue propertyId="bgx.gpio.gpio5.direction.selection" value="4"/>
+    <propertyValue propertyId="bgx.gpio.gpio5.driveStrength.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio5.function" value="9"/>
+    <propertyValue propertyId="bgx.gpio.gpio5.function.selection" value="9"/>
+    <propertyValue propertyId="bgx.gpio.gpio5.mode.selection" value="1"/>
+    <propertyValue propertyId="bgx.gpio.gpio5.programString" value="5 con_active olo pp drvst"/>
+    <propertyValue propertyId="bgx.system.header" value="true"/>
+    <propertyValue propertyId="bgx.system.printLevel.selection" value="0"/>
+    <propertyValue propertyId="bgx.system.prompt" value="false"/>
+  </documentObject>
+</document:XMLDocument>
