@@ -100,7 +100,7 @@ SL_WEAK void app_init(void)
       &sample,
       sizeof(hall_sensor_sample_t));
   // If a previously stored sample was found, display it and update the count
-  if (err != ECODE_NVM3_OK) {
+  if (err == ECODE_NVM3_OK) {
     printf(
         "Stored Sample %lu\r\n"
         "  field_strength: %lu\r\n"
