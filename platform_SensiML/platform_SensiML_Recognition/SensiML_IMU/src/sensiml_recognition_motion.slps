@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
+  <descriptors name="sensiml_recognition_motion">
+    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.super:3.1.1._-1613284334"/>
+    <properties key="universalConfig.generationDirectory" value="/home/jublin/SimplicityStudio/v5_workspace/SensiML_IMU_Recognition_2"/>
+    <properties key="universalConfig.toolchainCompatibility" value="iar gcc"/>
+    <properties key="projectCommon.boardIds" value="brd4166a:0.0.0"/>
+    <properties key="projectCommon.partId" value="mcu.arm.efr32.mg12.efr32mg12p332f1024gl125"/>
+    <properties key="projectCommon.toolchainId" value="com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:7.2.1.20170904"/>
+    <properties key="universalConfig.projectTypeIds" value="com.silabs.framework.project.makefile"/>
+    <properties key="projectCommon.importModeId" value="COPY"/>
+  </descriptors>
+</model:MDescriptors>
