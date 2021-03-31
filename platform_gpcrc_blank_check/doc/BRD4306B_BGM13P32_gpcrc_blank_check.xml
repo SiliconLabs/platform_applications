@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<workspace name="spi_master_interrupt">
-  <project device="BGM13P32F512GA" name="BGM13_spi_master_interrupt">
+<workspace name="gpcrc_blank_check">
+  <project device="BGM13P32F512GA" name="BGM13_gpcrc_blank_check">
     <targets>
       <name>slsproj</name>
       <name>iar</name>
@@ -42,7 +42,7 @@
     </group>
     <group name="Source">
       <source>$PROJ_DIR$\..\src\main_s1.c</source>
-      <source>$PROJ_DIR$\..\readme.txt</source>
+      <source>$PROJ_DIR$\..\README.md</source>
     </group>
     <cflags>
       <define>RETARGET_VCOM</define>
