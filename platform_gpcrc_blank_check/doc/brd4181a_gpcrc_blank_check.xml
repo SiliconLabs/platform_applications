@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<workspace name="xg21_gpcrc_flash_blank_check">
+  <project device="EFR32MG21A010F1024IM32"
+           name="EFR32xG21_gpcrc_flash_blank_check">
+    <targets>
+      <name>slsproj</name>
+	  <name>iar</name>
+    </targets>
+    <directories>
+      <cmsis>$PROJ_DIR$\..\..\..\platform\CMSIS</cmsis>
+      <device>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs</device>
+      <emlib>$PROJ_DIR$\..\..\..\platform\emlib</emlib>
+      <drivers>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</drivers>
+      <bsp>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</bsp>
+      <kitconfig>$PROJ_DIR$\..\..\..\hardware\kit\EFR32MG21_BRD4181A\config</kitconfig>
+      <localdrivers>$PROJ_DIR$\..\Drivers</localdrivers>
+    </directories>
+    <includepaths>
+      <path>##em-path-cmsis##\Include</path>
+      <path>##em-path-device##\EFR32MG21\Include</path>
+      <path>##em-path-emlib##\inc</path>
+      <path>##em-path-kitconfig##</path>
+      <path>##em-path-bsp##</path>
+      <path>##em-path-drivers##</path>
+    </includepaths>
+    <group name="CMSIS">
+      <source>##em-path-device##\EFR32MG21\Source\$IDE$\startup_efr32mg21.s</source>
+      <source>##em-path-device##\EFR32MG21\Source\system_efr32mg21.c</source>
+    </group>
+    <group name="emlib">
+      <source>##em-path-cmsis##\emlib\src\em_cmu.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_core.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_emu.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_gpcrc.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_gpio.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_ldma.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_system.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_timer.c</source>
+      <source>##em-path-cmsis##\emlib\src\em_usart.c</source>
+    </group>
+    <group name="Drivers">
+      <source>##em-path-drivers##\retargetio.c</source>
+      <source>##em-path-drivers##\retargetserial.c</source>
+    </group>
+    <group name="Source">
+      <source>$PROJ_DIR$\..\src\main_xg21.c</source>
+    </group>
+    <group>
+      <source>$PROJ_DIR$\..\README.md</source>
+    </group>
+    <cflags>
+      <define>RETARGET_VCOM</define>
+      <tooloption only_ide="slsproj">&lt;toolOption toolId="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.base" optionId="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none"/&gt;</tooloption>
+    </cflags>
+  </project>
+</workspace>
