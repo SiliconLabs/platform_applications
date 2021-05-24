@@ -1,4 +1,4 @@
-/** @file ssi_comms_v2.c */
+/** @file ssi_comms.h */
 
 /*==========================================================
  * Copyright 2021 QuickLogic Corporation
