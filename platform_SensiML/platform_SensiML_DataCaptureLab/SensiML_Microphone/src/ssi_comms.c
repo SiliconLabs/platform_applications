@@ -20,26 +20,34 @@
 #include "ssi_comms.h"
 #include "sl_iostream.h"
 
-static uint32_t ssi_conn_seqnum = 0;
-void ssi_seqnum_init(void)
+static uint32_t ssi_conn_seqnum[SSI_MAX_CHANNELS] = {0};
+void ssi_seqnum_init(uint8_t channel)
 {
-    ssi_conn_seqnum = 0;
+    if (channel >= SSI_MAX_CHANNELS)
+      return;
+    ssi_conn_seqnum[channel] = 0;
 }
 
-void ssi_seqnum_reset(void)
+void ssi_seqnum_reset(uint8_t channel)
 {
-    ssi_conn_seqnum = 0;
+    if (channel >= SSI_MAX_CHANNELS)
+      return;
+    ssi_conn_seqnum[channel] = 0;
 }
 
-uint32_t ssi_seqnum_update(void)
+uint32_t ssi_seqnum_update(uint8_t channel)
 {
-    ssi_conn_seqnum++;
-    return ssi_conn_seqnum;
+    if (channel >= SSI_MAX_CHANNELS)
+      return 0;
+    ssi_conn_seqnum[channel]++;
+    return ssi_conn_seqnum[channel];
 }
 
-uint32_t ssi_seqnum_get(void)
+uint32_t ssi_seqnum_get(uint8_t channel)
 {
-    return ssi_conn_seqnum;
+    if (channel >= SSI_MAX_CHANNELS)
+      return 0;
+    return ssi_conn_seqnum[channel];
 }
 
 uint8_t ssi_payload_checksum_get(uint8_t *p_data, uint16_t len)
@@ -52,9 +60,8 @@ uint8_t ssi_payload_checksum_get(uint8_t *p_data, uint16_t len)
     return crc8;
 }
 
-void ssi_publish_sensor_data(uint8_t* buffer, int size)
+void ssiv2_publish_sensor_data(uint8_t channel, uint8_t* buffer, int size)
 {
-#if (SSI_JSON_CONFIG_VERSION == 2)
     uint32_t seqnum;
     uint16_t u16len;
     uint8_t crc8 = 0xFF;
@@ -65,19 +72,19 @@ void ssi_publish_sensor_data(uint8_t* buffer, int size)
     uint8_t sync_data = SSI_SYNC_DATA;
     sl_iostream_write(SL_IOSTREAM_STDOUT, &sync_data, sizeof(sync_data));
 
+    // Add channel number
+    sl_iostream_write(SL_IOSTREAM_STDOUT, &channel, sizeof(channel));
+
     // Add sequence number
-    seqnum = ssi_seqnum_update();
+    seqnum = ssi_seqnum_update(channel);
     sl_iostream_write(SL_IOSTREAM_STDOUT, &seqnum, sizeof(seqnum));
 
     // Add payload length
     u16len = size;
     sl_iostream_write(SL_IOSTREAM_STDOUT, &u16len, sizeof(u16len));
-#endif
 
     sl_iostream_write(SL_IOSTREAM_STDOUT, buffer, size);
 
-#if (SSI_JSON_CONFIG_VERSION == 2)
     // Add 8-bit checksum
     sl_iostream_write(SL_IOSTREAM_STDOUT, &crc8, 1);
-#endif
 }

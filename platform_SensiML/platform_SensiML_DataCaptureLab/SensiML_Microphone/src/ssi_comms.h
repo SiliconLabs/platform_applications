@@ -21,15 +21,15 @@
 
 #include <inttypes.h>
 #define SSI_JSON_CONFIG_VERSION    (2)     /* 2 => Use enhance SSI protocol, 1 => use original SSI protocol */
+#define SSI_SYNC_DATA              (0xFF)
+#define SSI_MAX_CHANNELS           (4)
 
-#define SSI_SYNC_DATA (0xFF)
-
-extern void ssi_seqnum_init(void);
-extern void ssi_seqnum_reset(void);
-extern uint32_t ssi_seqnum_update(void);
-extern uint32_t ssi_seqnum_get(void);
+extern void ssi_seqnum_init(uint8_t channel);
+extern void ssi_seqnum_reset(uint8_t channel);
+extern uint32_t ssi_seqnum_update(uint8_t channel);
+extern uint32_t ssi_seqnum_get(uint8_t channel);
 extern uint8_t ssi_payload_checksum_get(uint8_t *p_data, uint16_t len);
 
-extern void ssi_publish_sensor_data(uint8_t* p_source, int ilen);
+extern void ssiv2_publish_sensor_data(uint8_t channel, uint8_t* p_source, int ilen);
 
 #endif /* SSI_COMMS_H_ */

@@ -122,7 +122,8 @@ void app_sensor_imu_process_action(void)
       if(samples_collected == APP_IMU_SAMPLES_PER_PACKET){
           samples_collected = 0;
           p = (unsigned char*) imu_data;
-          ssi_publish_sensor_data(p, APP_IMU_BYTES_TO_WRITE);
+          // send data using SSI v2 on Channel 0
+          ssiv2_publish_sensor_data(0, p, APP_IMU_BYTES_TO_WRITE);
           //sl_iostream_write(SL_IOSTREAM_STDOUT, p, APP_IMU_BYTES_TO_WRITE);
       }
   }

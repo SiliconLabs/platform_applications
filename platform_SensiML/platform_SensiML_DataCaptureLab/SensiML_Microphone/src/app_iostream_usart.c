@@ -33,7 +33,6 @@
  * maintained and there may be no bug maintenance planned for these resources.
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
-
 #include <app_voice.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,6 +45,8 @@
 
 #include "sl_mic.h"
 #include "app_led.h"
+
+#include "ssi_comms.h"
 
 extern volatile bool config_received;
 extern sl_sleeptimer_timer_handle_t send_config_timer;
@@ -119,16 +120,19 @@ void app_iostream_usart_process_action(void)
       config_received = true;
 
       // Turn off LED0 (red) to indicate open connection; data transfer
-      app_config_led_control(OFF);
+      app_config_led_off();
+      // reset sequence number for this connection
+      // default channel number is 0
+      ssi_seqnum_reset(0);
     }
     else if ((strcmp("disconnect", buffer) == 0)) {
-      //initialize IMU and start measurement
-      app_voice_stop();
+              //initialize IMU and start measurement
+              app_voice_stop();
 
-      config_received = false;
-      app_config_mic();
-      // Turn on LED0 (red) to indicate disconnect
-      app_config_led_control(ON);
-    }
+              config_received = false;
+              app_config_mic();
+              // Turn off LED0 (red) to indicate open connection; data transfer
+              app_led_init();
+            }
   }
 }

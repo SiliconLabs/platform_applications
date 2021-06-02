@@ -2,6 +2,9 @@
  * @file
  * @brief Inertial Measurement Unit sensor header
  *******************************************************************************
+ * # License
+ * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
  *
