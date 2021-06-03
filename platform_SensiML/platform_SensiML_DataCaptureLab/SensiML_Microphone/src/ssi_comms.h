@@ -23,6 +23,7 @@
 #define SSI_JSON_CONFIG_VERSION    (2)     /* 2 => Use enhance SSI protocol, 1 => use original SSI protocol */
 #define SSI_SYNC_DATA              (0xFF)
 #define SSI_MAX_CHANNELS           (4)
+#define SSI_CHANNEL_DEFAULT        (0)
 
 extern void ssi_seqnum_init(uint8_t channel);
 extern void ssi_seqnum_reset(uint8_t channel);

@@ -3,7 +3,7 @@
  * @brief Top level application functions
  *******************************************************************************
  * # License
- * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -53,14 +53,13 @@ void app_init(void)
 
 void app_process_action(void)
 {
-  app_iostream_usart_process_action();
-  app_led_process_action();
-  
   // Send JSON configuration and wait to receive "connect" command
   if (!config_received) {
     app_config_process_action();
-    
+    app_iostream_usart_process_action();
   } else { // once connected, no longer necessary to listen for commands
+      app_iostream_usart_process_action();
     app_voice_process_action();
   }
+  app_led_process_action();
 }

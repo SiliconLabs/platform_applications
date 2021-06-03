@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
-  <descriptors name="SensiML_Microphone">
-    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.super:3.1.0._640221277"/>
-    <properties key="universalConfig.generationDirectory" value="C:\Users\augoodwi\SimplicityStudio\v5_SensiML\SensiML_Microphone"/>
+  <descriptors name="SensiML_Microphone_data_capture">
+    <properties key="projectCommon.sdkId" value="com.silabs.sdk.stack.super:3.1.1._640221277"/>
+    <properties key="universalConfig.generationDirectory" value="C:\Users\marao\SimplicityStudio\v5_workspace\SensiML_Microphone_data_capture"/>
     <properties key="universalConfig.toolchainCompatibility" value="iar gcc"/>
     <properties key="projectCommon.boardIds" value="brd4166a:0.0.0"/>
     <properties key="projectCommon.partId" value="mcu.arm.efr32.mg12.efr32mg12p332f1024gl125"/>
@@ -10,4 +10,4 @@
     <properties key="universalConfig.projectTypeIds" value="com.silabs.ss.framework.ide.project.core.cdtMbsProjectType"/>
     <properties key="projectCommon.importModeId" value="LINK_LIBRARIES"/>
   </descriptors>
-</model:MDescriptors>
+</model:MDescriptors>

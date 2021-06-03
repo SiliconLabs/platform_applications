@@ -319,8 +319,8 @@ static void voice_send_data(void)
 #include "ssi_comms.h"
 static void voice_transmit(uint8_t *buffer, uint32_t size)
 {
-  // Send data using SSI v2 on Channel 0
-  ssiv2_publish_sensor_data(0, buffer, size);
+  // Send data using SSI v2 on default Channel
+  ssiv2_publish_sensor_data(SSI_CHANNEL_DEFAULT, buffer, size);
 }
 
 static void mic_buffer_ready(const void *buffer, uint32_t n_frames)

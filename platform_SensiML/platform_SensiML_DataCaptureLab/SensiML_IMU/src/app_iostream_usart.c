@@ -119,9 +119,8 @@ void app_iostream_usart_process_action(void)
 
       // Turn off LED0 (red) to indicate open connection; data transfer
       app_config_led_control(OFF);
-      // reset sequence number for this connection
-      // default channel number is 0
-      ssi_seqnum_reset(0);
+      // reset sequence number for this connection, for default channel
+      ssi_seqnum_reset(SSI_CHANNEL_DEFAULT);
     }
     else if ((strcmp("disconnect", buffer) == 0)) {
       //initialize IMU and start measurement
