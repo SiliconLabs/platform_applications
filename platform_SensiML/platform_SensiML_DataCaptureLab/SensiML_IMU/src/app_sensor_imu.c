@@ -124,7 +124,6 @@ void app_sensor_imu_process_action(void)
           p = (unsigned char*) imu_data;
           // send data using SSI v2 on default Channel
           ssiv2_publish_sensor_data(SSI_CHANNEL_DEFAULT, p, APP_IMU_BYTES_TO_WRITE);
-          //sl_iostream_write(SL_IOSTREAM_STDOUT, p, APP_IMU_BYTES_TO_WRITE);
       }
   }
 }
