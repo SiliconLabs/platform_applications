@@ -46,6 +46,7 @@
 #include "app_sensor_imu.h"
 #include "app_led.h"
 
+#include "ssi_comms.h"
 extern volatile bool config_received;
 extern sl_sleeptimer_timer_handle_t send_config_timer;
 
@@ -118,6 +119,8 @@ void app_iostream_usart_process_action(void)
 
       // Turn off LED0 (red) to indicate open connection; data transfer
       app_config_led_control(OFF);
+      // reset sequence number for this connection, for default channel
+      ssi_seqnum_reset(SSI_CHANNEL_DEFAULT);
     }
     else if ((strcmp("disconnect", buffer) == 0)) {
       //initialize IMU and start measurement

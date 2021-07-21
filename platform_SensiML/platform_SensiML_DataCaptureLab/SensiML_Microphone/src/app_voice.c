@@ -3,7 +3,7 @@
  * @brief Voice transmission
  *******************************************************************************
  * # License
- * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -33,7 +33,6 @@
  * maintained and there may be no bug maintenance planned for these resources.
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
-
 #include <app_voice.h>
 #include <stdio.h>
 #include <string.h>
@@ -317,9 +316,11 @@ static void voice_send_data(void)
   }
 }
 
+#include "ssi_comms.h"
 static void voice_transmit(uint8_t *buffer, uint32_t size)
 {
-  sl_iostream_write(SL_IOSTREAM_STDOUT, buffer, size);
+  // Send data using SSI v2 on default Channel
+  ssiv2_publish_sensor_data(SSI_CHANNEL_DEFAULT, buffer, size);
 }
 
 static void mic_buffer_ready(const void *buffer, uint32_t n_frames)
@@ -338,8 +339,18 @@ static void send_config_callback(sl_sleeptimer_timer_handle_t *handle, void *dat
 
 static void send_json_config()
 {
+#if (SSI_JSON_CONFIG_VERSION == 1)
   printf("{\"sample_rate\":%d,"
       "\"column_location\":{"
       "\"Microphone\":0},"
       "\"samples_per_packet\":%d}\n", SR2FS(VOICE_SAMPLE_RATE_DEFAULT), MIC_SAMPLE_BUFFER_SIZE);
+#elif (SSI_JSON_CONFIG_VERSION == 2)
+  printf("{\"version\":%d, \"sample_rate\":%d,"
+      "\"column_location\":{"
+      "\"Microphone\":0},"
+      "\"samples_per_packet\":%d}\n", SSI_JSON_CONFIG_VERSION, SR2FS(VOICE_SAMPLE_RATE_DEFAULT), MIC_SAMPLE_BUFFER_SIZE);
+#else
+#error "Unknown SSI_JSON_CONFIG_VERSION"
+#endif
 }
+

@@ -24,8 +24,8 @@ component:
 - {id: device_init_hfxo}
 - instance: [led0, led1]
   id: simple_led
-- {id: sl_system}
 - {id: iostream_retarget_stdio}
+- {id: sl_system}
 - {id: device_init}
 - {id: iostream}
 - {id: brd4166a}

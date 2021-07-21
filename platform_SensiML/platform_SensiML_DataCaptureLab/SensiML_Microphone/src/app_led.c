@@ -38,7 +38,6 @@
 #include "sl_simple_led.h"
 #include "sl_simple_led_instances.h"
 #include "sl_sleeptimer.h"
-#include "app_led.h"
 
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
@@ -104,15 +103,10 @@ void app_led_process_action(void)
 /***************************************************************************//**
  * Turn of configuration LED indicator
  ******************************************************************************/
-void app_config_led_control(bool state)
+void app_config_led_off(void)
 {
-  if(state == ON) {
-      sl_led_turn_on(&LED_INSTANCE0);
-  }
-  else if(state == OFF) {
       sl_led_turn_off(&LED_INSTANCE0);
   }
-}
 
 /***************************************************************************//**
  * Sleeptimer timeout callback.

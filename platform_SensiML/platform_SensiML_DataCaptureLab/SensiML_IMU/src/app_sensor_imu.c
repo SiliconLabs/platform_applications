@@ -34,7 +34,6 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-
 #include <stdio.h>
 #include "sl_board_control.h"
 #include "sl_iostream.h"
@@ -42,6 +41,7 @@
 #include "sl_app_assert.h"
 #include "app_sensor_imu.h"
 #include "sl_sleeptimer.h"
+#include "ssi_comms.h"
 
 /** Time (in ms) between periodic JSON template messages. */
 #define JSON_TEMPLATE_INTERVAL_MS      1000
@@ -122,7 +122,8 @@ void app_sensor_imu_process_action(void)
       if(samples_collected == APP_IMU_SAMPLES_PER_PACKET){
           samples_collected = 0;
           p = (unsigned char*) imu_data;
-          sl_iostream_write(SL_IOSTREAM_STDOUT, p, APP_IMU_BYTES_TO_WRITE);
+          // send data using SSI v2 on default Channel
+          ssiv2_publish_sensor_data(SSI_CHANNEL_DEFAULT, p, APP_IMU_BYTES_TO_WRITE);
       }
   }
 }
@@ -223,6 +224,7 @@ static void send_config_callback(sl_sleeptimer_timer_handle_t *handle, void *dat
  ******************************************************************************/
 static void send_json_config()
 {
+#if (SSI_JSON_CONFIG_VERSION == 1)
   printf("{\"sample_rate\":%3.0f,"
     "\"samples_per_packet\":%d,"
     "\"column_location\":{"
@@ -232,4 +234,17 @@ static void send_json_config()
     "\"GyroscopeX\":3,"
     "\"GyroscopeY\":4,"
     "\"GyroscopeZ\":5}}\n", get_acc_gyro_odr(), APP_IMU_SAMPLES_PER_PACKET);
+#elif (SSI_JSON_CONFIG_VERSION == 2)
+  printf("{\"version\":%d, \"sample_rate\":%3.0f,"
+    "\"samples_per_packet\":%d,"
+    "\"column_location\":{"
+    "\"AccelerometerX\":0,"
+    "\"AccelerometerY\":1,"
+    "\"AccelerometerZ\":2,"
+    "\"GyroscopeX\":3,"
+    "\"GyroscopeY\":4,"
+    "\"GyroscopeZ\":5}}\n", SSI_JSON_CONFIG_VERSION, get_acc_gyro_odr(), APP_IMU_SAMPLES_PER_PACKET);
+#else
+#error "Unknown SSI_JSON_CONFIG_VERSION"
+#endif
 }

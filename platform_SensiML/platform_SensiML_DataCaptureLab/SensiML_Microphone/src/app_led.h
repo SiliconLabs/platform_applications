@@ -34,17 +34,8 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-
 #ifndef APP_LED_H
 #define APP_LED_H
-
-#ifndef OFF
-#define OFF                    1
-#endif
-
-#ifndef ON
-#define ON                     0
-#endif
 
 /***************************************************************************//**
  * Initialize LEDs
@@ -59,6 +50,6 @@ void app_led_process_action(void);
 /***************************************************************************//**
  * Turn of configuration LED indicator
  ******************************************************************************/
-void app_config_led_control(bool state);
+void app_config_led_off(void);
 
 #endif  // APP_LED_H
