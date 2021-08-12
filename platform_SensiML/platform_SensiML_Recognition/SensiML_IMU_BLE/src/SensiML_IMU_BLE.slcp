@@ -1,0 +1,77 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: sensiml_recognition_motion
+label: sensiml_recognition_motion
+description: "This examples shocases inference with a model made with SensiML. The model uses the 
+IMU sensor to classify the motion of the board into a set of classes; 
+*Horizontal (Classification: 1)*, *Stationary (Classification: 2)* and *Vertical (Classification: 3)*.
+The output can be viewed over serial VCOM or through SensiML bluetooth app. \n"
+category: Example|Platform
+package: platform
+quality: production
+source:
+  - {path: app.c}
+  - {path: main.c}
+  - {path: app_iostream_usart.c}
+  - {path: app_bt.c}
+  - {path: app_led.c}
+  - {path: app_sensor_imu.c}
+  - {path: app_output.c}
+  - {path: knowledgepack/sml_recognition_run.c}
+include:
+- path: ''
+  file_list:
+  - {path: app.h}
+  - {path: app_iostream_usart.h}
+  - {path: app_bt.h}
+  - {path: app_led.h}
+  - {path: app_sensor_imu.h}
+- path: knowledgepack
+  file_list:
+  - path: sml_output.h
+  - path: sml_recognition_run.h
+- path: knowledgepack/lib
+  file_list:
+  - path: kb_defines.h
+  - path: kb_typedefs.h
+  - path: kb.h
+
+library:
+  - path: knowledgepack/lib/libsensiml.a
+
+
+
+sdk: {id: gecko_sdk, version: 3.1.1}
+toolchain_settings: []
+component:
+- {id: app_log}
+- {id: iostream_retarget_stdio}
+- {id: sl_system}
+- {id: iostream}
+- {id: brd4166a}
+- instance: [vcom]
+  id: iostream_usart
+- {id: simple_timer}
+- {id: EFR32MG12P332F1024GL125}
+- {id: device_init_hfxo}
+- instance: [led0, led1]
+  id: simple_led
+- {id: device_init}
+- {id: app_assert}
+- {id: imu_driver}
+- {id: sleeptimer}
+- {id: bt_fp_soc_default}
+define:
+- {name: DEBUG_EFM}
+configuration:
+- {name: SL_BOARD_ENABLE_VCOM, value: '1'}
+ui_hints: {}
+
+config_file:
+  - path: config/btconf/gatt_configuration.btconf
+    directory: btconf
+    override:
+      component: gatt_configuration
+      file_id: gatt_configuration_file_id
+      
+
+
