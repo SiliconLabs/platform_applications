@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ASCII"?>
+<device:XMLDevice xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:device="http://www.silabs.com/ss/hwconfig/document/device.ecore" name="pin_tool.EFR32MG12P332F1024GL125" partId="mcu.arm.efr32.mg12.efr32mg12p332f1024gl125" contextId="com.silabs.sdk.stack.super:3.1.2._640221277">
+  <mode name="DefaultMode">
+    <property object="DefaultMode" propertyId="mode.diagramLocation" value="100, 100"/>
+    <property object="I2C1" propertyId="ABModule.selectedRequirement" value="i2c%T%SL_I2CSPM_SENSOR%T%sl_i2cspm_sensor_config.h"/>
+    <property object="I2C1" propertyId="ABPeripheral.included" value="true"/>
+    <property object="PB10" propertyId="ABModule.selectedRequirement" value="gpio%T%SL_BOARD_ENABLE_SENSOR_HALL%T%sl_board_control_config.h"/>
+    <property object="PB10" propertyId="pin.reserve" value="Reserved"/>
+    <property object="PF10" propertyId="ABModule.selectedRequirement" value="gpio%T%SL_BOARD_ENABLE_SENSOR_MICROPHONE%T%sl_board_control_config.h"/>
+    <property object="PF10" propertyId="pin.reserve" value="Reserved"/>
+    <property object="PF14" propertyId="ABModule.selectedRequirement" value="gpio%T%SL_BOARD_ENABLE_SENSOR_GAS%T%sl_board_control_config.h"/>
+    <property object="PF14" propertyId="pin.reserve" value="Reserved"/>
+    <property object="PF8" propertyId="ABModule.selectedRequirement" value="gpio%T%SL_BOARD_ENABLE_SENSOR_IMU%T%sl_board_control_config.h"/>
+    <property object="PF8" propertyId="pin.reserve" value="Reserved"/>
+    <property object="PF9" propertyId="ABModule.selectedRequirement" value="gpio%T%SL_BOARD_ENABLE_SENSOR_PRESSURE%T%sl_board_control_config.h"/>
+    <property object="PF9" propertyId="pin.reserve" value="Reserved"/>
+    <property object="PK1" propertyId="ABModule.selectedRequirement" value="gpio%T%SL_MX25_FLASH_SHUTDOWN_CS%T%sl_mx25_flash_shutdown_usart_config.h"/>
+    <property object="PK1" propertyId="pin.reserve" value="Reserved"/>
+    <property object="PORTIO" propertyId="portio.i2c1.enable.scl" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.i2c1.enable.sda" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.i2c1.location.scl" value="17"/>
+    <property object="PORTIO" propertyId="portio.i2c1.location.sda" value="17"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.cts" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.rts" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.rx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.enable.tx" value="Enabled"/>
+    <property object="PORTIO" propertyId="portio.usart0.location.cts" value="30"/>
+    <property object="PORTIO" propertyId="portio.usart0.location.rts" value="30"/>
+    <property object="USART0" propertyId="ABModule.selectedRequirement" value="usart%T%SL_IOSTREAM_USART_VCOM%T%sl_iostream_usart_vcom_config.h"/>
+    <property object="USART0" propertyId="ABPeripheral.included" value="true"/>
+  </mode>
+  <modeTransition>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.source" value="RESET"/>
+    <property object="RESET &#x2192; DefaultMode" propertyId="modeTransition.target" value="DefaultMode"/>
+  </modeTransition>
+</device:XMLDevice>

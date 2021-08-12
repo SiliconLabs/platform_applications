@@ -1,0 +1,48 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: SensiML_IMU_data_capture_ble
+label: SensiML_IMU_data_capture_ble
+description: |
+  This example project shows an empty configuration that can be used as a starting point to add components and functionality.
+category: Example|Platform
+package: platform
+quality: production
+source:
+- {path: app.c}
+- {path: main.c}
+- {path: gatt_service_sensiml.c}
+include:
+- path: ''
+  file_list:
+  - {path: app.h}
+sdk: {id: gecko_sdk, version: 3.1.2}
+toolchain_settings: []
+component:
+- {id: app_log}
+- {id: sl_system}
+- {id: iostream_retarget_stdio}
+- {id: brd4166a}
+- instance: [vcom]
+  id: iostream_usart
+- {id: EFR32MG12P332F1024GL125}
+- {id: sensor_imu}
+- instance: [sensor]
+  id: i2cspm
+- {id: device_init}
+- {id: app_assert}
+- {id: sleeptimer}
+- {id: bt_fp_soc_default}
+define:
+- {name: DEBUG_EFM}
+ui_hints: {}
+
+config_file:
+ - path: config/btconf/gatt_configuration.btconf
+   directory: btconf
+   override:
+      component: gatt_configuration
+      file_id: gatt_configuration_file_id
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+  - name: SL_BOARD_ENABLE_SENSOR_IMU
+    value: "1"
