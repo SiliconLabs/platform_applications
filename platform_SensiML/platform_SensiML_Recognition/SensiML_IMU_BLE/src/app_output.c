@@ -13,8 +13,6 @@ static char serial_out_buf[SERIAL_OUT_CHARS_MAX];
 static uint8_t recent_fv[MAX_VECTOR_SIZE];
 static uint16_t recent_fv_len;
 
-static char *p_serial_out = serial_out_buf;
-
 static void sml_output_serial(uint16_t model, uint16_t classification)
 {
     int written = 0;

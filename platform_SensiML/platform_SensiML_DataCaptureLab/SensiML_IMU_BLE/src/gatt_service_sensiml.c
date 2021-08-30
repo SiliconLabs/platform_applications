@@ -41,32 +41,37 @@
 #include "gatt_service_sensiml.h"
 #include "sl_imu.h"
 
-
-
-
 // -----------------------------------------------------------------------------
 // Private macros
 
-#define IMU_CP_RESPONSE                     0x10
-#define IMU_CP_OPCODE_CALIBRATE             0x01
-#define IMU_CP_OPCODE_ORIRESET              0x02
-#define IMU_CP_OPCODE_CALRESET              0x64
-#define IMU_CP_RESP_SUCCESS                 0x01
-#define IMU_CP_RESP_ERROR                   0x02
-// Client Characteristic Configuration descriptor improperly configured
-#define IMU_CP_ERR_CCCD_CONF                0x81
+// Max sample rate supported by the ICM-20648 IMU is 1125 samples/s
+#ifndef IMU_SAMPLE_RATE
+#define IMU_SAMPLE_RATE                     102
+#endif
+#ifndef IMU_SAMPLES_PER_PACKET
+#define IMU_SAMPLES_PER_PACKET              2
+#endif
+
+#define STR(s) #s
+#define XSTR(s) STR(s)
+static const char config_str[] = "{"
+  "\"sample_rate\":" XSTR(IMU_SAMPLE_RATE) ","
+  "\"samples_per_packet\":" XSTR(IMU_SAMPLES_PER_PACKET) ","
+  "\"column_location\":{"
+    "\"AccelerometerX\":0,"
+    "\"AccelerometerY\":1,"
+    "\"AccelerometerZ\":2,"
+    "\"GyroscopeX\":3,"
+    "\"GyroscopeY\":4,"
+    "\"GyroscopeZ\":5"
+  "}"
+"}";
 
 static uint8_t imu_connection = 0;
 static bool imu_state = false; /* disabled / enabled */
 static volatile bool imu_data_notification = false;
-static int16_t data[6] = { 0, 0, 0, 0, 0, 0};
-
-
-static enum {
-  IMU_CP_IND_IDLE,
-  IMU_CP_IND_PENDING,
-  IMU_CP_IND_WAITING
-} imu_cp_indication_status = IMU_CP_IND_IDLE;
+static int16_t data[6*IMU_SAMPLES_PER_PACKET] = {0};
+static int current_sample = 0;
 
 // -----------------------------------------------------------------------------
 // Private function declarations
@@ -83,7 +88,7 @@ static void imu_update_state(void)
   bool imu_state_old = imu_state;
   imu_state = imu_data_notification;
   if (imu_state_old != imu_state) {
-      gatt_service_sensiml_imu_enable(imu_state);
+    gatt_service_sensiml_imu_enable(imu_state);
   }
 }
 
@@ -104,7 +109,6 @@ static void imu_connection_closed_cb(sl_bt_evt_connection_closed_t *data)
 {
   (void)data;
   imu_data_notification = false;
-  imu_cp_indication_status = IMU_CP_IND_IDLE;
   imu_update_state();
 }
 
@@ -124,9 +128,21 @@ static void imu_char_config_changed_cb(sl_bt_evt_gatt_server_characteristic_stat
   imu_update_state();
 }
 
-
-void gatt_service_sensiml_imu_on_event(sl_bt_msg_t *evt){// Handle stack events
+void gatt_service_sensiml_imu_on_event(sl_bt_msg_t *evt)
+{
+  sl_status_t sc;
+  // Handle stack events
   switch (SL_BT_MSG_ID(evt->header)) {
+    case sl_bt_evt_system_boot_id:
+      // Setup config characteristic
+      sc = sl_bt_gatt_server_write_attribute_value(
+        gattdb_sensiml_config,
+        0,
+        sizeof(config_str),
+        (const uint8_t *)config_str
+      );
+      app_assert_status(sc);
+      break;
     case sl_bt_evt_connection_closed_id:
       imu_connection_closed_cb(&evt->data.evt_connection_closed);
       break;
@@ -140,31 +156,45 @@ void gatt_service_sensiml_imu_on_event(sl_bt_msg_t *evt){// Handle stack events
   }
 }
 
-void gatt_service_sensiml_imu_step(void){
+void gatt_service_sensiml_imu_step(void)
+{
   if (imu_state) {
-      if (SL_STATUS_OK == gatt_service_sensiml_imu_get(data)) {
+    if (SL_STATUS_OK == gatt_service_sensiml_imu_get(&data[6 * current_sample])) {
+      current_sample++;
+      if (current_sample == IMU_SAMPLES_PER_PACKET) {
+        current_sample = 0;
         if (imu_data_notification) {
           imu_data_notify();
         }
       }
     }
+  }
 }
 
-sl_status_t gatt_service_sensiml_imu_get(int16_t data[6]){
+sl_status_t gatt_service_sensiml_imu_get(int16_t data[6])
+{
   sl_imu_update();
-  while (!sl_imu_is_data_ready()) {
-      // wait
+  if (!sl_imu_is_data_ready()) {
+    return SL_STATUS_NOT_READY;
   }
   sl_imu_get_acceleration(data);
   sl_imu_get_orientation(&data[3]);
+
   return SL_STATUS_OK;
 }
 
 void gatt_service_sensiml_imu_enable(bool enable)
 {
-  sl_imu_init();
-  sl_imu_configure(102);
-  (void)enable;
+  if (enable) {
+    sl_imu_init();
+    sl_imu_configure(IMU_SAMPLE_RATE);
+  } else {
+    sl_imu_reset();
+    sl_imu_deinit();
+  }
 }
 
-
+bool app_is_ok_to_sleep(void)
+{
+  return !imu_state;
+}

@@ -14,7 +14,7 @@ include:
 - path: ''
   file_list:
   - {path: app.h}
-sdk: {id: gecko_sdk, version: 3.1.2}
+sdk: {id: gecko_sdk, version: 3.2.1}
 toolchain_settings: []
 component:
 - {id: app_log}
@@ -24,13 +24,14 @@ component:
 - instance: [vcom]
   id: iostream_usart
 - {id: EFR32MG12P332F1024GL125}
-- {id: sensor_imu}
+- {id: imu_driver}
 - instance: [sensor]
   id: i2cspm
 - {id: device_init}
 - {id: app_assert}
 - {id: sleeptimer}
 - {id: bt_fp_soc_default}
+- {id: printf}
 define:
 - {name: DEBUG_EFM}
 ui_hints: {}
@@ -45,4 +46,6 @@ configuration:
   - name: SL_BOARD_ENABLE_VCOM
     value: "1"
   - name: SL_BOARD_ENABLE_SENSOR_IMU
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
     value: "1"

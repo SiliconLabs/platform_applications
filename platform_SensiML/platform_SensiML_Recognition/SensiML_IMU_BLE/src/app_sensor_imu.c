@@ -39,7 +39,7 @@
 #include "sl_board_control.h"
 #include "sl_iostream.h"
 #include "sl_imu.h"
-#include "sl_app_assert.h"
+#include "app_assert.h"
 #include "app_sensor_imu.h"
 #include "sl_sleeptimer.h"
 #include "kb.h"
@@ -108,9 +108,7 @@ void app_sensor_imu_enable(bool enable)
   uint8_t state = sl_imu_get_state();
   if (enable && (IMU_STATE_DISABLED == state)) {
     sc = sl_imu_init();
-    sl_app_assert(sc == SL_STATUS_OK,
-                  "[E: 0x%04x] IMU init failed\n",
-                  (int)sc);
+    app_assert_status(sc);
     sl_imu_configure(get_acc_gyro_odr());
   } else if (!enable && (IMU_STATE_READY == state)) {
     sl_imu_deinit();

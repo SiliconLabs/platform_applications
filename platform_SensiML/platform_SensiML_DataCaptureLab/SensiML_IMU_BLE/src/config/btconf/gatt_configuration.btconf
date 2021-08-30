@@ -50,7 +50,7 @@
   </service>
   
   <!--sensiml-->
-  <service advertise="false" id="sensiml" name="sensiml" requirement="mandatory" sourceId="" type="primary" uuid="16480000-0525-4ad5-b4fb-6dd83f49546b">
+  <service advertise="true" id="sensiml" name="sensiml" requirement="mandatory" sourceId="" type="primary" uuid="16480000-0525-4ad5-b4fb-6dd83f49546b">
     <informativeText/>
     
     <!--data-->
@@ -66,7 +66,7 @@
     <!--config-->
     <characteristic const="false" id="sensiml_config" name="config" sourceId="" uuid="16480001-0525-4ad5-b4fb-6dd83f49546b">
       <informativeText/>
-      <value length="0" type="utf-8" variable_length="true">{"sample_rate":102,"samples_per_packet":1,"column_location":{"AccelerometerX":0,"AccelerometerY":1,"AccelerometerZ":2,"GyroscopeX":3,"GyroscopeY":4,"GyroscopeZ":5}}</value>
+      <value length="200" type="utf-8" variable_length="true">{}</value>
       <properties>
         <read authenticated="false" bonded="false" encrypted="false"/>
       </properties>
