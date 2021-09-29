@@ -50,11 +50,11 @@
 sl_sleeptimer_timer_handle_t my_sleeptimer_handle;
 
 // Timeout value in ticks of chosen LF clock source
-#define PERIODIC_TIMEOUT 15000
+// 32768 ticks = 1 second
+#define PERIODIC_TIMEOUT 32768
 
 // LED to turn on
 #define	LED0_NUM	0
-
 
 /**************************************************************************//**
  * @brief
