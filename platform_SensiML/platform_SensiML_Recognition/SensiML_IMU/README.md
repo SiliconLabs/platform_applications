@@ -31,11 +31,11 @@ After flashing the device with the firmware, open a serial terminal program (suc
 The application uses the process-action bare-metal project configuration model. Running a Machine Learning model on an embedded device such as the Thunderboard Sense 2 can be very broadly classified into three steps. 
 Step 1: Data collection and labelling which is covered in the IMU Data Capture project. 
 Step 2: This labelled data is then passed on to SensiML's Analytics Studio to design a machine learning model based on the end-goal (i.e., classify movements). For inference to run on an embedded device, a Machine Learning model should be created and converted to an embedded device friendly version and flashed to the device. The Machine Learning model is created, trained and tested in SensiML's Analytics Studio. The model that gets generated for the Thunderboard Sense 2 device is called a Knowledge Pack. Going into the details of this process is beyond the scope of this readme, but for more information, refer to SensiML's Analytics Studio Documentation - https://sensiml.com/documentation/guides/analytics-studio/index.html. 
-Step 3:  The Knowledge Pack can be downloaded as a library and incorporated into an embedded firmware application. The application can then be flashed onto the device. The model will run on the Thunderboard Sense 2 and can classify incoming voice data based on the labels created in Steps 1 and 2. This project showcases step 3. 
+Step 3:  The Knowledge Pack can be downloaded as a library and incorporated into an embedded firmware application. The application can then be flashed onto the device. The model will run on the Thunderboard Sense 2 and can classify incoming IMU data based on the labels created in Steps 1 and 2. This project showcases step 3. 
 
-This project detects and classifies three types of audio sounds - *Horizontal (Classification: 1)*, *Stationary (Classification: 2)*, *Vertical (Classification: 3)*.  
+This project detects and classifies three types of motion - *Horizontal (Classification: 1)*, *Stationary (Classification: 2)*, *Vertical (Classification: 3)*.  
 
-The data obtained from the IMU sensor is passed onto SensiML's Knowledge Pack that then classifies the audio. The classification output can be viewed on a serial terminal as shown in the image below. 
+The data obtained from the IMU sensor is passed onto SensiML's Knowledge Pack that then classifies the data. The classification output can be viewed on a serial terminal as shown in the image below. 
 
 ![Teraterm output](doc/Classification_output.PNG)
 
