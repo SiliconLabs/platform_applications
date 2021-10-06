@@ -302,9 +302,9 @@
           <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32PG12B\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -563,9 +563,9 @@
           <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32PG12B\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -1252,9 +1252,9 @@
           <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32PG12B\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -1509,9 +1509,9 @@
           <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32PG12B\Include</state>
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3402A_EFM32PG12\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>

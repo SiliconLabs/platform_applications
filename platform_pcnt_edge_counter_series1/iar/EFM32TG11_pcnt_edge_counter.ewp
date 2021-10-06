@@ -249,7 +249,7 @@
         </option>
         <option>
           <name>CCDiagWarnAreErr</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
@@ -281,12 +281,12 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\CMSIS\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
 
         </option>
         <option>
@@ -489,12 +489,12 @@
         </option>
         <option>
           <name>AUserIncludes</name>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\CMSIS\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
 
         </option>
         <option>
@@ -671,7 +671,7 @@
         </option>
         <option>
           <name>IlinkWarningsAreErrors</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>IlinkUseExtraOptions</name>
@@ -1053,7 +1053,7 @@
         </option>
         <option>
           <name>CCDiagWarnAreErr</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
@@ -1085,12 +1085,12 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\CMSIS\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
 
         </option>
         <option>
@@ -1293,12 +1293,12 @@
         </option>
         <option>
           <name>AUserIncludes</name>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\CMSIS\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\platform\emlib\inc</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\platform\CMSIS\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Include</state>
+          <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\SLSTK3301A_EFM32TG11\config</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
 
         </option>
         <option>
@@ -1475,7 +1475,7 @@
         </option>
         <option>
           <name>IlinkWarningsAreErrors</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>IlinkUseExtraOptions</name>
@@ -1612,34 +1612,34 @@
   <group>
     <name>CMSIS</name>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Source\IAR\startup_efm32tg11b.s</name>
+      <name>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Source\IAR\startup_efm32tg11b.s</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Source\system_efm32tg11b.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs\EFM32TG11B\Source\system_efm32tg11b.c</name>
     </file>
   </group>
   <group>
     <name>emlib</name>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_system.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_system.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_cmu.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_cmu.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_core.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_core.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_emu.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_emu.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_gpio.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_gpio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_pcnt.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_pcnt.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\platform\emlib\src\em_prs.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_prs.c</name>
     </file>
   </group>
   <group>
