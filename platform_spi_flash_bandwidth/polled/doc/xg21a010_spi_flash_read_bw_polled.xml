@@ -10,7 +10,7 @@
       <cmsis>$PROJ_DIR$\..\..\..\platform\CMSIS</cmsis>
       <device>$PROJ_DIR$\..\..\..\platform\Device\SiliconLabs</device>
       <emlib>$PROJ_DIR$\..\..\..\platform\emlib</emlib>
-      <drivers>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</drivers>
+      <drivers>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</drivers>
       <bsp>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</bsp>
       <kitconfig>$PROJ_DIR$\..\..\..\hardware\kit\EFR32MG21_BRD4181A\config</kitconfig>
       <localdrivers>$PROJ_DIR$\..\Drivers</localdrivers>
@@ -29,12 +29,12 @@
       <source>##em-path-device##\EFR32MG21\Source\system_efr32mg21.c</source>
     </group>
     <group name="emlib">
-      <source>##em-path-cmsis##\emlib\src\em_cmu.c</source>
-      <source>##em-path-cmsis##\emlib\src\em_core.c</source>
-      <source>##em-path-cmsis##\emlib\src\em_emu.c</source>
-      <source>##em-path-cmsis##\emlib\src\em_gpio.c</source>
-      <source>##em-path-cmsis##\emlib\src\em_system.c</source>
-      <source>##em-path-cmsis##\emlib\src\em_usart.c</source>
+      <source>##em-path-emlib##\src\em_cmu.c</source>
+      <source>##em-path-emlib##\src\em_core.c</source>
+      <source>##em-path-emlib##\src\em_emu.c</source>
+      <source>##em-path-emlib##\src\em_gpio.c</source>
+      <source>##em-path-emlib##\src\em_system.c</source>
+      <source>##em-path-emlib##\src\em_usart.c</source>
 	</group>
     <group name="Drivers">
       <source>##em-path-drivers##\retargetio.c</source>

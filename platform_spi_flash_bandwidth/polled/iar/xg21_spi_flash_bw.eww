@@ -4,6 +4,9 @@
   <project>
     <path>$WS_DIR$\xg21_spi_flash_read_bw_polled.ewp</path>
   </project>
+  <project>
+    <path>$WS_DIR$\xg21_spi_flash_read_bw_polled.ewp</path>
+  </project>
 
   <batchBuild/>
 </workspace>

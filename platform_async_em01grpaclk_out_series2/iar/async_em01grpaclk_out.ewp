@@ -1972,22 +1972,22 @@
   <group>
     <name>emlib</name>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_cmu.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_cmu.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_core.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_core.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_emu.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_emu.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_gpio.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_gpio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_system.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_system.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_timer.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_timer.c</name>
     </file>
   </group>
   <group>

@@ -284,7 +284,7 @@
         </option>
         <option>
           <name>CCDiagWarnAreErr</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
@@ -317,7 +317,7 @@
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\EFR32MG21_BRD4180A\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -587,7 +587,7 @@
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\EFR32MG21_BRD4180A\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -770,7 +770,7 @@
         </option>
         <option>
           <name>IlinkWarningsAreErrors</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>IlinkUseExtraOptions</name>
@@ -1265,7 +1265,7 @@
         </option>
         <option>
           <name>CCDiagWarnAreErr</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
@@ -1298,7 +1298,7 @@
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\EFR32MG21_BRD4180A\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -1569,7 +1569,7 @@
           <state>$PROJ_DIR$\..\..\..\platform\emlib\inc</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\EFR32MG21_BRD4180A\config</state>
           <state>$PROJ_DIR$\..\..\..\hardware\kit\common\bsp</state>
-          <state>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers</state>
+          <state>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers</state>
           <state>$PROJ_DIR$\..\Drivers</state>
 
         </option>
@@ -1752,7 +1752,7 @@
         </option>
         <option>
           <name>IlinkWarningsAreErrors</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>IlinkUseExtraOptions</name>
@@ -1976,31 +1976,31 @@
   <group>
     <name>emlib</name>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_cmu.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_cmu.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_core.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_core.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_emu.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_emu.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_gpio.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_gpio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_system.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_system.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\platform\CMSIS\emlib\src\em_usart.c</name>
+      <name>$PROJ_DIR$\..\..\..\platform\emlib\src\em_usart.c</name>
     </file>
   </group>
   <group>
     <name>Drivers</name>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers\retargetio.c</name>
+      <name>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers\retargetio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\..\..\..\hardware\kit\common\drivers\retargetserial.c</name>
+      <name>$PROJ_DIR$\..\..\..\hardware\kit\common\drivers\retargetserial.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Drivers\systick.h</name>
