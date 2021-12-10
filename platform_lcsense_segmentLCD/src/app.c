@@ -47,6 +47,9 @@
 #include "em_emu.h"
 #include "app.h"
 
+#define LCD_COM_MASK      0x00FF   // Mask for LCD COM lines
+#define LCD_SEGMENT_MASK  0xC05F3  // Mask for LCD Segment lines
+
 volatile uint32_t counter = 0;  // metal detected counter
 uint32_t no_metal[16];          // store calibration value for no metal
 uint32_t pcnt_top[2] = {0,4};   // PCNT top value for two modes
@@ -174,7 +177,7 @@ void initVDAC(void)
   initChannel.powerMode = vdacPowerModeLowPower;  // Low power mode
   initChannel.holdOutTime = 10;
 
-  initVdac.reference = vdacRef2V5;               // AVDD reference
+  initVdac.reference = vdacRef2V5;               // Internal 2.5V reference
   initVdac.onDemandClk = false;
   initVdac.prescaler = VDAC_PrescaleCalc(VDAC0, 500000);
 
@@ -185,7 +188,7 @@ void initVDAC(void)
   // Enable VDAC
   VDAC_Enable(VDAC0, 0, true);
 
-  // Set channel 0 output, 2000 / 4095 * 3.3 ~= 1.6V
+  // Set channel 0 output, 3000 / 4095 * 2.5 ~= 1.83V
   VDAC_Channel0OutputSet(VDAC0, 3000);
 }
 
@@ -378,7 +381,12 @@ void app_init(void)
 
   // Segment LCD Initialization
   // Default display 0
-  SegmentLCD_Init(true);
+  SegmentLCD_Init(false);
+
+  // disable unused segments
+  GPIO->LCDCOM &= LCD_COM_MASK;
+  GPIO->LCDSEG &= LCD_SEGMENT_MASK;
+
   SegmentLCD_Number(counter);
 
 }
