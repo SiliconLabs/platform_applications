@@ -139,7 +139,7 @@ void initTimer(void)
 
   TIMER_Init(TIMER0, &timerInit);
 
-  // Route Timer0 CC0 to PB0
+  // Route Timer0 CC0 to PA6
   GPIO->TIMERROUTE[0].ROUTEEN  = GPIO_TIMER_ROUTEEN_CC0PEN;
   GPIO->TIMERROUTE[0].CC0ROUTE = (SCL_PORT << _GPIO_TIMER_CC0ROUTE_PORT_SHIFT)
                     | (SCL_PIN << _GPIO_TIMER_CC0ROUTE_PIN_SHIFT);
