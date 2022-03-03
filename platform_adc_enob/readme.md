@@ -1,119 +1,205 @@
-# bgm iadc Example #
+# EFR32BG22 IADC 16-bit ENOB #
 
-## Summary ##
+## Description ##
 
-This project uses bgm board to evaluate the EFR32BG22 16 bit ADC performance (14.3 ENOB with 32x OVS). 
-a. EMU temperature
-b. led
-c. button
-d. adc calibration
+The [EFR32BG22](https://www.silabs.com/documents/public/data-sheets/efr32bg22-datasheet.pdf) (Wireless Gecko **Series 2**) **IADC** is an intermediate architecture combining techniques from both **Successive Approximation Register (SAR)** and **Delta-Sigma (ΔΣ)** style converters. 
 
-Peripherals used: ADC, GPIO, I2C, USART, EMU, CMU
+The flexible incremental architecture uses **oversampling** to allow applications to trade speed for **higher resolution**. 
+- 1 Msps with oversampling ratio = 2
+- 76.9 ksps with oversampling ratio = 32
 
-## Gecko SDK version ##
+This example discusses how to attain 14.3-bit **ENOB** with **oversampling**. It also cover offset and gain **calibration** of the IADC with **external reference**.  
+ENOB is calculated based on below **formula**:  
+![diagram](images/bgm-iadc-enob.png)  
 
-v3.2.1
+**Key points** to attain 14.3 bit ENOB:
+- **Differential** mode input
+- External **reference**
+- 32+ **oversample** rate
+
+**Peripherals used**: IADC, GPIO, I2C, USART, EMU, CMU
+
+## Gecko SDK Suite version ##
+
+- **Gecko SDK Suite** v4.0.1
+- MCU v6.2.1.0
+- Bluetooth v3.3.1
 
 ## Hardware Required ##
 
-- One WSTK main board
-<https://www.silabs.com/products/development-tools/mcu/32-bit/efm32-giant-gecko-gg11-starter-kit>
-- One bgm board
-<https://components101.com/motors/28byj-48-stepper-motor>
-- Which include 
-  -- DAC70501 https://www.ti.com/lit/ds/symlink/dac70501.pdf
-  -- ADC1220 https://www.ti.com/lit/ds/symlink/ads1220.pdf
-  -- REF3312 https://www.ti.com/product/REF3312
-- Schematic for the bgm board
-<https://components101.com/motors/28byj-48-stepper-motor>
+- One WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard)
+- One [**bgm board**](doc/CGM-Board_Schematic.pdf)
+![diagram](images/bgm-iadc-diagram.png)
+
+- The bgm board includes: 
+  - TI 14-bit Voltage-Output DAC [DAC70501](https://www.ti.com/lit/ds/symlink/dac70501.pdf)
+  - TI 24-bit Low Power Delta-sigma ADC [ADS1220](https://www.ti.com/lit/ds/symlink/ads1220.pdf)
+  - 2 TI Low Drift Voltage Reference [REF3312s](https://www.ti.com/lit/pdf/sbos392)
+  - Silabs [EFR32BG22](https://www.silabs.com/documents/public/data-sheets/efr32bg22-datasheet.pdf)
+
 ## Setup ##
 
-Connect bgm board with WSTK main board via Simplicity 10 pins adater, and connect WSTK main board to PC via mini USB.
-a. Set the debug mode as 'OUT'.
-b. set target in Simplicity launcher as EFR32BG22C112F352GM32.
-c. read back the secure FW version.
-d. flash the bootloader first via commander or flash programmer.
-C:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\bootloader\sample-apps\bootloader-storage-internal-single-512k\efr32mg22c224f512im40-brd4182a
+**Connect** [**bgm board**](doc/CGM-Board_Schematic.pdf) with WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via 10 pins [**Simplicity Debug Adapter**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect WSTK **mainboard** to **PC** via **mini USB**.
+- Set the **Debug Mode** as **External Device (OUT)** in Simplicity Studio **Launcher->Overview->General Information->Debug mode**.
+- Set **Target part** in Simplicity Studio **Launcher->Debug Adapter->Device Configuration->Device hardware** as EFR32BG22C224F512IM32.
+- Read the **Secure FW** version in **Launcher->Overview->General Information->Secure FW**.
+- Flash the **bootloader** first via [**Simplicity Commander**](https://www.silabs.com/developers/mcu-programming-options) or **Flash Programmer** integrated in Simplicity Studio.
 
+The final **connections** should looks like below picture showed:
+![brd4001a+bgm](images/bgm-iadc-connection.png)
 
-The final connections should looks like so:
+## Hardware ##
 
+bgm board schematic is [here](doc/CGM-Board_Schematic.pdf)
 
+### Pins Function Map ###
 
-| EFR32BG22 | REF3312 Input | ULN2003 Output | 28BYJ-48        |
-|------|---------------|----------------|-----------------|
-| PA0  | IN1           | OUT1           | ADC reference   |
-| GND  | GND           |                |                 |
-
-
-| EFR32BG22 | ADC Input | ULN2003 Output | 28BYJ-48        |
-|------|---------------|----------------|-----------------|
-| PD0  | IN1           | OUT1           | ADC INPUT   |
-| PD1  | IN2           |                | ADC INPUT   |
-|------|---------------|----------------|-----------------|
-| PC0  | IN1           | OUT1           | ADC INPUT |
-| PC1  | IN2           | OUT2           | ADC INPUT |
-
-
-| EFR32BG22 | ADC1220 Input | ULN2003 Output | 28BYJ-48        |
-|------|---------------|----------------|-----------------|
-| PA3  | IN1           | OUT1           | SPI MISO |
-| PA4  | IN2           | OUT2           | SPI MOSI |
-| PC4  | IN3           | OUT3           | SPI CLK  |
-| PC2  | IN4           | OUT4           | SPI CS   |
-| PB0  | IN4           | OUT4           | SPI INT  |
-
-
-VCOM:
-| PA5  | IN1           | OUT1           | USART0 TX |
-| PA6  | IN1           | OUT1           | USART0 RX |
-
-LED:
-| NO  | IN4           | OUT4           | SPI INT  |
-Button:
-| PC5  | IN4           | OUT4           | SPI INT  |
-CLK OUT:
-| PC3  | IN4           | OUT4           | SPI INT  |
-
-
-Import the included .sls file to Simplicity Studio then build and flash the project to the bgm board.
-In Simplicity Studio select "File->Import" and navigate to the directory with the .sls project file.
-The project is built with relative paths to the STUDIO_SDK_LOC variable which was defined as
-
-C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v3.2
+| EFR32BG22 | Net Name   | Function        |
+|-----------|------------|-----------------|
+| PA0       | SoC_Vref   | ADC reference   |
+| PD0       | ADC_N1     | ADC Pos reserved|
+| PD1       | ADC_P1     | ADC Neg reserved|
+| PC0       | ADC_P0     | ADC Pos input   |
+| PC1       | GND        | ADC Neg input   |
+| PA3       | SPI_MISO   | SPI/USART0 MISO |
+| PA4       | SPI_MOSI   | SPI/USART0 MOSI |
+| PC4       | SPI_CLK    | SPI/USART0 CLK  |
+| PC2       | SPI_CS     | SPI/USART0 CS   |
+| PA5       | VCOM_TX    | USART1 TX       |
+| PA6       | VCOM_RX    | USART1 RX       |
+| PB1       | SCL        | I2C0 Clock      |
+| PB2       | SDA        | I2C0 Data       |
+| PC5       | BTN_EM4    | button          |
+| PC3       | LED_EN     | LED             |
+| PB0       | ISR        | reserved        |
 
 ## How the Project Works ##
 
-The application sits in EM1 until an interrupt occurs. The push buttons on the GG11 Starter Kit is used to start the TIMER and choose a rotation direction. TIMER1 is set to overflow at a frequency of 200 Hz and set to interrupt in an overflow event. In the TIMER1 interrupt handler, the software sets the coils to the next state in order to step the motor. In order to rotate the motor counter-clockwise, the motor coils need to be driven in the following order: Coil 1 -> Coil 3 -> Coil 2 -> Coil 4. In order to rotate the motor clockwise, the motor coils need to be driven in the following order: Coil 4 -> Coil 2 -> Coil 3 -> Coil 1. The calculateSteps() function determines the number of full steps required to rotate by a specified angle. The desired delta angle can be set using the ANGLE_PER_TRIGGER macro. TIMER1 will continue to interrupt until the motor shaft rotates by the desired angle. Once the desired angle is reached, TIMER1 stops and the application waits for the next pushbutton press.
+### Memory Layout ###
+bootloader + application + nvm3 + lock bytes  
+```
+|--------------------------------------------|
+|                 lock bytes (8k)            |
+|--------------------------------------------|
+|                      nvm3 (24k)            |
+|--------------------------------------------|
+|              application (296k)            |
+|--------------------------------------------|
+|                bootloader (24k)            |
+|--------------------------------------------|
+```
+current application size is: ~kB
 
-## How to test ##
-a. run the code
-b. dump the adc data via vcom
-c. import the data into excel
-d. calcuate the ENOB
+### Software Workflow ###
+![workflow](images/bgm-iadc-workflow.png)
+
+## API Overview ##
+**General**:
+| API                                   | Comment                               | 
+|---------------------------------------|---------------------------------------|
+| void initLetimer(void);               |  -                                    |
+| void letimerDelay(uint32_t msec);     | simple delay                          |
+| void initButtonEM2(void);             | button in EM2                         |
+| void lightLED(uint8_t onoff)          | LED on/off                            |
+| float getDieTemperature(void);        | bg22 emu die temperature              |
+| double rmsCal(double buffer[], double adcAve);  | rms calculation             |
+
+**dac70501**:
+| API                                             | Comment                                           | 
+|-------------------------------------------------|---------------------------------------------------|
+| uint16_t dac70501_init(void);                   | dac70501 initialization                           |
+| float dac70501_readRef(void);                   | dac70501 voltage read                             |
+| uint16_t dac70501_setRef(uint8_t dacValueHigh, uint8_t dacValueLow); | dac70501 output register set |
+| uint16_t dac70501_setVolt(float voltValue);     | dac70501 voltage set (in V unit)                  |
+| uint16_t dac070501_powerDown(uint8_t dac_pwdwn, uint8_t ref_pwdwn); | dac70501 power down           |
+| uint16_t dac70501_reStart(void);                | dac70501 power up (restart)                        |
+
+**ads1220**:
+| API                                             | Comment                      | 
+|-------------------------------------------------|------------------------------|
+| uint32_t ads1220_init(void);                    | ads1220 initialization       |
+| double ads1220_getAdcTemp(void);                | ads1220 get temperature      |
+| double ads1220_getAdcDataVolt(void);            | ads1220 get voltage          |
+| void ads1220_Calibrate(void);                   | ads1220 calibration          |
+| void ads1220_powerDown(void);                   | ads1220 power down           |
+
+**efr32bg22 adc**:
+| API                                             | Comment                      | 
+|-------------------------------------------------|------------------------------|
+| void resetIADC(void);                           | bg22 iadc reset              |
+| void rescaleIADC(uint32_t newScale);            | bg22 iadc rescale            |
+| void initIADC(void);                            | bg22 iadc initialization     |
+| void bg22SaveCalData(uint32_t scale);           | bg22 iadc cal data save      |
+| void bg22RestoreCalData(void);                  | bg22 iadc cal data restore   |
+| double iadcPollSingleResult(void);              | bg22 iadc voltage polling    |
+| uint32_t iadcDifferentialCalibrate();           | bg22 iadc calibration        |
+
+**variable**:
+| variable                                        | Comment                      | 
+|-------------------------------------------------|------------------------------|
+| double buffer[ADC_BUFFER_SIZE];                 | buffer to save adc data      |
+| double adcGainResult;                           | adc gain cal result          |
+| double adcOffsetresult;                         | adc offset cal result        |
+| double adcEnobResult;                           | adc enob result              |
+
+## Power Consumption ##
+| Components(Peripheral) | Power Up       | Power Down       | Comment         |
+|------------------------|----------------|------------------|-----------------|
+| REF3312                | 4.9uA          | -                | ADC reference   |
+| DAC70501               | 1.05mA         | 15uA             | ADC input       |
+| ADS1220                | 15uA           | -                | External ADC    |
+| REF3312 IADC           | 150uA          | 3uA              | EFR32BG22 IADC  |
 
 ## .sls Projects Used ##
 
-gg11_stepper_motor.sls
+platform_adc_enob.sls
 
-## Steps to create the project ##
-a. add EFR32BG22C224F512IM32 in my products and select it.
-a. For EFR32BG22C224F512IM32 (EFR32BG22C112F352GM32), start with "Platform - Empty C Example" project.
-b. Add software component Services->IO Stream->IO Stream: USART. also configure it.
-c. Add Add platform->peripheral->iadc and letimer
-d. Add platform->peripheral->i2c and usart
-e. add folder inc and drv.
-f. drag the files into the folder.
-g. add the inc path.
-h. replace the app.c
-e. ignore PTI warning in pintool.
+## Steps to Create the Project ##
+
+- add **EFR32BG22C224F512IM32** in **Launcher->My Products** and **select** it.
+- Start with **Bluetooth - SoC Empty project**, rename the project as **platform_adc_enob**.
+- Check **With project files:->Link sdk and copy project sources**.
+- Open the .slcp file, add software component **Services->IO Stream->IO Stream: USART**, also configure it.
+- Add component **platform->peripheral->i2c**
+- Add component **platform->peripheral->letimer**
+- Add component **platform->peripheral->iadc**
+- Add component **application->utility->log**
+- Add folder **inc** and **drv**.
+- **drag** the source and header files into the folder.
+- Add the inc path **Project Explorer->Properties->C/C++ Build->Settings->Tool Settings->GNU ARC C Compile->Includes->Include paths**.
+- **Replace** the **app.c**
+- **ignore** PTI warning for pintool in view tab **Problmes**.
 
 ## How to Port to Another Part ##
 
-Open the "Project Properties" and navigate to the "C/C++ Build -> Board/Part/SDK" item. Select the new board or part to target and "Apply" the changes.  Note: there may be dependencies that need to be resolved when changing the target architecture.
-note: only EFR32/EFM32 S2 support this.
+In Simplicity Studio IDE perspective, open the **Project Explorer->Properties** and navigate to the **C/C++ Build -> Board/Part/SDK** item. Select the new **Board** or **Part** to target and **Apply** the changes.  
+**Note**: 
+- There may be **dependencies** that need to be resolved when changing the target architecture.
+- **ONLY** EFR32/EFM32 S2 support this 16-bit ENOB.
 
-## reference ##
-DAC70501 datasheet, https://www.ti.com/lit/ds/symlink/dac70501.pdf
-ADC1220 datasheet, https://www.ti.com/lit/ds/symlink/ads1220.pdf
-REF3312 datasheet, https://www.ti.com/product/REF3312
+## How to Test ##
+
+Import the included **.sls** file to **Simplicity Studio** then **build** and **flash** the project to the bgm board.
+In Simplicity Studio select **File->Import** and **navigate** to the directory with the **.sls** project file.
+The project is built with **relative paths** to the STUDIO_SDK_LOC variable which was defined as  
+C:\Users\user_name\SimplicityStudio\SDKs\gecko_sdk
+
+Then:
+- **Run** the code in EFR32BG22
+- **Open** an terminal applicatin and observe if the data printed is expected. 
+
+
+## Known **Issues** ##
+
+- **PTI** not used
+- PC05 use as button (on port **C/D**), not support by **simple button** component in EM2.
+
+## Reference ##
+
+- DAC70501 [data sheet](https://www.ti.com/lit/ds/symlink/dac70501.pdf)
+- ADS1220 [data sheet](https://www.ti.com/lit/ds/symlink/ads1220.pdf)
+- REF3312 [data sheet](https://www.ti.com/lit/pdf/sbos392)
+- EFR32BG22 [reference manual](https://www.silabs.com/documents/public/reference-manuals/efr32xg22-rm.pdf)
+- EFR32BG22 [data sheet](https://www.silabs.com/documents/public/data-sheets/efr32bg22-datasheet.pdf)
+- AN1189: Incremental Analog to Digital Converter [(IADC)](https://www.silabs.com/documents/public/application-notes/an1189-efr32-iadc.pdf)
+- ENOB [calculation](https://www.tij.co.jp/lit/ug/tiduda7/tiduda7.pdf?ts=1630225963102&ref_url=https%253A%252F%252Fwww.google.com%252F)

@@ -59,7 +59,6 @@ extern "C" {
 
 volatile uint8_t button_EmMode = 0;
 
-#if 0
 /**************************************************************************//**
  * @brief GPIO Interrupt handler for even pins.
  * @comment
@@ -74,11 +73,12 @@ void GPIO_ODD_IRQHandler(void)
   /* Check if button 1 was pressed */
   if(interruptMask & ((1 << EM4WU_PIN) | GPIO_IEN_EM4WUIEN7))
   {
-    /* add your code here */
+    /* add your code here
+     * this toggle the LED */
+    GPIO_PinOutToggle(LED_PORT, LED_PIN);
     ;
   }
 }
-#endif
 
 /**************************************************************************//**
  * @brief
@@ -164,17 +164,17 @@ float getDieTemperature(void)
  * @brief
  *    turn on led
  * @param[in]
- *    none
+ *    onoff: 1-on, 0-off
  * @return
  *    none
  *****************************************************************************/
-void lightLED(void)
+void lightLED(uint8_t onoff)
 {
   /* Enable clock */
   CMU_ClockEnable(cmuClock_GPIO, true);
 
   /* Set chosen port pin as output */
-  GPIO_PinModeSet(LED_PORT, LED_PIN, gpioModePushPull, 1);
+  GPIO_PinModeSet(LED_PORT, LED_PIN, gpioModePushPull, onoff);
 }
 
 /**************************************************************************//**
@@ -208,7 +208,6 @@ void initButtonEM1(void)
 
   /* enter EM1 */
   button_EmMode = 1;
-  //EMU_EnterEM1();
 }
 
 /**************************************************************************//**
@@ -242,7 +241,6 @@ void initButtonEM2(void)
 
   /* enter EM2 */
   button_EmMode = 2;
-  //EMU_EnterEM2(false);
 }
 
 /**************************************************************************//**
@@ -257,9 +255,6 @@ void initButtonEM4(void)
 {
   /* Use default settings for EM4 */
   EMU_EM4Init_TypeDef em4Init = EMU_EM4INIT_DEFAULT;
-
-  /* Release pin state */
-  //EMU_UnlatchPinRetention();  // removed???
 
   /* Enable clock */
   CMU_ClockEnable(cmuClock_GPIO, true);
@@ -276,8 +271,7 @@ void initButtonEM4(void)
   /* Initialize EM mode 4 */
   EMU_EM4Init(&em4Init);
 
-  /* Enter EM4 */
-  //EMU_EnterEM4();
+  button_EmMode = 4;
 }
 
 /**************************************************************************//**
@@ -364,10 +358,6 @@ void IADC_IRQHandler(void)
     loop++;
     letimerDelay(2);
   }
-  else
-  {
-    ;
-  }
 }
 
 /**************************************************************************//**
@@ -380,13 +370,13 @@ void IADC_IRQHandler(void)
  *****************************************************************************/
 void rescaleIADC(uint32_t newScale)
 {
-  // Disable the IADC
+  /* Disable the IADC */
   IADC0->EN_CLR = IADC_EN_EN;
 
-  // configure new scale settings
+  /* configure new scale settings */
   IADC0->CFG[0].SCALE = newScale;
 
-  // Re-enable IADC
+  /* Re-enable IADC */
   IADC0->EN_SET = IADC_EN_EN;
 }
 
@@ -531,7 +521,6 @@ void initIADC(void)
   ** in this case res = 11 + log2(32 * 1) = 16
   ** */
   initAllConfigs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
-  // initAllConfigs.configs[0].digAvg = iadcDigitalAverage16;
 
   /* Single initialization */
   initSingle.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
@@ -555,13 +544,6 @@ void initIADC(void)
   /* Allocate the analog bus for ADC0 inputs */
   GPIO->IADC_INPUT_0_BUS |= IADC_INPUT_0_BUSALLOC;
   GPIO->IADC_INPUT_1_BUS |= IADC_INPUT_1_BUSALLOC;
-
-  /* Enable interrupts on data valid level */
-  // IADC_enableInt(IADC0, IADC_IEN_SINGLEFIFODVL);
-
-  /* Enable ADC interrupts */
-  // NVIC_ClearPendingIRQ(IADC_IRQn);
-  // NVIC_EnableIRQ(IADC_IRQn);
 }
 
 /**************************************************************************//**
@@ -582,7 +564,7 @@ void initIADCforCali(void)
   /* Enable IADC0 clock branch */
   CMU_ClockEnable(cmuClock_IADC0, true);
   /* Select clock for IADC */
-  CMU_ClockSelectSet(cmuClock_IADCCLK, cmuSelect_FSRCO);  // FSRCO - 20MHz
+  CMU_ClockSelectSet(cmuClock_IADCCLK, cmuSelect_FSRCO);   /* FSRCO - 20MHz */
 
   /* Set warmup mode */
   init.warmup = iadcWarmupKeepWarm;
@@ -603,20 +585,19 @@ void initIADCforCali(void)
   /* 32x OVS mode */
   initAllConfigs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
 
-  // single initialization
-  // initSingle.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
+  /* single initialization */
   initSingle.alignment = iadcAlignRight16;
 
-  // Assign pins to positive and negative inputs in differential mode
+  /* Assign pins to positive and negative inputs in differential mode  */
   initSingleInput.posInput = iadcPosInputPortCPin0; // PC00
   initSingleInput.negInput = iadcNegInputPortCPin1; // PC01
 
-  // Initialize the IADC
+  /* Initialize the IADC */
   IADC_init(IADC0, &init, &initAllConfigs);
-  // Initialize the Single conversion inputs
+  /* Initialize the Single conversion inputs */
   IADC_initSingle(IADC0, &initSingle, &initSingleInput);
 
-  // Allocate the analog bus for ADC0 inputs
+  /* Allocate the analog bus for ADC0 inputs */
   GPIO->IADC_INPUT_0_BUS |= IADC_INPUT_0_BUSALLOC;
   GPIO->IADC_INPUT_1_BUS |= IADC_INPUT_1_BUSALLOC;
 }
@@ -691,7 +672,10 @@ uint32_t iadcDifferentialCalibrate(void)
   ** (2^15) - 1 = 32727
   ** */
   resultRange = resultFullscale - resultZero;
-  //gainCorrectionFactor = 32767 / (resultFullscale - resultZero);
+  /*
+   * gainCorrectionFactor equals
+   * 32767 / (resultFullscale - resultZero)
+   * */
   gainCorrectionFactor =  (double)32767.0 / resultRange;
   adcGainResult = gainCorrectionFactor;
 

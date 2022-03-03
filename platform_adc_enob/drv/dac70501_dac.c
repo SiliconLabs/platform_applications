@@ -396,7 +396,7 @@ uint16_t dac70501_resetSoft(void)
   ** 0x0             bx        0xa
   ** */
 
-  // denver
+  // soft reset command
   i2c_txBuffer[0] = 0x0;
   i2c_txBuffer[1] = 0xa;
 
@@ -555,7 +555,6 @@ uint16_t dac70501_init(void)
   ** this get 1.25v full range
   ** */
   dac70501_setGain(0, 1);
-  //dac70501_readGain();
 
   /* set in sync mode and then read output voltage,
   ** Vout = data / 16384 * vref / div * gain
@@ -576,11 +575,6 @@ uint16_t dac70501_init(void)
   dacVolt = 1.20f;
   dac70501_setVolt(dacVolt);
 
-  /* power down dac70501, only for test
-  ** check  dac70501 power consumption with any parameter change
-  **  */
-  //dac070501_powerDown(0, 0);
-
   /* read status */
   status = dac70501_readStatus();
 
@@ -598,7 +592,6 @@ uint16_t dac70501_reStart(void)
   ** this get 1.25v full range
   ** */
   dac70501_setGain(0, 1);
-  //dac70501_readGain();
 
   /* set output voltage in unit volt */
   dacVolt = 1.20f;

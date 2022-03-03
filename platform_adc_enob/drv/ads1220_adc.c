@@ -540,7 +540,7 @@ double ads1220_getAdcTemp(void)
   USART_SpiTransfer(USART0, cTempMode);
   letimerDelay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
-
+  letimerDelay(10);
   adcVolt = ads1220_getAdcDataRaw();
   /* 2048 / 2^16 = 0.03125 degC/lsb */
   adcTemperature = 0.03125 * (adcVolt >> 10);
@@ -629,8 +629,6 @@ void ads1220_Calibrate(void)
 *****************************************************************************/
 uint32_t ads1220_init(void)
 {
-  //uint32_t i;
-
   /* delay 1mS to allow power supply to settle and power up reset to complete
   ** 60uS minimum
   ** */
@@ -640,7 +638,7 @@ uint32_t ads1220_init(void)
   ads1220_initUsart0();
 
   /* reset ads1220 */
-  //ads1220_reset();
+  ads1220_reset();
   letimerDelay(10);
 
   /* write first then read test */
@@ -652,9 +650,6 @@ uint32_t ads1220_init(void)
   ads1220_regConfig();
   ads1220_sync();
   letimerDelay(100);
-
-  /* power down ads1220 */
-  //ads1220_powerDown();
 
   // ret
   return 1;

@@ -46,7 +46,7 @@ void bg22RestoreCalData(void);                  /* bg22 iadc cal data restore */
 double iadcPollSingleResult(void);              /* bg22 iadc voltage polling */
 uint32_t iadcDifferentialCalibrate();           /* bg22 iadc calibration */
 
-void lightLED(void);                            /* led on/off */
+void lightLED(uint8_t onoff);                   /* led on/off */
 void initLetimer(void);
 void letimerDelay(uint32_t msec);               /* simple delay */
 void initButtonEM2(void);                       /* button in EM2 */
