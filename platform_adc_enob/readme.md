@@ -28,7 +28,7 @@ ENOB is calculated based on below **formula**:
 ## Hardware Required ##
 
 - One WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard)
-- One [**bgm board**](doc/CGM-Board_Schematic.pdf)
+- One [**bgm board**](doc/CGM-Board_Schematic_V2.1.pdf)
 ![diagram](images/bgm-iadc-diagram.png)
 
 - The bgm board includes: 
