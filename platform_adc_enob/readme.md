@@ -39,7 +39,8 @@ ENOB is calculated based on below **formula**:
 
 ## Setup ##
 
-**Connect** [**bgm board**](doc/CGM-Board_Schematic.pdf) with WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via 10 pins [**Simplicity Debug Adapter**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect WSTK **mainboard** to **PC** via **mini USB**.
+**Connect** [**bgm board**](doc/CGM-Board_Schematic_V2.1.pdf) with WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via 10 pins [**Simplicity Debug Adapter**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect WSTK **mainboard** to **PC** via **mini USB**.
+
 - Set the **Debug Mode** as **External Device (OUT)** in Simplicity Studio **Launcher->Overview->General Information->Debug mode**.
 - Set **Target part** in Simplicity Studio **Launcher->Debug Adapter->Device Configuration->Device hardware** as EFR32BG22C224F512IM32.
 - Read the **Secure FW** version in **Launcher->Overview->General Information->Secure FW**.
@@ -50,7 +51,7 @@ The final **connections** should looks like below picture showed:
 
 ## Hardware ##
 
-bgm board schematic is [here](doc/CGM-Board_Schematic.pdf)
+bgm board schematic is [here](doc/CGM-Board_Schematic_v2.1.pdf)
 
 ### Pins Function Map ###
 
@@ -95,7 +96,7 @@ current application size is: ~kB
 
 ## API Overview ##
 **General**:
-| API                                   | Comment                               | 
+| API                                   | Comment                               |
 |---------------------------------------|---------------------------------------|
 | void initLetimer(void);               |  -                                    |
 | void letimerDelay(uint32_t msec);     | simple delay                          |
@@ -105,7 +106,7 @@ current application size is: ~kB
 | double rmsCal(double buffer[], double adcAve);  | rms calculation             |
 
 **dac70501**:
-| API                                             | Comment                                           | 
+| API                                             | Comment                                           |
 |-------------------------------------------------|---------------------------------------------------|
 | uint16_t dac70501_init(void);                   | dac70501 initialization                           |
 | float dac70501_readRef(void);                   | dac70501 voltage read                             |
@@ -115,7 +116,7 @@ current application size is: ~kB
 | uint16_t dac70501_reStart(void);                | dac70501 power up (restart)                        |
 
 **ads1220**:
-| API                                             | Comment                      | 
+| API                                             | Comment                      |
 |-------------------------------------------------|------------------------------|
 | uint32_t ads1220_init(void);                    | ads1220 initialization       |
 | double ads1220_getAdcTemp(void);                | ads1220 get temperature      |
@@ -124,7 +125,7 @@ current application size is: ~kB
 | void ads1220_powerDown(void);                   | ads1220 power down           |
 
 **efr32bg22 adc**:
-| API                                             | Comment                      | 
+| API                                             | Comment                      |
 |-------------------------------------------------|------------------------------|
 | void resetIADC(void);                           | bg22 iadc reset              |
 | void rescaleIADC(uint32_t newScale);            | bg22 iadc rescale            |
@@ -135,7 +136,7 @@ current application size is: ~kB
 | uint32_t iadcDifferentialCalibrate();           | bg22 iadc calibration        |
 
 **variable**:
-| variable                                        | Comment                      | 
+| variable                                        | Comment                      |
 |-------------------------------------------------|------------------------------|
 | double buffer[ADC_BUFFER_SIZE];                 | buffer to save adc data      |
 | double adcGainResult;                           | adc gain cal result          |
