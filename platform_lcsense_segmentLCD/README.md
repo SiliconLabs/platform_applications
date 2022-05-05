@@ -1,4 +1,4 @@
-# Segment LCD with timer functionality example
+# Segment LCD with LC Sensor Functionality
 
 ## Summary
 This project shows how to use the FG23 LESENSE peripheral on the BRD2600A board to detect

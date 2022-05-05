@@ -68,6 +68,7 @@ typedef enum {
   LCD_SYMBOL_P3, //!< LCD_SYMBOL_P3
   LCD_SYMBOL_P4, //!< LCD_SYMBOL_P4
   LCD_SYMBOL_P5, //!< LCD_SYMBOL_P5
+  LCD_SYMBOL_P6, //!< LCD_SYMBOL_P6
   LCD_SYMBOL_DEGC//!< LCD_SYMBOL_DEGC
 } lcdSymbol;
 
@@ -79,6 +80,8 @@ typedef enum {
 #define LCD_SYMBOL_P4_SEG  8
 #define LCD_SYMBOL_P5_COM  3
 #define LCD_SYMBOL_P5_SEG  19
+#define LCD_SYMBOL_P6_COM  3
+#define LCD_SYMBOL_P6_SEG  1
 #define LCD_SYMBOL_DEGC_COM  3
 #define LCD_SYMBOL_DEGC_SEG  19
 
