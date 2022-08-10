@@ -1,4 +1,9 @@
 # xG21 Timestamped IADC Stimulus Generator #
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2.7.9-green)
+![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_pg12_iadc_stimulus_gcc.json)
 
 ## Summary ##
 

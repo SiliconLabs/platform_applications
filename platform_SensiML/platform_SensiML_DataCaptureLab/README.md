@@ -1,4 +1,7 @@
 # SensiML Data Capture Examples #
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
 
 ## Summary ##
 

@@ -1,4 +1,9 @@
 # Baremetal TRNG Example #
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v3.1.0-green)
+![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_trng_gcc.json)
 
 ## Summary ##
 This project uses the TRNG peripheral of the EFM32GG11 to generate random numbers.

@@ -1,4 +1,9 @@
 # xG21 DMA SPI Throughput Tester #
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2.7.9-green)
+![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/ldma_gcc.json)
 
 ## Summary ##
 
@@ -104,8 +109,8 @@ exits EM1, and the rxDone flag is set to true.
 Apart from any issues of pin availability on a given radio board, this code should run as-is on any radio board for EFR32xG21
 or any module that is based on EFR32xG21, such as BGM210L, BGM210P, MGM210L, and MGM210P.
 
-The code can also run on EFR32xG22, although this has not been tested. However, all module clocks — GPIO, LDMA, and USART2
-(retargetio.enables the clock for whatever USART it is configured to use, which is USART0 in this case) — because xG22
+The code can also run on EFR32xG22, although this has not been tested. However, all module clocks ï¿½ GPIO, LDMA, and USART2
+(retargetio.enables the clock for whatever USART it is configured to use, which is USART0 in this case) ï¿½ because xG22
 does not have the on-demand module clock enable functionality that is present on xG21. 
 
 To change the target board, navigate to Project -> Properties -> C/C++ Build -> Board/Part/SDK. Start typing in the Boards

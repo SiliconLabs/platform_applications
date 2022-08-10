@@ -1,4 +1,9 @@
 # Simple Periodic Sleeptimer Example
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2.7.6-green)
+![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/periodic_sleeptimer_example_gcc.json)
 
 ## Summary
 This project shows how to use the Sleeptimer in EM2 to periodically execute

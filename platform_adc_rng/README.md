@@ -1,4 +1,9 @@
 # ADC as a Random Number Generator Example
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2.7.7-green)
+![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_adc_rng_gcc.json)
 
 ## Summary
 This project shows how to use the ADC as a random number generator to create a

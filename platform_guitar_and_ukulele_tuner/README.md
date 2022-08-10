@@ -1,4 +1,9 @@
 # Guitar and Ukulele tuner using the GG11 Starter Kit #
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2.7.4-green)
+![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_guitar_and_ukulele_tuner_gcc.json)
 
 ## Summary ##
 
