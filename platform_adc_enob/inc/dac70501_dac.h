@@ -3,7 +3,7 @@
  * @brief dac70501 i2c driver header file.
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -27,7 +27,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  *******************************************************************************
- *
  * # Evaluation Quality
  * This code has been minimally tested to ensure that it builds and is suitable
  * as a demonstration for evaluation purposes only. This code will be maintained
@@ -36,13 +35,19 @@
 #ifndef DAC70501_DAC_H
 #define DAC70501_DAC_H
 
-uint16_t dac70501_init(void);                   /* dac70501 initialization */
-float dac70501_readRef(void);                   /* dac70501 voltage read */
-uint16_t dac70501_setRef(uint8_t dacValueHigh,  /* dac70501 register set */
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint16_t dac70501_init(void);                   // dac70501 initialization
+float dac70501_readRef(void);                   // dac70501 voltage read
+uint16_t dac70501_setRef(uint8_t dacValueHigh,  // dac70501 register set
                          uint8_t dacValueLow);
-uint16_t dac70501_setVolt(float voltValue);     /* dac70501 voltage set */
-uint16_t dac070501_powerDown(uint8_t dac_pwdwn, /* dac70501 power down */
+uint16_t dac70501_setVolt(float voltValue);     // dac70501 voltage set
+uint16_t dac070501_powerDown(uint8_t dac_pwdwn, // dac70501 power down
                              uint8_t ref_pwdwn);
-uint16_t dac70501_reStart(void);                /* dac70501 powerup(restart) */
-
+uint16_t dac70501_reStart(void);                // dac70501 powerup(restart)
+#ifdef __cplusplus
+}
 #endif /* DAC70501_DAC_H */
+
+#endif

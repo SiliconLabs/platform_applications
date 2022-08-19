@@ -3,7 +3,7 @@
  * @brief dac70501 i2c driver.
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -27,7 +27,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  *******************************************************************************
- *
  * # Evaluation Quality
  * This code has been minimally tested to ensure that it builds and is suitable
  * as a demonstration for evaluation purposes only. This code will be maintained
@@ -46,19 +45,17 @@
 extern "C" {
 #endif
 
-/* i2c read protocol description:
-|MSB  ...  LSB| ACK |MSB  ...  LSB| ACK |MSB ... LSB| ACK |MSB ... LSB| ACK
-Address byte         Command byte           MSDB              LSDB
-DB [32:24]            DB [23:16]          DB [15:8]          DB [7:0]
-slaveAddress         targetAddress,       rxBuff[0],         rxBuff[1]
- * */
+// i2c read protocol description:
+// |MSB  ...  LSB| ACK |MSB  ...  LSB| ACK |MSB ... LSB| ACK |MSB ... LSB| ACK
+// Address byte         Command byte           MSDB              LSDB
+// DB [32:24]            DB [23:16]          DB [15:8]          DB [7:0]
+// slaveAddress         targetAddress,       rxBuff[0],         rxBuff[1]
 
-/* i2c write protocol description:
-|MSB  ...  LSB| ACK |MSB  ...  LSB| ACK |MSB ... LSB| ACK |MSB ... LSB| ACK
-Address byte         Command byte           MSDB              LSDB
-DB [32:24]            DB [23:16]          DB [15:8]          DB [7:0]
-slaveAddress         targetAddress,       rxBuff[0],         rxBuff[0]
- * */
+// i2c write protocol description:
+// |MSB  ...  LSB| ACK |MSB  ...  LSB| ACK |MSB ... LSB| ACK |MSB ... LSB| ACK
+// Address byte         Command byte           MSDB              LSDB
+// DB [32:24]            DB [23:16]          DB [15:8]          DB [7:0]
+// slaveAddress         targetAddress,       rxBuff[0],         rxBuff[0]
 
 // TX and RX Buffers size
 #define I2C_TXBUFFER_SIZE   10
@@ -107,18 +104,18 @@ uint8_t initialized = 0;
  *****************************************************************************/
 void dac70501_initI2C0(void)
 {
-  /* Using default settings */
+  // Using default settings 
   I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT;
 
-  /* Enabling clock to the GPIO and I2C0 */
+  // Enabling clock to the GPIO and I2C0 
   CMU_ClockEnable(cmuClock_GPIO, true);
   CMU_ClockEnable(cmuClock_I2C0, true);
 
-  /* Using PB1 (SCL) and PB2 (SDA) */
+  // Using PB1 (SCL) and PB2 (SDA) 
   GPIO_PinModeSet(I2C0_CLK_PORT, I2C0_CLK_PIN, gpioModeWiredAndPullUpFilter, 1);
   GPIO_PinModeSet(I2C0_SDA_PORT, I2C0_SDA_PIN, gpioModeWiredAndPullUpFilter, 1);
 
-  /* Route GPIO pins to I2C0 module */
+  // Route GPIO pins to I2C0 module 
   GPIO->I2CROUTE[0].SDAROUTE =                                \
       (GPIO->I2CROUTE[0].SDAROUTE & ~_GPIO_I2C_SDAROUTE_MASK) \
       | (I2C0_SDA_PORT << _GPIO_I2C_SDAROUTE_PORT_SHIFT       \
@@ -130,7 +127,7 @@ void dac70501_initI2C0(void)
   GPIO->I2CROUTE[0].ROUTEEN =
       GPIO_I2C_ROUTEEN_SDAPEN | GPIO_I2C_ROUTEEN_SCLPEN;      \
 
-  /* Initializing the I2C */
+  // Initializing the I2C 
   I2C_Init(I2C0, &i2cInit);
   I2C0->CTRL = I2C_CTRL_AUTOSN;
 }
@@ -149,34 +146,32 @@ void dac70501_initI2C0(void)
 void dac70501_reg_read(uint16_t slaveAddress, uint8_t targetAddress,
                        uint8_t *rxBuff, uint8_t numBytes)
 {
-  /* Transfer structure */
+  // Transfer structure 
   I2C_TransferSeq_TypeDef i2cTransfer;
   I2C_TransferReturn_TypeDef result;
 
-  /* Initializing I2C transfer */
-  /* I2C slave device address */
+  // Initializing I2C transfer 
+  // I2C slave device address 
   i2cTransfer.addr          = slaveAddress;
-  /* use write+read to read */
+  // use write+read to read 
   i2cTransfer.flags         = I2C_FLAG_WRITE_READ;
-  /* must write target (register) address before reading */
+  // must write target (register) address before reading 
   i2cTransfer.buf[0].data   = &targetAddress;
-  /* write slave address + register address */
+  // write slave address + register address 
   i2cTransfer.buf[0].len    = 1;
-  /* read back numBytes bytes */
+  // read back numBytes bytes 
   i2cTransfer.buf[1].data   = rxBuff;
   i2cTransfer.buf[1].len    = numBytes;
 
   result = I2C_TransferInit(I2C0, &i2cTransfer);
 
-  /* Sending data */
-  while(result == i2cTransferInProgress)
-  {
+  // Sending data 
+  while (result == i2cTransferInProgress) {
     result = I2C_Transfer(I2C0);
   }
 
-  if(result != i2cTransferDone)
-  {
-    while(1) ;
+  if (result != i2cTransferDone) {
+    while (1);
   }
 }
 
@@ -194,42 +189,39 @@ void dac70501_reg_read(uint16_t slaveAddress, uint8_t targetAddress,
 void dac70501_reg_write(uint16_t slaveAddress, uint8_t targetAddress,
                         uint8_t *txBuff, uint8_t numBytes)
 {
-  /* Transfer structure */
+  // Transfer structure 
   I2C_TransferSeq_TypeDef i2cTransfer;
   I2C_TransferReturn_TypeDef result;
 
-  /* Local buffer */
+  // Local buffer 
   uint8_t txBufferLocal[I2C_TXBUFFER_SIZE + 1];
-  /* copy local write data */
+  // copy local write data 
   txBufferLocal[0] = targetAddress;
-  for(int i = 0; i < numBytes; i++)
-  {
+  for (int i = 0; i < numBytes; i++) {
     txBufferLocal[i + 1] = txBuff[i];
   }
 
-  /* Initializing I2C transfer */
+  // Initializing I2C transfer 
   i2cTransfer.addr          = slaveAddress;
-  /* use write flag to write */
+  // use write flag to write 
   i2cTransfer.flags         = I2C_FLAG_WRITE;
-  /* must write target (register) address */
+  // must write target (register) address 
   i2cTransfer.buf[0].data   = txBufferLocal;
-  /* write slave address + register address + data */
+  // write slave address + register address + data 
   i2cTransfer.buf[0].len    = numBytes + 1;
-  /* don't need to read */
+  // don't need to read 
   i2cTransfer.buf[1].data   = NULL;
   i2cTransfer.buf[1].len    = 0;
 
   result = I2C_TransferInit(I2C0, &i2cTransfer);
 
-  /* Sending data */
-  while(result == i2cTransferInProgress)
-  {
+  // Sending data 
+  while (result == i2cTransferInProgress) {
     result = I2C_Transfer(I2C0);
   }
 
-  if(result != i2cTransferDone)
-  {
-    while(1) ;
+  if (result != i2cTransferDone) {
+    while (1) ;
   }
 }
 
@@ -243,13 +235,12 @@ void dac70501_reg_write(uint16_t slaveAddress, uint8_t targetAddress,
  *****************************************************************************/
 uint16_t dac70501_readID(void)
 {
-  /* reserved   resolution    reserved         rstsel            reserved
-  ** 15         14:12         11:8             7                 6:0
-  ** b0         b001          b0001            b1                b0010101
-  ** */
+  // reserved   resolution    reserved         rstsel            reserved
+  // 15         14:12         11:8             7                 6:0
+  // b0         b001          b0001            b1                b0010101
   dac70501_reg_read(I2C_SLAVE_ADDRESS, DAC70501_REG_DEVICE_ID, i2c_rxBuffer, 2);
 
-  // expect 0x1195
+  // expect 0x1195 
   return i2c_rxBuffer[1] | (i2c_rxBuffer[0] << 8);
 }
 
@@ -264,11 +255,10 @@ uint16_t dac70501_readID(void)
 *****************************************************************************/
 uint16_t dacx070501_checkID(uint16_t devID)
 {
-  if(devID == 0x1195)
+  if (devID == 0x1195)
     return 1;
-  else
-  {
-    while(1) ;
+  else {
+    while (1) ;
   }
 }
 
@@ -282,16 +272,15 @@ uint16_t dacx070501_checkID(uint16_t devID)
 *****************************************************************************/
 uint16_t dac70501_syncMode(uint8_t syncMode)
 {
-  /* reserved        DAC_SYNC_EN
-  ** 15~1            0
-  ** 0x0             0x1
-  ** */
+  // reserved        DAC_SYNC_EN
+  // 15~1            0
+  // 0x0             0x1
   i2c_txBuffer[0] = 0x0;
-  /* synchronous or immediately mode
-   * refer to trigger register */
+  // synchronous or immediately mode
+  // refer to trigger register 
   i2c_txBuffer[1] = syncMode;
 
-  /* use default immediately mode */
+  // use default immediately mode 
   dac70501_reg_write(I2C_SLAVE_ADDRESS,
                      DAC70501_REG_SYNC_EN, i2c_txBuffer, 2);
   return 1;
@@ -308,16 +297,15 @@ uint16_t dac70501_syncMode(uint8_t syncMode)
 *****************************************************************************/
 uint16_t dac070501_powerDown(uint8_t dac_pwdwn, uint8_t ref_pwdwn)
 {
-  /* reserved        REF_PWDWN      reserved       DAC_PWDWN
-  ** 15~9            8              7:1            0
-  ** 0x0             b0             0x0            b0
-  ** */
+  // reserved        REF_PWDWN      reserved       DAC_PWDWN
+  // 15~9            8              7:1            0
+  // 0x0             b0             0x0            b0
 
-  /* power down dac and (or) internal ref */
+  // power down dac and (or) internal ref 
   i2c_txBuffer[0] = ref_pwdwn;
   i2c_txBuffer[1] = dac_pwdwn;
 
-  /* enable both dac and internal ref (default) */
+  // enable both dac and internal ref (default) 
   dac70501_reg_write(I2C_SLAVE_ADDRESS, DAC70501_REG_CONFIG, i2c_txBuffer, 2);
   return 1;
 }
@@ -333,21 +321,18 @@ uint16_t dac070501_powerDown(uint8_t dac_pwdwn, uint8_t ref_pwdwn)
  *****************************************************************************/
 uint16_t dac70501_setGain(uint8_t gain, uint8_t div)
 {
-  /* reserved        REF-DIV        reserved       BUFF-GAIN
-  ** 15~9            8              7:1            0
-  ** 0x0             b0             0x0            b0
-  ** */
+  // reserved        REF-DIV        reserved       BUFF-GAIN
+  // 15~9            8              7:1            0
+  // 0x0             b0             0x0            b0
 
-  /* reference divider
-  **   0 - the reference voltage is unaffected
-  **   1 - reference voltage is internally divided by a factor of 2.
-  ** */
+  // reference divider
+  //   0 - the reference voltage is unaffected
+  //   1 - reference voltage is internally divided by a factor of 2.
   i2c_txBuffer[0] = div;
 
-  /* buffer gain:
-  **   0 - the buffer amplifier for corresponding DAC has a gain of 1.
-  **   1 - the buffer amplifier for corresponding DAC has a gain of 2.
-  ** */
+  // buffer gain:
+  //   0 - the buffer amplifier for corresponding DAC has a gain of 1.
+  //   1 - the buffer amplifier for corresponding DAC has a gain of 2.
   i2c_txBuffer[1] = gain;
 
   dac70501_reg_write(I2C_SLAVE_ADDRESS, DAC70501_REG_GAIN, i2c_txBuffer, 2);
@@ -367,12 +352,11 @@ uint16_t dac70501_setGain(uint8_t gain, uint8_t div)
 *****************************************************************************/
 uint16_t dac70501_updateLDAC(uint8_t ldacMode)
 {
-  /* reserved        LDAC   SOFT-RESET
-  ** 15~5            4         3:0
-  ** 0x0             bx        0xa
-  ** */
+  // reserved        LDAC   SOFT-RESET
+  // 15~5            4         3:0
+  // 0x0             bx        0xa
 
-  /* refer to register sync */
+  // refer to register sync 
   i2c_txBuffer[0] = 0x0;
   i2c_txBuffer[1] = ldacMode << 4;
 
@@ -391,12 +375,11 @@ uint16_t dac70501_updateLDAC(uint8_t ldacMode)
 *****************************************************************************/
 uint16_t dac70501_resetSoft(void)
 {
-  /* reserved        LDAC   SOFT-RESET
-  ** 15~5            4         3:0
-  ** 0x0             bx        0xa
-  ** */
+  // reserved        LDAC   SOFT-RESET
+  // 15~5            4         3:0
+  // 0x0             bx        0xa
 
-  // soft reset command
+  // soft reset command 
   i2c_txBuffer[0] = 0x0;
   i2c_txBuffer[1] = 0xa;
 
@@ -415,14 +398,14 @@ uint16_t dac70501_resetSoft(void)
  *****************************************************************************/
 uint16_t dac70501_readStatus(void)
 {
-  /* reserved REF-ALARM
-  ** 15~1      0
-  ** 0x0       b0
-  ** */
+  // reserved REF-ALARM
+  // 15~1      0
+  // 0x0       b0
+
 
   dac70501_reg_read(I2C_SLAVE_ADDRESS, DAC70501_REG_STATUS, i2c_rxBuffer, 2);
 
-  // expect 0x0000
+  // expect 0x0000 
   return i2c_rxBuffer[1] | (i2c_rxBuffer[0] << 8);;
 }
 
@@ -436,13 +419,12 @@ uint16_t dac70501_readStatus(void)
  *****************************************************************************/
 uint16_t dac70501_readGain(void)
 {
-  /* reserved      REF-DIV       reserved   BUFF-GAIN
-  ** 15~9          8                 7:1         b0
-  ** 0x1           b1                0x0         b0
-  ** */
+  // reserved      REF-DIV       reserved   BUFF-GAIN
+  // 15~9          8                 7:1         b0
+  // 0x1           b1                0x0         b0
   dac70501_reg_read(I2C_SLAVE_ADDRESS, DAC70501_REG_GAIN, i2c_rxBuffer, 2);
 
-  // expect 0x0001
+  // expect 0x0001 
   return i2c_rxBuffer[1] | (i2c_rxBuffer[0] << 8);;
 }
 
@@ -458,13 +440,12 @@ float dac70501_readRef(void)
 {
   float voltValue;
   uint16_t regValue;
-  /* DAC-DATA high    DAC-DATA low    reserved
-  ** 15:8             7:2             1:0
-  ** dacValueHigh     dacValueLow     b00
-  ** */
+  // DAC-DATA high    DAC-DATA low    reserved
+  // 15:8             7:2             1:0
+  // dacValueHigh     dacValueLow     b00
   dac70501_reg_read(I2C_SLAVE_ADDRESS, DAC70501_REG_DAC0, i2c_rxBuffer, 2);
 
-  /* convert to voltage in mV unit */
+  // convert to voltage in mV unit 
   regValue = (i2c_rxBuffer[0]) << 8 | (i2c_rxBuffer[1] & 0xfc);
   voltValue = 1.25 * regValue / 4 / 16383;
 
@@ -483,10 +464,9 @@ float dac70501_readRef(void)
  *****************************************************************************/
 uint16_t dac70501_setRef(uint8_t dacValueHigh, uint8_t dacValueLow)
 {
-  /* DAC-DATA high    DAC-DATA low    reserved
-  ** 15:8             7:2             1:0
-  ** dacValueHigh     dacValueLow     b00
-  ** */
+  // DAC-DATA high    DAC-DATA low    reserved
+  // 15:8             7:2             1:0
+  // dacValueHigh     dacValueLow     b00
   i2c_txBuffer[0] = dacValueHigh;
   i2c_txBuffer[1] = dacValueLow;
 
@@ -508,19 +488,19 @@ uint16_t dac70501_setVolt(float voltValue)
   uint16_t dacRegVal;
   uint8_t dacHigh, dacLow;
 
-  if(voltValue > 1.25)
+  if (voltValue > 1.25)
     voltValue = 1.25;
-  if(voltValue < 0.0)
+  if (voltValue < 0.0)
     voltValue = 0.0;
 
-  /* calculate registers value based on target voltage */
+  // calculate registers value based on target voltage 
   dacRegVal = (uint16_t)(voltValue / 1.25f * 4.0f * 16383.0f);
 
-  // separate as high and low registers DAC value
+  // separate as high and low registers DAC value 
   dacHigh = (uint8_t)((dacRegVal & 0xff00) >> 8);
   dacLow = (uint8_t)dacRegVal & 0xff;
 
-  /* write to DAC register */
+  // write to DAC register 
   dac70501_setRef(dacHigh, dacLow);
 
   return 1;
@@ -541,41 +521,38 @@ uint16_t dac70501_init(void)
 {
   uint16_t devID, status;
 
-  /* init I2C */
+  // init I2C 
   dac70501_initI2C0();
 
-  /* soft reset */
+  // soft reset 
   dac70501_resetSoft();
   letimerDelay(1000);
-  /* read and confirm id */
+  // read and confirm id 
   devID = dac70501_readID();
   dacx070501_checkID(devID);
 
-  /* gain = 0, div = 1
-  ** this get 1.25v full range
-  ** */
+  // gain = 0, div = 1
+  // this get 1.25v full range
   dac70501_setGain(0, 1);
 
-  /* set in sync mode and then read output voltage,
-  ** Vout = data / 16384 * vref / div * gain
-  **
-  ** */
-  /* sync mode */
+  // set in sync mode and then read output voltage,
+  // Vout = data / 16384 * vref / div * gain
+  // sync mode 
   dac70501_syncMode(1);
   dacVolt = 0.625f;
   dac70501_setVolt(dacVolt);
-  /* update DAC register */
+  // update DAC register 
   dac70501_updateLDAC(1);
-  /* immediately mode */
+  // immediately mode 
   dac70501_syncMode(0);
   dacVolt = dac70501_readRef();
 
 
-  /* set output voltage in unit volt */
+  // set output voltage in unit volt 
   dacVolt = 1.20f;
   dac70501_setVolt(dacVolt);
 
-  /* read status */
+  // read status 
   status = dac70501_readStatus();
 
   return status;
@@ -585,19 +562,18 @@ uint16_t dac70501_reStart(void)
 {
   uint16_t status;
 
-  /* soft reset */
+  // soft reset 
   dac70501_resetSoft();
   letimerDelay(1000);
-  /* gain = 0, div = 1
-  ** this get 1.25v full range
-  ** */
+  // gain = 0, div = 1
+  // this get 1.25v full range
   dac70501_setGain(0, 1);
 
-  /* set output voltage in unit volt */
+  // set output voltage in unit volt 
   dacVolt = 1.20f;
   dac70501_setVolt(dacVolt);
 
-  /* read status */
+  // read status 
   status = dac70501_readStatus();
 
   return status;

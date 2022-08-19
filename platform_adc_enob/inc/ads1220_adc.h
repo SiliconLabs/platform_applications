@@ -3,7 +3,7 @@
  * @brief ads1220 spi driver header file.
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -27,7 +27,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  *******************************************************************************
- *
  * # Evaluation Quality
  * This code has been minimally tested to ensure that it builds and is suitable
  * as a demonstration for evaluation purposes only. This code will be maintained
@@ -36,10 +35,16 @@
 #ifndef ADS1220_ADC_H
 #define ADS1220_ADC_H
 
-uint32_t ads1220_init(void);                    /* ads1220 initialization */
-double ads1220_getAdcTemp(void);                /* ads1220 temperature */
-double ads1220_getAdcDataVolt(void);            /* ads1220 get voltage */
-void ads1220_Calibrate(void);                   /* ads1220 calibration */
-void ads1220_powerDown(void);                   /* ads1220 power down */
-
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint32_t ads1220_init(void);                    // ads1220 initialization
+double ads1220_getAdcTemp(void);                // ads1220 temperature
+double ads1220_getAdcDataVolt(void);            // ads1220 get voltage
+void ads1220_Calibrate(void);                   // ads1220 calibration
+void ads1220_powerDown(void);                   // ads1220 power down
+#ifdef __cplusplus
+}
 #endif /* ADS1220_ADC_H */
+
+#endif

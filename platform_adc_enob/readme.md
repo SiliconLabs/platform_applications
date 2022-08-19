@@ -9,9 +9,9 @@ The flexible incremental architecture uses **oversampling** to allow application
 - 76.9 ksps with oversampling ratio = 32
 
 This example discusses how to attain 14.3-bit **ENOB** with **oversampling**. It also cover offset and gain **calibration** of the IADC with **external reference**.  
-ENOB is calculated based on below **formula**:  
-![diagram](images/bgm-iadc-enob.png)  
-
+The ENOB is calculated based on the **formula** below:  
+![diagram](doc/bgm-iadc-enob.png)  
+The BGM board have precision voltage reference and ADC to evaluate the ADC performance on EFR32BG22. 
 **Key points** to attain 14.3 bit ENOB:
 - **Differential** mode input
 - External **reference**
@@ -28,8 +28,9 @@ ENOB is calculated based on below **formula**:
 ## Hardware Required ##
 
 - One WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard)
-- One [**bgm board**](doc/CGM-Board_Schematic_V2.1.pdf)
-![diagram](images/bgm-iadc-diagram.png)
+- One [**bgm board**](doc/CGM-Board_Schematic.pdf)
+![diagram](doc/bgm-iadc-diagram.png)
+- One [**BRD8010A**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter)
 
 - The bgm board includes: 
   - TI 14-bit Voltage-Output DAC [DAC70501](https://www.ti.com/lit/ds/symlink/dac70501.pdf)
@@ -39,19 +40,18 @@ ENOB is calculated based on below **formula**:
 
 ## Setup ##
 
-**Connect** [**bgm board**](doc/CGM-Board_Schematic_V2.1.pdf) with WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via 10 pins [**Simplicity Debug Adapter**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect WSTK **mainboard** to **PC** via **mini USB**.
-
+**Connect** the [**bgm board**](doc/CGM-Board_Schematic.pdf) to the WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via the 10 pins [**Mini Simplicity Debug Adapter brd8010a**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect the WSTK **mainboard** to **PC** via the **mini USB** connector.
 - Set the **Debug Mode** as **External Device (OUT)** in Simplicity Studio **Launcher->Overview->General Information->Debug mode**.
 - Set **Target part** in Simplicity Studio **Launcher->Debug Adapter->Device Configuration->Device hardware** as EFR32BG22C224F512IM32.
 - Read the **Secure FW** version in **Launcher->Overview->General Information->Secure FW**.
 - Flash the **bootloader** first via [**Simplicity Commander**](https://www.silabs.com/developers/mcu-programming-options) or **Flash Programmer** integrated in Simplicity Studio.
 
-The final **connections** should looks like below picture showed:
-![brd4001a+bgm](images/bgm-iadc-connection.png)
+The final **connections** should look like the one in the picture below:
+![brd4001a+bgm](doc/bgm-iadc-connection.png)
 
 ## Hardware ##
 
-bgm board schematic is [here](doc/CGM-Board_Schematic_v2.1.pdf)
+bgm board schematic is [here](doc/CGM-Board_Schematic.pdf)
 
 ### Pins Function Map ###
 
@@ -77,10 +77,10 @@ bgm board schematic is [here](doc/CGM-Board_Schematic_v2.1.pdf)
 ## How the Project Works ##
 
 ### Memory Layout ###
-bootloader + application + nvm3 + lock bytes  
+bootloader + application + nvm3 + lock bits(manufacturing token region)  
 ```
 |--------------------------------------------|
-|                 lock bytes (8k)            |
+|                 lock bits (8k)            |
 |--------------------------------------------|
 |                      nvm3 (24k)            |
 |--------------------------------------------|
@@ -89,14 +89,14 @@ bootloader + application + nvm3 + lock bytes
 |                bootloader (24k)            |
 |--------------------------------------------|
 ```
-current application size is: ~kB
+
 
 ### Software Workflow ###
-![workflow](images/bgm-iadc-workflow.png)
+![workflow](doc/bgm-iadc-workflow.png)
 
 ## API Overview ##
 **General**:
-| API                                   | Comment                               |
+| API                                   | Comment                               | 
 |---------------------------------------|---------------------------------------|
 | void initLetimer(void);               |  -                                    |
 | void letimerDelay(uint32_t msec);     | simple delay                          |
@@ -106,7 +106,7 @@ current application size is: ~kB
 | double rmsCal(double buffer[], double adcAve);  | rms calculation             |
 
 **dac70501**:
-| API                                             | Comment                                           |
+| API                                             | Comment                                           | 
 |-------------------------------------------------|---------------------------------------------------|
 | uint16_t dac70501_init(void);                   | dac70501 initialization                           |
 | float dac70501_readRef(void);                   | dac70501 voltage read                             |
@@ -116,7 +116,7 @@ current application size is: ~kB
 | uint16_t dac70501_reStart(void);                | dac70501 power up (restart)                        |
 
 **ads1220**:
-| API                                             | Comment                      |
+| API                                             | Comment                      | 
 |-------------------------------------------------|------------------------------|
 | uint32_t ads1220_init(void);                    | ads1220 initialization       |
 | double ads1220_getAdcTemp(void);                | ads1220 get temperature      |
@@ -125,7 +125,7 @@ current application size is: ~kB
 | void ads1220_powerDown(void);                   | ads1220 power down           |
 
 **efr32bg22 adc**:
-| API                                             | Comment                      |
+| API                                             | Comment                      | 
 |-------------------------------------------------|------------------------------|
 | void resetIADC(void);                           | bg22 iadc reset              |
 | void rescaleIADC(uint32_t newScale);            | bg22 iadc rescale            |
@@ -136,7 +136,7 @@ current application size is: ~kB
 | uint32_t iadcDifferentialCalibrate();           | bg22 iadc calibration        |
 
 **variable**:
-| variable                                        | Comment                      |
+| variable                                        | Comment                      | 
 |-------------------------------------------------|------------------------------|
 | double buffer[ADC_BUFFER_SIZE];                 | buffer to save adc data      |
 | double adcGainResult;                           | adc gain cal result          |
@@ -169,7 +169,6 @@ platform_adc_enob.sls
 - **drag** the source and header files into the folder.
 - Add the inc path **Project Explorer->Properties->C/C++ Build->Settings->Tool Settings->GNU ARC C Compile->Includes->Include paths**.
 - **Replace** the **app.c**
-- **ignore** PTI warning for pintool in view tab **Problmes**.
 
 ## How to Port to Another Part ##
 
@@ -186,14 +185,15 @@ The project is built with **relative paths** to the STUDIO_SDK_LOC variable whic
 C:\Users\user_name\SimplicityStudio\SDKs\gecko_sdk
 
 Then:
-- **Run** the code in EFR32BG22
-- **Open** an terminal applicatin and observe if the data printed is expected. 
+- **Run** the code in EFR32BG22.
+- **Open** a terminal applicatin and observe if the data printed is expected. 
+- an example log file is [app_log.txt](doc/app_log.txt).
 
 
 ## Known **Issues** ##
 
 - **PTI** not used
-- PC05 use as button (on port **C/D**), not support by **simple button** component in EM2.
+- PC05 use as button (on port **C/D**), not support by the **simple button** component in EM2.
 
 ## Reference ##
 

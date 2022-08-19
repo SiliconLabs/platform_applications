@@ -3,7 +3,7 @@
  * @brief efr32bg22 adc driver header file.
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -27,7 +27,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  *******************************************************************************
- *
  * # Evaluation Quality
  * This code has been minimally tested to ensure that it builds and is suitable
  * as a demonstration for evaluation purposes only. This code will be maintained
@@ -38,25 +37,34 @@
 
 #include "stdint.h"
 
-void resetIADC(void);                           /* bg22 iadc reset */
-void rescaleIADC(uint32_t newScale);            /* bg22 iadc rescale */
-void initIADC(void);                            /* bg22 iadc initialization */
-void bg22SaveCalData(uint32_t scale);           /* bg22 iadc cal data save */
-void bg22RestoreCalData(void);                  /* bg22 iadc cal data restore */
-double iadcPollSingleResult(void);              /* bg22 iadc voltage polling */
-uint32_t iadcDifferentialCalibrate();           /* bg22 iadc calibration */
-
-void lightLED(uint8_t onoff);                   /* led on/off */
-void initLetimer(void);
-void letimerDelay(uint32_t msec);               /* simple delay */
-void initButtonEM2(void);                       /* button in EM2 */
-float getDieTemperature(void);                  /* bg22 emu die temperature */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define ADC_BUFFER_SIZE 1024
-double rmsCal(double buffer[], double adcAve);
-extern double buffer[ADC_BUFFER_SIZE];          /* buffer to save adc data */
-extern double adcGainResult;                    /* adc gain cal result */
-extern double adcOffsetResult;                  /* adc offset cal result */
-extern double adcEnobResult;                    /* adc enob result */
 
+void resetIADC(void);                           // bg22 iadc reset
+void rescaleIADC(uint32_t newScale);            // bg22 iadc rescale
+void initIADC(void);                            // bg22 iadc initialization
+void bg22SaveCalData(uint32_t scale);           // bg22 iadc cal data save
+void bg22RestoreCalData(void);                  // bg22 iadc cal data restore
+double iadcPollSingleResult(void);              // bg22 iadc voltage polling
+uint32_t iadcDifferentialCalibrate();           // bg22 iadc calibration
+
+void lightLED(uint8_t onoff);                   // led on/off
+void initLetimer(void);
+void letimerDelay(uint32_t msec);               // simple delay
+void initButtonEM2(void);                       // button in EM2
+float getDieTemperature(void);                  // bg22 emu die temperature
+
+double rmsCal(double buffer[], double adcAve);
+extern double buffer[ADC_BUFFER_SIZE];          // buffer to save adc data
+extern double adcGainResult;                    // adc gain cal result
+extern double adcOffsetResult;                  // adc offset cal result
+extern double adcEnobResult;                    // adc enob result
+
+#ifdef __cplusplus
+}
 #endif /* EFM32BG22_ADC_H */
+
+#endif
