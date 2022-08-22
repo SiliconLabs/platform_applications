@@ -1,4 +1,7 @@
 # BGX demo example
+![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
 
 ## Summary
 This project shows how to communicate between the computer and the EFM32WG starter 
