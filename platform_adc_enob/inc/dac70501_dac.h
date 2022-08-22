@@ -38,14 +38,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-uint16_t dac70501_init(void);                   // dac70501 initialization
-float dac70501_readRef(void);                   // dac70501 voltage read
-uint16_t dac70501_setRef(uint8_t dacValueHigh,  // dac70501 register set
+uint16_t dac70501_init(void);                    // dac70501 initialization
+float dac70501_read_ref(void);                   // dac70501 voltage read
+uint16_t dac70501_set_ref(uint8_t dacValueHigh,  // dac70501 register set
                          uint8_t dacValueLow);
-uint16_t dac70501_setVolt(float voltValue);     // dac70501 voltage set
-uint16_t dac070501_powerDown(uint8_t dac_pwdwn, // dac70501 power down
+uint16_t dac70501_set_volt(float voltValue);     // dac70501 voltage set
+uint16_t dac070501_power_down(uint8_t dac_pwdwn, // dac70501 power down
                              uint8_t ref_pwdwn);
-uint16_t dac70501_reStart(void);                // dac70501 powerup(restart)
+uint16_t dac70501_restart(void);                 // dac70501 powerup(restart)
 #ifdef __cplusplus
 }
 #endif /* DAC70501_DAC_H */

@@ -42,10 +42,6 @@
 #include "dac70501_dac.h"
 #include "ads1220_adc.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // button
 #define EM4WU_PORT          gpioPortC
 #define EM4WU_PIN           5
@@ -56,7 +52,12 @@ extern "C" {
 #define LED_PORT            gpioPortC
 #define LED_PIN             3
 
-volatile uint8_t button_EmMode = 0;
+// msc
+#define USERDATA ((uint32_t*)USERDATA_BASE)
+#define POSITION 3
+uint32_t cleared_value, write_value;
+
+volatile uint8_t button_em_mode = 0;
 
 /**************************************************************************//**
  * @brief GPIO Interrupt handler for even pins.
@@ -66,15 +67,14 @@ volatile uint8_t button_EmMode = 0;
 void GPIO_ODD_IRQHandler(void)
 {
   // Get and clear all pending GPIO interrupts 
-  uint32_t interruptMask = GPIO_IntGet();
-  GPIO_IntClear(interruptMask);
+  uint32_t isr_mask = GPIO_IntGet();
+  GPIO_IntClear(isr_mask);
 
   // Check if button 1 was pressed 
-  if (interruptMask & ((1 << EM4WU_PIN) | GPIO_IEN_EM4WUIEN7)) {
+  if (isr_mask & ((1 << EM4WU_PIN) | GPIO_IEN_EM4WUIEN7)) {
     // add your code here
     // this toggle the LED 
     GPIO_PinOutToggle(LED_PORT, LED_PIN);
-    ;
   }
 }
 
@@ -88,9 +88,9 @@ void GPIO_ODD_IRQHandler(void)
  * @comment
  *    24-bit down count for delay
  *****************************************************************************/
-void initLetimer(void)
+void init_letimer(void)
 {
-  LETIMER_Init_TypeDef letimerInit = LETIMER_INIT_DEFAULT;
+  LETIMER_Init_TypeDef letimer_init = LETIMER_INIT_DEFAULT;
 
   // use LFRCO 
   CMU_ClockSelectSet(cmuClock_EM23GRPACLK, cmuSelect_LFRCO);
@@ -98,11 +98,11 @@ void initLetimer(void)
   CMU_ClockEnable(cmuClock_LETIMER0, true);
 
   // field initialize 
-  letimerInit.enable = false;
-  letimerInit.debugRun = true;
+  letimer_init.enable = false;
+  letimer_init.debugRun = true;
 
   // Initialize LETIMER 
-  LETIMER_Init(LETIMER0, &letimerInit);
+  LETIMER_Init(LETIMER0, &letimer_init);
   LETIMER_CounterSet(LETIMER0, 10);
 }
 
@@ -117,12 +117,12 @@ void initLetimer(void)
  * @comment
  *    for delay， em0 only
  *****************************************************************************/
-void letimerDelay(uint32_t msec)
+void letimer_delay(uint32_t msec)
 {
   // enable and wait CNT equal 
-  uint32_t totalTicks = 0xFFFFFF - msec * 32.768;
+  uint32_t total_ticks = 0xFFFFFF - msec * 32.768;
   LETIMER_Enable(LETIMER0, true);
-  while (LETIMER_CounterGet(LETIMER0) >= totalTicks) ;
+  while (LETIMER_CounterGet(LETIMER0) >= total_ticks) ;
 
   // reset CNT and disable 
   LETIMER_CounterSet(LETIMER0, 0);
@@ -137,25 +137,25 @@ void letimerDelay(uint32_t msec)
  * @return
  *    bg22 die temperature in Celcius unit
  *****************************************************************************/
-float getDieTemperature(void)
+float get_die_temperature(void)
 {
-  uint32_t diTemp = 0, diEmu = 0;
-  float EMUTempC = 0.0, tempDegC = 0.0, offsetCorrection = 0.0;
+  uint32_t di_temp = 0, di_emu = 0;
+  float emu_tempC = 0.0, temp_degC = 0.0, offset_correction = 0.0;
 
   // Read EMU temperature sensor calibration data from device info page 
-  diTemp = (DEVINFO->CALTEMP & _DEVINFO_CALTEMP_TEMP_MASK)
+  di_temp = (DEVINFO->CALTEMP & _DEVINFO_CALTEMP_TEMP_MASK)
            >> _DEVINFO_CALTEMP_TEMP_SHIFT;
-  diEmu =  (DEVINFO->EMUTEMP & _DEVINFO_EMUTEMP_EMUTEMPROOM_MASK)
+  di_emu =  (DEVINFO->EMUTEMP & _DEVINFO_EMUTEMP_EMUTEMPROOM_MASK)
            >> _DEVINFO_EMUTEMP_EMUTEMPROOM_SHIFT;
 
   // EMU temperature raw data in Celcius unit 
-  EMUTempC = EMU_TemperatureGet();
+  emu_tempC = EMU_TemperatureGet();
 
   // compensate the data 
-  offsetCorrection = diEmu - 273.15 - diTemp;
-  tempDegC = EMUTempC - offsetCorrection;
+  offset_correction = di_emu - 273.15 - di_temp;
+  temp_degC = emu_tempC - offset_correction;
 
-  return tempDegC;
+  return temp_degC;
 }
 
 /**************************************************************************//**
@@ -166,7 +166,7 @@ float getDieTemperature(void)
  * @return
  *    none
  *****************************************************************************/
-void lightLED(uint8_t onoff)
+void light_led(uint8_t onoff)
 {
   // Enable clock 
   CMU_ClockEnable(cmuClock_GPIO, true);
@@ -183,7 +183,7 @@ void lightLED(uint8_t onoff)
  * @return
  *    none
  *****************************************************************************/
-void initButtonEM1(void)
+void init_button_em1(void)
 {
   // Enable clock 
   CMU_ClockEnable(cmuClock_GPIO, true);
@@ -205,7 +205,7 @@ void initButtonEM1(void)
   NVIC_EnableIRQ(GPIO_ODD_IRQn);
 
   // enter EM1 
-  button_EmMode = 1;
+  button_em_mode = 1;
 }
 
 /**************************************************************************//**
@@ -216,7 +216,7 @@ void initButtonEM1(void)
  * @return
  *    none
  *****************************************************************************/
-void initButtonEM2(void)
+void init_button_em2(void)
 {
   // Enable clock 
   CMU_ClockEnable(cmuClock_GPIO, true);
@@ -238,7 +238,7 @@ void initButtonEM2(void)
   NVIC_EnableIRQ(GPIO_ODD_IRQn);
 
   // enter EM2 
-  button_EmMode = 2;
+  button_em_mode = 2;
 }
 
 /**************************************************************************//**
@@ -249,10 +249,10 @@ void initButtonEM2(void)
  * @return
  *    none
  *****************************************************************************/
-void initButtonEM4(void)
+void init_button_em4(void)
 {
   // Use default settings for EM4 
-  EMU_EM4Init_TypeDef em4Init = EMU_EM4INIT_DEFAULT;
+  EMU_EM4Init_TypeDef em4_Init = EMU_EM4INIT_DEFAULT;
 
   // Enable clock 
   CMU_ClockEnable(cmuClock_GPIO, true);
@@ -265,11 +265,11 @@ void initButtonEM4(void)
   GPIO_EM4EnablePinWakeup(GPIO_IEN_EM4WUIEN7, 0 << _GPIO_IEN_EM4WUIEN7_SHIFT);
 
   // Enable Pin Retention through EM4 and wakeup 
-  em4Init.pinRetentionMode = emuPinRetentionLatch;
+  em4_Init.pinRetentionMode = emuPinRetentionLatch;
   // Initialize EM mode 4 
-  EMU_EM4Init(&em4Init);
+  EMU_EM4Init(&em4_Init);
 
-  button_EmMode = 4;
+  button_em_mode = 4;
 }
 
 /**************************************************************************//**
@@ -281,16 +281,16 @@ void initButtonEM4(void)
  * @return
  *    none
  *****************************************************************************/
-double rmsCal(double buffer[], double adcAve)
+double rms_cal(double buffer[], double adcAve)
 {
-  double adcAcc = 0.0, adcRmsValue;
+  double adc_acc = 0.0, adc_rms_value;
 
   for(uint32_t i = 0; i < ADC_BUFFER_SIZE; i++) {
-    adcAcc += (buffer[i] - adcAve) * (buffer[i] - adcAve);
+    adc_acc += (buffer[i] - adcAve) * (buffer[i] - adcAve);
   }
 
-  adcRmsValue = sqrt(adcAcc) / 1023.0 * 1000;   // in mV 
-  return adcRmsValue;
+  adc_rms_value = sqrt(adc_acc) / 1023.0 * 1000;   // in mV
+  return adc_rms_value;
 }
 
 /*******************************************************************************
@@ -323,13 +323,13 @@ double rmsCal(double buffer[], double adcAve)
  ******************************************************************************/
 // Stores latest ADC sample and converts to volts
 static volatile IADC_Result_t sample;
-static volatile double singleResult;
+static volatile double single_result;
 
 // buffer to save adc result
 double buffer[1024];
 volatile uint32_t loop = 0;
-double adcGainResult;
-double adcOffsetResult;
+double adc_gain_result;
+double adc_offset_result;
 
 /**************************************************************************//**
  * @brief  ADC Handler, never be used/called
@@ -342,16 +342,16 @@ void IADC_IRQHandler(void)
 
   // For differential the result range is -Vref to +Vref, i.e., 16 bits for the
   // conversion value.
-  singleResult = sample.data * 1.25 *2 / 0xFFFF;
+  single_result = sample.data * 1.25 *2 / 0xFFFF;
 
   // clear int flag 
   IADC_clearInt(IADC0, IADC_IF_SINGLEFIFODVL);
 
   // store result to buffer 
   if (loop < NUM_SAMPLES) {
-    buffer[loop] = singleResult;
+    buffer[loop] = single_result;
     loop++;
-    letimerDelay(2);
+    letimer_delay(2);
   }
 }
 
@@ -363,7 +363,7 @@ void IADC_IRQHandler(void)
  * @return
  *    none
  *****************************************************************************/
-void rescaleIADC(uint32_t newScale)
+void rescale_iadc(uint32_t newScale)
 {
   // Disable the IADC 
   IADC0->EN_CLR = IADC_EN_EN;
@@ -383,7 +383,7 @@ void rescaleIADC(uint32_t newScale)
  * @return
  *    none
  *****************************************************************************/
-void resetIADC(void)
+void reset_iadc(void)
 {
   IADC_reset(IADC0);
 }
@@ -396,7 +396,7 @@ void resetIADC(void)
  * @return
  *    iadc value in volt unit
  *****************************************************************************/
-double iadcPollSingleResult(void)
+double iadc_poll_single_result(void)
 {
   // start converting 
   IADC_command(IADC0, iadcCmdStartSingle);
@@ -412,9 +412,9 @@ double iadcPollSingleResult(void)
 
   // For differential the result range is -Vref to +Vref, i.e., 16 bits for the
   // conversion value.
-  singleResult = sample.data * 1.25 * 2 / 0xFFFF;
+  single_result = sample.data * 1.25 * 2 / 0xFFFF;
 
-  return singleResult;
+  return single_result;
 }
 
 /**************************************************************************//**
@@ -424,7 +424,7 @@ double iadcPollSingleResult(void)
  * @return
  *    adc average raw data
  *****************************************************************************/
-double iadcAverageConversion(uint32_t numSamples)
+double iadc_average_conversion(uint32_t numSamples)
 {
   uint32_t i;
   double average;
@@ -461,7 +461,7 @@ double iadcAverageConversion(uint32_t numSamples)
  * @return
  *    none
  *****************************************************************************/
-void initIADCScan(void)
+void init_iadc_scan(void)
 {
   // dummy, may use LDMA 
   ;
@@ -475,13 +475,13 @@ void initIADCScan(void)
  * @return
  *    none
  *****************************************************************************/
-void initIADC(void)
+void init_iadc(void)
 {
   // Declare init structs 
   IADC_Init_t init = IADC_INIT_DEFAULT;
-  IADC_AllConfigs_t initAllConfigs = IADC_ALLCONFIGS_DEFAULT;
-  IADC_InitSingle_t initSingle = IADC_INITSINGLE_DEFAULT;
-  IADC_SingleInput_t initSingleInput = IADC_SINGLEINPUT_DEFAULT;
+  IADC_AllConfigs_t init_all_configs = IADC_ALLCONFIGS_DEFAULT;
+  IADC_InitSingle_t init_single = IADC_INITSINGLE_DEFAULT;
+  IADC_SingleInput_t init_single_input = IADC_SINGLEINPUT_DEFAULT;
 
   // Configure IADC clock source 
   CMU_ClockSelectSet(cmuClock_IADCCLK, cmuSelect_FSRCO);
@@ -499,9 +499,9 @@ void initIADC(void)
 
   // Configuration 0 is used by both scan and single conversions by default 
   // Use external reference as reference 
-  initAllConfigs.configs[0].reference = iadcCfgReferenceExt1V25;
+  init_all_configs.configs[0].reference = iadcCfgReferenceExt1V25;
   // Divides CLK_SRC_ADC to set the CLK_ADC frequency for desired sample rate 
-  initAllConfigs.configs[0].adcClkPrescale =
+  init_all_configs.configs[0].adcClkPrescale =
                             IADC_calcAdcClkPrescale(IADC0,
                             CLK_ADC_FREQ,
                             0,
@@ -512,26 +512,26 @@ void initIADC(void)
   // resolution formula res = 11 + log2(oversampling * digital averaging)
   // in this case res = 11 + log2(32 * 1) = 16
 
-  initAllConfigs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
+  init_all_configs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
 
   // Single initialization 
-  initSingle.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
+  init_single.dataValidLevel = _IADC_SINGLEFIFOCFG_DVL_VALID1;
   // Set conversions to run once per trigger 
-  initSingle.triggerAction = iadcTriggerActionOnce;
+  init_single.triggerAction = iadcTriggerActionOnce;
   // Set alignment to right justified with 16 bits for data field 
-  initSingle.alignment = iadcAlignRight16;
+  init_single.alignment = iadcAlignRight16;
 
   // Configure input sources for differential conversion 
-  initSingleInput.posInput = ADC_POS_INPUT;
-  initSingleInput.negInput = ADC_NEG_INPUT;
+  init_single_input.posInput = ADC_POS_INPUT;
+  init_single_input.negInput = ADC_NEG_INPUT;
 
   // Initialize IADC
   // This is taken care of in the IADC_init() function in the emlib em_iadc
 
-  IADC_init(IADC0, &init, &initAllConfigs);
+  IADC_init(IADC0, &init, &init_all_configs);
 
   // Initialize single 
-  IADC_initSingle(IADC0, &initSingle, &initSingleInput);
+  IADC_initSingle(IADC0, &init_single, &init_single_input);
 
   // Allocate the analog bus for ADC0 inputs 
   GPIO->IADC_INPUT_0_BUS |= IADC_INPUT_0_BUSALLOC;
@@ -545,13 +545,13 @@ void initIADC(void)
  * @return
  *    none
  *****************************************************************************/
-void initIADCforCali(void)
+void init_iadc_for_cali(void)
 {
   // Declare init structs 
   IADC_Init_t init = IADC_INIT_DEFAULT;
-  IADC_AllConfigs_t initAllConfigs = IADC_ALLCONFIGS_DEFAULT;
-  IADC_InitSingle_t initSingle = IADC_INITSINGLE_DEFAULT;
-  IADC_SingleInput_t initSingleInput = IADC_SINGLEINPUT_DEFAULT;
+  IADC_AllConfigs_t init_all_configs = IADC_ALLCONFIGS_DEFAULT;
+  IADC_InitSingle_t init_single = IADC_INITSINGLE_DEFAULT;
+  IADC_SingleInput_t init_single_input = IADC_SINGLEINPUT_DEFAULT;
 
   // Enable IADC0 clock branch 
   CMU_ClockEnable(cmuClock_IADC0, true);
@@ -565,29 +565,29 @@ void initIADCforCali(void)
 
   // Configuration 0 is used by both scan and single conversions by default 
   // Use external reference 
-  initAllConfigs.configs[0].reference = iadcCfgReferenceExt1V25;
+  init_all_configs.configs[0].reference = iadcCfgReferenceExt1V25;
   // Force IADC to use bipolar inputs for conversion 
-  initAllConfigs.configs[0].twosComplement = iadcCfgTwosCompBipolar;
+  init_all_configs.configs[0].twosComplement = iadcCfgTwosCompBipolar;
   // Divides CLK_SRC_ADC to set the CLK_ADC frequency 
-  initAllConfigs.configs[0].adcClkPrescale = IADC_calcAdcClkPrescale(IADC0,
+  init_all_configs.configs[0].adcClkPrescale = IADC_calcAdcClkPrescale(IADC0,
                                              CLK_ADC_FREQ,
                                              0,
                                              iadcCfgModeNormal,
                                              init.srcClkPrescale);
   // 32x OVS mode 
-  initAllConfigs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
+  init_all_configs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
 
   // single initialization 
-  initSingle.alignment = iadcAlignRight16;
+  init_single.alignment = iadcAlignRight16;
 
   // Assign pins to positive and negative inputs in differential mode  
-  initSingleInput.posInput = iadcPosInputPortCPin0; // PC00 
-  initSingleInput.negInput = iadcNegInputPortCPin1; // PC01 
+  init_single_input.posInput = iadcPosInputPortCPin0; // PC00
+  init_single_input.negInput = iadcNegInputPortCPin1; // PC01
 
-  / Initialize the IADC 
-  IADC_init(IADC0, &init, &initAllConfigs);
-  / Initialize the Single conversion inputs 
-  IADC_initSingle(IADC0, &initSingle, &initSingleInput);
+  // Initialize the IADC
+  IADC_init(IADC0, &init, &init_all_configs);
+  // Initialize the Single conversion inputs
+  IADC_initSingle(IADC0, &init_single, &init_single_input);
 
   // Allocate the analog bus for ADC0 inputs 
   GPIO->IADC_INPUT_0_BUS |= IADC_INPUT_0_BUSALLOC;
@@ -602,30 +602,30 @@ void initIADCforCali(void)
  * @return
  *    calbrated scale value
  *****************************************************************************/
-uint32_t iadcDifferentialCalibrate(void)
+uint32_t iadc_differential_calibrate(void)
 {
   // please pay attention that offset is dependent to analog gain and OSR  
-  uint32_t scale;                          // offset is dependent to scale 
-  uint32_t caliGain1msb;                   // msb gain result              
-  double caliGain13lsb;                    // 0.75 or 1.0 gain             
+  uint32_t scale;                           // offset is dependent to scale
+  uint32_t cali_gain1_msb;                  // msb gain result
+  double cali_gain13_lsb;                   // 0.75 or 1.0 gain
 
-  double resultFullscale,                  // full scale result, 1250mV    
-         resultZero,                       // zero result, 0v              
-         resultOffset,                     // zero offset, 0v              
-         resultRange;                      // resultFullscale - resultZero 
-  double gainCorrectionFactor;             // gain correction factor       
-  int32_t iadcCalculatedOffset;            // offset from resultZero       
+  double result_fullscale,                  // full scale result, 1250mV
+         result_zero,                       // zero result, 0v
+         result_offset,                     // zero offset, 0v
+         result_range;                      // resultFullscale - resultZero
+  double gain_correction_factor;            // gain correction factor
+  int32_t iadc_calculated_offset;           // offset from resultZero
   // gain resolution, 0.25 / 8192 = 0.000030517578125                      
-  double IADC_GAIN13LSB_LSB = 0.25 / 8192; // lsb gain multiply factor     
+  double IADC_GAIN13LSB_LSB = 0.25 / 8192;  // lsb gain multiply factor
 
-  uint32_t iadcCalibratedGain3lsb;         // gain result value            
-  int32_t iadcCalibratedOffset;            // offset result value          
+  uint32_t iadc_calibrated_gain3_lsb;       // gain result value
+  int32_t iadc_calibrated_offset;           // offset result value
 
   // Initialize ADC for calibration 
-  initIADCforCali();
-  iadcCalibratedGain3lsb = (IADC0->CFG[0].SCALE & _IADC_SCALE_GAIN13LSB_MASK)
+  init_iadc_for_cali();
+  iadc_calibrated_gain3_lsb = (IADC0->CFG[0].SCALE & _IADC_SCALE_GAIN13LSB_MASK)
                            >> _IADC_SCALE_GAIN13LSB_SHIFT;   // 13 bit 
-  iadcCalibratedOffset = (IADC0->CFG[0].SCALE & _IADC_SCALE_OFFSET_MASK)
+  iadc_calibrated_offset = (IADC0->CFG[0].SCALE & _IADC_SCALE_OFFSET_MASK)
                          >> _IADC_SCALE_OFFSET_SHIFT;        // 18 bit 
 
   // range, 0.75x to 1.2499x
@@ -642,110 +642,109 @@ uint32_t iadcDifferentialCalibrate(void)
   scale = IADC_SCALE_GAIN3MSB_GAIN100 | IADC_SCALE_GAIN13LSB_DEFAULT
                                       | IADC_SCALE_OFFSET_MAX_NEG;
   // here we use config[0] only 
-  rescaleIADC(scale);
+  rescale_iadc(scale);
 
   // Apply a full-scale (almost) positive input to the IADC
   // Wait until differential voltage is applied
   // Take multiple conversions and average to reduce system-level noise
   // This is the ADC raw data.
-  dac70501_setVolt(1.25);
-  resultFullscale = iadcAverageConversion(NUM_SAMPLES);
+  dac70501_set_volt(1.25);
+  result_fullscale = iadc_average_conversion(NUM_SAMPLES);
 
   // Apply a zero differential input to the IADC (short POS and NEG)
   // Wait until differential voltage is applied
   // Take multiple conversions and average to reduce system-level noise
-  dac70501_setVolt(0.0);
-  resultZero = iadcAverageConversion(NUM_SAMPLES);
+  dac70501_set_volt(0.0);
+  result_zero = iadc_average_conversion(NUM_SAMPLES);
 
   // Calculate gain correction factor
   // In bipolar mode, expected positive full-scale for IADC is
   // (2^15) - 1 = 32727
-  resultRange = resultFullscale - resultZero;
+  result_range = result_fullscale - result_zero;
   //
   // gainCorrectionFactor equals
   // 32767 / (resultFullscale - resultZero)
-  gainCorrectionFactor =  (double)32767.0 / resultRange;
-  adcGainResult = gainCorrectionFactor;
+  gain_correction_factor =  (double)32767.0 / result_range;
+  adc_gain_result = gain_correction_factor;
 
   // calculate the coarse offset here 
-  iadcCalculatedOffset = -(IADC_SCALE_OFFSET_MAX_NEG + resultZero * 16);
-  iadcCalculatedOffset = iadcCalculatedOffset * gainCorrectionFactor;
+  iadc_calculated_offset = -(IADC_SCALE_OFFSET_MAX_NEG + result_zero * 16);
+  iadc_calculated_offset = iadc_calculated_offset * gain_correction_factor;
 
   // Correct gain:
   // Set IADC correction gain and clear offset in order to calibrate offset
   // 3 MSB of gain is represented by 1 bit;
   //     a. 1 => 100 representing 1.00x to 1.2499x,
   //     b. 0 => 011 representing 0.75x to 0.9999x
-  if (gainCorrectionFactor >= 1.0) {
+  if (gain_correction_factor >= 1.0) {
     // need to increase gain 
-    caliGain1msb = IADC_SCALE_GAIN3MSB_GAIN100;
-    caliGain13lsb = (gainCorrectionFactor - 1.0) / IADC_GAIN13LSB_LSB;
+    cali_gain1_msb = IADC_SCALE_GAIN3MSB_GAIN100;
+    cali_gain13_lsb = (gain_correction_factor - 1.0) / IADC_GAIN13LSB_LSB;
     // round to the nearest integer 
-    iadcCalibratedGain3lsb = (uint32_t)(caliGain13lsb + 0.5);
+    iadc_calibrated_gain3_lsb = (uint32_t)(cali_gain13_lsb + 0.5);
     scale = IADC_SCALE_GAIN3MSB_GAIN100                             // 3 msb  
-          | (iadcCalibratedGain3lsb << _IADC_SCALE_GAIN13LSB_SHIFT) // 13 lsb 
+          | (iadc_calibrated_gain3_lsb << _IADC_SCALE_GAIN13LSB_SHIFT) // 13 lsb
           | IADC_SCALE_OFFSET_ZERO;                                 // offset 
-  }
-  else {
+  } else {
     // need to decrease gain 
-    caliGain1msb = IADC_SCALE_GAIN3MSB_GAIN011;
-    caliGain13lsb = (gainCorrectionFactor - 0.75) / IADC_GAIN13LSB_LSB;
+    cali_gain1_msb = IADC_SCALE_GAIN3MSB_GAIN011;
+    cali_gain13_lsb = (gain_correction_factor - 0.75) / IADC_GAIN13LSB_LSB;
     // round to the nearest integer 
-    iadcCalibratedGain3lsb = (uint32_t)(caliGain13lsb + 0.5);
+    iadc_calibrated_gain3_lsb = (uint32_t)(cali_gain13_lsb + 0.5);
     scale = IADC_SCALE_GAIN3MSB_GAIN011
-          | (iadcCalibratedGain3lsb << _IADC_SCALE_GAIN13LSB_SHIFT)
+          | (iadc_calibrated_gain3_lsb << _IADC_SCALE_GAIN13LSB_SHIFT)
           | IADC_SCALE_OFFSET_ZERO;
   }
 
   // apply the gain correction 
-  rescaleIADC(scale);
+  rescale_iadc(scale);
 
   // Correct offset:
   // Apply a zero differential input to the IADC (short POS and NEG)
   // Take multiple conversions and average to reduce system-level noise
 
   // already applied zero when measure resultZero 
-  resultOffset = iadcAverageConversion(NUM_SAMPLES);
-  adcOffsetResult = resultOffset * 1.25 * 2 / 0xFFFF * 1000;         // in mV 
+  result_offset = iadc_average_conversion(NUM_SAMPLES);
+  adc_offset_result = result_offset * 1.25 * 2 / 0xFFFF * 1000;         // in mV
 
   // scale and negate offset
   // OFFSET is encoded as a 2's complement,
   // 18-bit number with the LSB representing 1 / (2^20) of full scale.
 
   // 16-bit convert to 20-bit, need gain 2^(20-16) = 16 
-  iadcCalibratedOffset = (int32_t)(resultOffset * -16);
+  iadc_calibrated_offset = (int32_t)(result_offset * -16);
 
   // 18-bit boundary check [-2^17 <-> (2^17-1)]
   // Check if offset is too large to be corrected and
   // set to maximum correction allowed
-  if (iadcCalibratedOffset > 131071) {
-    iadcCalibratedOffset = 131071;
+  if (iadc_calibrated_offset > 131071) {
+    iadc_calibrated_offset = 131071;
   }
-  if (iadcCalibratedOffset < -131072) {
-    iadcCalibratedOffset = -131072;
+  if (iadc_calibrated_offset < -131072) {
+    iadc_calibrated_offset = -131072;
   }
 
   // offset and gain result 
-  scale = caliGain1msb
-        | (iadcCalibratedGain3lsb << _IADC_SCALE_GAIN13LSB_SHIFT)
-        | (iadcCalibratedOffset & _IADC_SCALE_OFFSET_MASK);
+  scale = cali_gain1_msb
+        | (iadc_calibrated_gain3_lsb << _IADC_SCALE_GAIN13LSB_SHIFT)
+        | (iadc_calibrated_offset & _IADC_SCALE_OFFSET_MASK);
 
   // apply gain and offset correction 
-  rescaleIADC(scale);
+  rescale_iadc(scale);
 
   // expected to get result close to zero
   // for test purpose
-  resultOffset = iadcAverageConversion(NUM_SAMPLES);
+  result_offset = iadc_average_conversion(NUM_SAMPLES);
 
   // set dac70501 voltage for test 
-  gainCorrectionFactor = 0.60f;
-  dac70501_setVolt((float)gainCorrectionFactor);
-  letimerDelay(2);
+  gain_correction_factor = 0.60f;
+  dac70501_set_volt((float)gain_correction_factor);
+  letimer_delay(2);
 
   // test result, 10 samples 
   for (uint8_t i = 0; i < 20; i++) {
     // store result to buffer 
-    buffer[i] = iadcPollSingleResult();
+    buffer[i] = iadc_poll_single_result();
   }
 
   IADC_reset(IADC0);
@@ -761,10 +760,7 @@ uint32_t iadcDifferentialCalibrate(void)
  * @return
  *    none
  ******************************************************************************/
-#define USERDATA ((uint32_t*)USERDATA_BASE)
-#define POSITION 3
-uint32_t cleared_value, write_value;
-void bg22SaveCalData(uint32_t scale)
+void bg22_save_cal_data(uint32_t scale)
 {
   // Enable MSC Clock 
   CMU_ClockEnable(cmuClock_MSC, true);
@@ -791,14 +787,10 @@ void bg22SaveCalData(uint32_t scale)
  * @return
  *    none
  ******************************************************************************/
-void bg22RestoreCalData(void)
+void bg22_restore_cal_data(void)
 {
   uint32_t scale;
 
   scale = USERDATA[POSITION];
-  rescaleIADC(scale);
+  rescale_iadc(scale);
 }
-
-#ifdef __cplusplus
-}
-#endif

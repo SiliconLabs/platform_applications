@@ -39,10 +39,10 @@
 extern "C" {
 #endif
 uint32_t ads1220_init(void);                    // ads1220 initialization
-double ads1220_getAdcTemp(void);                // ads1220 temperature
-double ads1220_getAdcDataVolt(void);            // ads1220 get voltage
-void ads1220_Calibrate(void);                   // ads1220 calibration
-void ads1220_powerDown(void);                   // ads1220 power down
+double ads1220_get_adc_temp(void);              // ads1220 temperature
+double ads1220_get_adc_data_volt(void);         // ads1220 get voltage
+void ads1220_calibrate(void);                   // ads1220 calibration
+void ads1220_power_down(void);                  // ads1220 power down
 #ifdef __cplusplus
 }
 #endif /* ADS1220_ADC_H */

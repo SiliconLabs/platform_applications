@@ -43,25 +43,25 @@ extern "C" {
 
 #define ADC_BUFFER_SIZE 1024
 
-void resetIADC(void);                           // bg22 iadc reset
-void rescaleIADC(uint32_t newScale);            // bg22 iadc rescale
-void initIADC(void);                            // bg22 iadc initialization
-void bg22SaveCalData(uint32_t scale);           // bg22 iadc cal data save
-void bg22RestoreCalData(void);                  // bg22 iadc cal data restore
-double iadcPollSingleResult(void);              // bg22 iadc voltage polling
-uint32_t iadcDifferentialCalibrate();           // bg22 iadc calibration
+void reset_iadc(void);                           // bg22 iadc reset
+void rescale_iadc(uint32_t newScale);            // bg22 iadc rescale
+void init_iadc(void);                            // bg22 iadc initialization
+void bg22_save_cal_data(uint32_t scale);         // bg22 iadc cal data save
+void bg22_restore_cal_data(void);                // bg22 iadc cal data restore
+double iadc_poll_single_result(void);            // bg22 iadc voltage polling
+uint32_t iadc_differential_calibrate();          // bg22 iadc calibration
 
-void lightLED(uint8_t onoff);                   // led on/off
-void initLetimer(void);
-void letimerDelay(uint32_t msec);               // simple delay
-void initButtonEM2(void);                       // button in EM2
-float getDieTemperature(void);                  // bg22 emu die temperature
+void light_led(uint8_t onoff);                   // led on/off
+void init_letimer(void);
+void letimer_delay(uint32_t msec);               // simple delay
+void init_button_em2(void);                      // button in EM2
+float get_die_temperature(void);                 // bg22 emu die temperature
 
-double rmsCal(double buffer[], double adcAve);
-extern double buffer[ADC_BUFFER_SIZE];          // buffer to save adc data
-extern double adcGainResult;                    // adc gain cal result
-extern double adcOffsetResult;                  // adc offset cal result
-extern double adcEnobResult;                    // adc enob result
+double rms_cal(double buffer[], double adcAve);
+extern double buffer[ADC_BUFFER_SIZE];           // buffer to save adc data
+extern double adc_gain_result;                   // adc gain cal result
+extern double adc_offset_result;                 // adc offset cal result
+extern double adc_enob_result;                   // adc enob result
 
 #ifdef __cplusplus
 }
