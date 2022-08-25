@@ -43,8 +43,9 @@ double ads1220_get_adc_temp(void);              // ads1220 temperature
 double ads1220_get_adc_data_volt(void);         // ads1220 get voltage
 void ads1220_calibrate(void);                   // ads1220 calibration
 void ads1220_power_down(void);                  // ads1220 power down
+
 #ifdef __cplusplus
 }
-#endif /* ADS1220_ADC_H */
+#endif 
 
-#endif
+#endif /* ADS1220_ADC_H */

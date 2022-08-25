@@ -66,7 +66,6 @@
 //    manual operate CS, don't use auto mode
 //    ADS1220 ready polling (not interrupt)
 
-
 // Size of the data buffers
 #define ADC_BUFLEN  10
 // Outgoing data
@@ -75,23 +74,23 @@ uint8_t adc_out_buf[ADC_BUFLEN];
 uint8_t adc_in_buf[ADC_BUFLEN];
 
 // Ports and pins for SPI/USART0 interface
-#define US0_MISO_PORT  gpioPortA
-#define US0_MISO_PIN   3
-#define US0_MOSI_PORT  gpioPortA
-#define US0_MOSI_PIN   4
-#define US0_CLK_PORT   gpioPortC
-#define US0_CLK_PIN    4
-#define US0_CS_PORT    gpioPortC
-#define US0_CS_PIN     2
+#define US0_MISO_PORT                 gpioPortA
+#define US0_MISO_PIN                  3
+#define US0_MOSI_PORT                 gpioPortA
+#define US0_MOSI_PIN                  4
+#define US0_CLK_PORT                  gpioPortC
+#define US0_CLK_PIN                   4
+#define US0_CS_PORT                   gpioPortC
+#define US0_CS_PIN                    2
 // Ready pin, not used
-#define ADC_READY_PORT    gpioPortB
-#define ADC_READY_PIN     0
+#define ADC_READY_PORT                gpioPortB
+#define ADC_READY_PIN                 0
 
 // configuration register define (WREG/RREG)
-#define ADS1220_REG_CONFIGURATION0 0x00
-#define ADS1220_REG_CONFIGURATION1 0x01
-#define ADS1220_REG_CONFIGURATION2 0x02
-#define ADS1220_REG_CONFIGURATION3 0x03
+#define ADS1220_REG_CONFIGURATION0    0x00
+#define ADS1220_REG_CONFIGURATION1    0x01
+#define ADS1220_REG_CONFIGURATION2    0x02
+#define ADS1220_REG_CONFIGURATION3    0x03
 
 // COMMAND registers define
 #define ADS1220_REG_COMMAND_RESET     0x06      //0000 011x
@@ -115,50 +114,50 @@ uint8_t status = 0;
  *****************************************************************************/
 void ads1220_init_usart0(void)
 {
-  // Default asynchronous initializer (master mode, 1000k bps, 8-bit data) 
+  // Default asynchronous initializer (master mode, 1000k bps, 8-bit data)
   USART_InitSync_TypeDef init = USART_INITSYNC_DEFAULT;
 
-  // Enable gpio clock 
+  // Enable gpio clock
   CMU_ClockEnable(cmuClock_GPIO, true);
-  // Enable usart0 clock 
+  // Enable usart0 clock
   CMU_ClockEnable(cmuClock_USART0, true);
 
-  // MSB first transmission for SPI compatibility 
+  // MSB first transmission for SPI compatibility
   init.msbf = true;
-  // ADS1220 only support mode 1 
+  // ADS1220 only support mode 1
   init.clockMode = usartClockMode1;
   init.baudrate = 1000000;
 
-  // Configure RX pin as an input, filter off 
+  // Configure RX pin as an input, filter off
   GPIO_PinModeSet(US0_MISO_PORT, US0_MISO_PIN, gpioModeInput, 0);
-  // Configure TX pin as an output 
+  // Configure TX pin as an output
   GPIO_PinModeSet(US0_MOSI_PORT, US0_MOSI_PIN, gpioModePushPull, 0);
-  // Configure CLK pin as an output low (CPOL = 0) 
+  // Configure CLK pin as an output low (CPOL = 0)
   GPIO_PinModeSet(US0_CLK_PORT, US0_CLK_PIN, gpioModePushPull, 0);
-  // Configure CS pin as an output and drive inactive high 
+  // Configure CS pin as an output and drive inactive high
   GPIO_PinModeSet(US0_CS_PORT, US0_CS_PIN, gpioModePushPull, 1);
-  // Configure READY pin as an input, filter off 
+  // Configure READY pin as an input, filter off
   GPIO_PinModeSet(ADC_READY_PORT, ADC_READY_PIN, gpioModeInput, 0);
 
   // Route USART0 RX, TX, and CLK to the specified pins. Note that CS is
   // not controlled by USART0 so there is no write to the corresponding
   // USARTROUTE register to do this.
   
-  GPIO->USARTROUTE[0].RXROUTE =                                         \
-                      (US0_MISO_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT) \
-                    | (US0_MISO_PIN << _GPIO_USART_RXROUTE_PIN_SHIFT);
-  GPIO->USARTROUTE[0].TXROUTE =                                         \
-                      (US0_MOSI_PORT << _GPIO_USART_TXROUTE_PORT_SHIFT) \
-                    | (US0_MOSI_PIN << _GPIO_USART_TXROUTE_PIN_SHIFT);
-  GPIO->USARTROUTE[0].CLKROUTE =                                        \
-                      (US0_CLK_PORT << _GPIO_USART_CLKROUTE_PORT_SHIFT) \
-                    | (US0_CLK_PIN << _GPIO_USART_CLKROUTE_PIN_SHIFT);
-  // Enable USART interface pins 
-  GPIO->USARTROUTE[0].ROUTEEN = GPIO_USART_ROUTEEN_RXPEN |    // MISO
-                                GPIO_USART_ROUTEEN_TXPEN |    // MOSI
-                                GPIO_USART_ROUTEEN_CLKPEN;    // CLK
+  GPIO->USARTROUTE[0].RXROUTE =                       \
+    (US0_MISO_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT) \
+    | (US0_MISO_PIN << _GPIO_USART_RXROUTE_PIN_SHIFT);
+  GPIO->USARTROUTE[0].TXROUTE =                       \
+    (US0_MOSI_PORT << _GPIO_USART_TXROUTE_PORT_SHIFT) \
+    | (US0_MOSI_PIN << _GPIO_USART_TXROUTE_PIN_SHIFT);
+  GPIO->USARTROUTE[0].CLKROUTE =                      \
+    (US0_CLK_PORT << _GPIO_USART_CLKROUTE_PORT_SHIFT) \
+    | (US0_CLK_PIN << _GPIO_USART_CLKROUTE_PIN_SHIFT);
+  // Enable USART interface pins
+  GPIO->USARTROUTE[0].ROUTEEN = GPIO_USART_ROUTEEN_RXPEN        // MISO
+                                | GPIO_USART_ROUTEEN_TXPEN      // MOSI
+                                | GPIO_USART_ROUTEEN_CLKPEN;    // CLK
 
-  // Configure and enable USART0 
+  // Configure and enable USART0
   USART_InitSync(USART0, &init);
 }
 
@@ -177,61 +176,61 @@ void ads1220_uart0_test(uint8_t writenumBytes, uint8_t readnumBytes)
   uint8_t i;
   uint8_t adc_inbuf_save[4];
 
-  // read and save for restore later 
+  // read and save for restore later
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // start from reg0 
+  // start from reg0
   status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_RREG
                              | ((readnumBytes - 1) & 0x3));
   for (i = 0; i < readnumBytes; i++) {
     adc_inbuf_save[i] = USART_SpiTransfer(USART0, 0xff);
   }
-  // De-assert chip select upon transfer completion 
+  // De-assert chip select upon transfer completion
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-  // write registers temporary value 0xaa 
+  // write registers temporary value 0xaa
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
   // start from reg0 
   status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
                              | ((writenumBytes - 1) & 0x3));
   for (i = 0; i < writenumBytes; i++) {
-    // dummy read, written 0xaa 
-      adc_in_buf[i] = USART_SpiTransfer(USART0, 0xaa);
+    // dummy read, written 0xaa
+    adc_in_buf[i] = USART_SpiTransfer(USART0, 0xaa);
   }
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-  // read back temporary register value 
+  // read back temporary register value
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // start from reg0 
+  // start from reg0
   status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_RREG
                              | ((readnumBytes - 1) & 0x3));
   for (i = 0; i < readnumBytes; i++) {
-    // expect 0xaa, written value previously 
-      adc_in_buf[i] = USART_SpiTransfer(USART0, 0xff);
+    // expect 0xaa, written value previously
+    adc_in_buf[i] = USART_SpiTransfer(USART0, 0xff);
   }
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-  // check write and read back 
+  // check write and read back
   for (i = 0; i < writenumBytes; i++) {
     if (adc_in_buf[i] != 0xaa) {
-      while (1) ;
+      while (1) {}
     }
   }
 
-  // restore the register value 
+  // restore the register value
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // start from reg0 
+  // start from reg0
   status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
                              | ((writenumBytes - 1) & 0x3));
   for (i = 0; i < writenumBytes; i++) {
-    // dummy read, write back 
-      adc_in_buf[i] = USART_SpiTransfer(USART0, adc_inbuf_save[i]);
+    // dummy read, write back
+    adc_in_buf[i] = USART_SpiTransfer(USART0, adc_inbuf_save[i]);
   }
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
@@ -247,10 +246,10 @@ void ads1220_uart0_test(uint8_t writenumBytes, uint8_t readnumBytes)
  *****************************************************************************/
 void ads1220_reset(void)
 {
-  // reset ads1220 
+  // reset ads1220
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // RESET command 
+  // RESET command
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_RESET);
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
@@ -269,10 +268,10 @@ void ads1220_sync(void)
 {
   // single-shot -             start single
   // continuous conversion -   start sequence
-  
+
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // START command 
+  // START command
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_START);
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
@@ -293,21 +292,19 @@ void ads1220_power_down(void)
   // c. turn of both IDAC
   // d. start will resume previous
 
-
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
-  // reg1 
-  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG |
-                           ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1 
-                          | (0 & 0x3));                              // 1 
+  // reg1
+  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG 
+                             | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1
+                             | (0 & 0x3));                               // 1
 
-  // ads1220 operation mode 
+  // ads1220 operation mode
   adc_in_buf[0] = USART_SpiTransfer(USART0, 0x0);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // POWERDOWN command 
+  // POWERDOWN command
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_POWERDOWN);
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
@@ -328,15 +325,15 @@ void ads1220_conver_mode_metting(uint8_t modeConv)
   uint8_t adc_conv_mode = modeConv << 2;
 
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
-  // reg1 
-  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG |
-                           ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1 
-                          | (0 & 0x3));                              // 1 
-  // ads1220 convert mode 
+  // reg1
+  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG 
+                             | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1
+                             | (0 & 0x3));                               // 1
+  // ads1220 convert mode
   adc_in_buf[0] = USART_SpiTransfer(USART0, adc_conv_mode);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-  // followed by start 
+  // followed by start
   ads1220_sync();
 }
 
@@ -359,16 +356,16 @@ void ads1220_oper_mode_setting(uint8_t modeOpe)
   }
 
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
-  // reg1 
-  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG |
-                           ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1 
-                          | (0 & 0x3));                              // 1 
+  // reg1
+  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG 
+                             | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1
+                             | (0 & 0x3));                               // 1
 
-  // ads1220 operation mode 
+  // ads1220 operation mode
   adc_in_buf[0] = USART_SpiTransfer(USART0, adc_ope_mode);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-  // use default data rate 
+  // use default data rate
 }
 
 /**************************************************************************//**
@@ -389,11 +386,11 @@ void ads1220_reg_config(void)
   // 7-4          3:1         0
   // mux          gain        pga_bypass
   // b0101        000         0 (enabled pga)
-  
+
   // default input channel is REF3312 (0x6)
   // AIN0, AIN1, dac70501
 
-  reg0 = 0x50;  // can use pga power down 
+  reg0 = 0x50;  // can use pga power down
 
   // ADS1220_REG_CONFIGURATION1
   // 7-5         4:3          2              1          0
@@ -401,8 +398,8 @@ void ads1220_reg_config(void)
   // 000         0 (256k)     0 (single      0 (temp    burn-out
   // 20 SPS                      shot       disable     off
 
-  // use default 
-  reg1 = 0xd0;  // can use duty-cycle mode 
+  // use default
+  reg1 = 0xd0;  // can use duty-cycle mode
 
   // ADS1220_REG_CONFIGURATION2
   // 7-6           5:4         3               2:0
@@ -410,7 +407,7 @@ void ads1220_reg_config(void)
   // 010           NO reject   OPEN            0 (OFF)
   // ext
 
-  // external REFP0 and REFN0 
+  // external REFP0 and REFN0
   reg2 = 0x40;
 
   // ADS1220_REG_CONFIGURATION3
@@ -419,17 +416,17 @@ void ads1220_reg_config(void)
   // 000          000            0               x
   // disable      disable    dedicated only
 
-  // use default 
+  // use default
   reg3 = 0x00;
 
-  // write registers values 
+  // write registers values
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
   // register write, write 3 registers start from reg0
   // command register WREG
 
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
-                    // rr=0        nn=3 
+                    // rr=0        nn=3
                     | (0x0 << 2) | ((3 - 1) & 0x3));
   adc_in_buf[0] = USART_SpiTransfer(USART0, reg0);  // reg0, dac70501 input
   adc_in_buf[1] = USART_SpiTransfer(USART0, reg1);  // reg1
@@ -451,12 +448,12 @@ uint32_t ads1220_get_adc_data_raw(void)
 {
   uint32_t adc_result = 0;
 
-  // start command 
-  // delay 
+  // start command
+  // delay
   ads1220_sync();
   letimer_delay(100);
 
-  // read data 
+  // read data
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_RDATA);
@@ -466,7 +463,7 @@ uint32_t ads1220_get_adc_data_raw(void)
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
 
-  // convert to final data 
+  // convert to final data
   adc_result = adc_in_buf[0] << 16 | adc_in_buf[1] << 8 | adc_in_buf[2];
 
   return adc_result;
@@ -523,26 +520,26 @@ double ads1220_get_adc_temp(void)
   // reg1 = 0x02
 
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
-                    // rr=1                                       nn=1 
+                    // rr=1                                       nn=1
                     | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) | (0 & 0x3));
 
-  // write the value containing the new value to the ADS register 
+  // write the value containing the new value to the ADS register
   USART_SpiTransfer(USART0, temp_mode);
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(10);
   adc_volt = ads1220_get_adc_data_raw();
-  // 2048 / 2^16 = 0.03125 degC/lsb 
+  // 2048 / 2^16 = 0.03125 degC/lsb
   adc_temperature = 0.03125 * (adc_volt >> 10);
 
-  // write back the mode (non temperature) 
+  // write back the mode (non temperature)
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
   USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
-                    //  rr=1          nn=1 
+                    //  rr=1          nn=1
                     | ((0x1 << 2) & 0x6) | (0 & 0x3));
 
-  // write the register back to the ADS 
+  // write the register back to the ADS
   USART_SpiTransfer(USART0, 0x00);
   letimer_delay(1);
   GPIO_PinOutSet(US0_CS_PORT, US0_CS_PIN);
@@ -566,22 +563,22 @@ void ads1220_calibrate(void)
   double correction_gain, correction_offset;
   float dac_Volt;
 
-  // read back dac voltage set 
+  // read back dac voltage set
   dac_Volt = dac70501_read_ref();
-  // calibrate offset only since the gain resolution is coarse 
+  // calibrate offset only since the gain resolution is coarse
 
   dac70501_set_volt(1.25f);
-  // adc read operation 
+  // adc read operation
   for (i = 0; i < 10; i++) {
     average += ads1220_get_adc_data_raw();
   }
-  // get average 
+  // get average
   average /= 10;
 
-  // need software calibration 
-  correction_gain =  average / (double)8388607.0;
+  // need software calibration
+  correction_gain = average / (double)8388607.0;
 
-  // set dac7051 zero output 
+  // set dac7051 zero output
   dac70501_set_volt(0.0f);
   average = 0.0;
   // adc read operation
@@ -598,12 +595,12 @@ void ads1220_calibrate(void)
   average = 0.0;
   for (i = 0; i < 10; i++) {
     average += (ads1220_get_adc_data_raw() - correction_offset)
-        / correction_gain;
+               / correction_gain;
   }
-  // get average 
+  // get average
   average /= 10;
 
-  // restore dac voltage 
+  // restore dac voltage
   dac70501_set_volt(dac_Volt);
 }
 
@@ -623,19 +620,19 @@ uint32_t ads1220_init(void)
 
   letimer_delay(1);
 
-  // configure SPI interface 
+  // configure SPI interface
   ads1220_init_usart0();
 
-  // reset ads1220 
+  // reset ads1220
   ads1220_reset();
   letimer_delay(10);
 
-  // write first then read test 
+  // write first then read test
   read_num_byte = 3;
   write_num_byte = 2;
   ads1220_uart0_test(write_num_byte, read_num_byte);
 
-  // config ads1220 
+  // config ads1220
   ads1220_reg_config();
   ads1220_sync();
   letimer_delay(100);

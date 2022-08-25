@@ -56,7 +56,6 @@ void init_letimer(void);
 void letimer_delay(uint32_t msec);               // simple delay
 void init_button_em2(void);                      // button in EM2
 float get_die_temperature(void);                 // bg22 emu die temperature
-
 double rms_cal(double buffer[], double adcAve);
 extern double buffer[ADC_BUFFER_SIZE];           // buffer to save adc data
 extern double adc_gain_result;                   // adc gain cal result
@@ -65,6 +64,6 @@ extern double adc_enob_result;                   // adc enob result
 
 #ifdef __cplusplus
 }
-#endif /* EFM32BG22_ADC_H */
+#endif 
 
-#endif
+#endif /* EFM32BG22_ADC_H */

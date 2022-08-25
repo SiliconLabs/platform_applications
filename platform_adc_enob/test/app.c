@@ -57,34 +57,34 @@ uint32_t adc_snr = 0.0;                            // for enob calculation
  ******************************************************************************/
 void app_init(void)
 {
-  // Initialize letimer for delay function 
+  // Initialize letimer for delay function
   init_letimer();
 
-  // Initialize button for EM2 interrupt 
+  // Initialize button for EM2 interrupt
   init_button_em2();
 
-  // Turn on LED 
+  // Turn on LED
   light_led(1);
 
-  // Initialize dac70501 
+  // Initialize dac70501
   dac70501_init();
   dac70501_set_volt(1.00f);
 
-  // dac set voltage test 
+  // dac set voltage test
   dac_voltage_value = 1.00f;
   dac70501_set_volt(dac_voltage_value);
   // suggested by dac70501
   letimer_delay(10);
 
-  // Initialize ads1220 
+  // Initialize ads1220
   ads1220_init();
   // suggested by ads1220
   letimer_delay(10);
-  // ads1220 gain and offset calibration 
+  // ads1220 gain and offset calibration
   ads1220_calibrate();
   letimer_delay(10);
 
-  // Read temperature 
+  // Read temperature
   ads_adc_temperature = ads1220_get_adc_temp();
   bg22_die_temperature = get_die_temperature();
   app_log("ads1220 temp - %f degC\r\n", ads_adc_temperature);
@@ -92,13 +92,13 @@ void app_init(void)
   app_log("\r\n");
 
   // collect 10 samples
-  // buffer data should be close to 1.0v 
+  // buffer data should be close to 1.0v
   for (uint32_t i = 0; i < 10; i++) {
     buffer[i] = ads1220_get_adc_data_volt();
   }
 
   // dump adc result via terminal
-  // buffer data should be close to 1.0v 
+  // buffer data should be close to 1.0v
   app_log("ADS1220 adc voltage in mV:\r\n");
   app_log("sample - value\r\n");
   for (uint32_t i = 0; i < 10; i++) {
@@ -107,16 +107,16 @@ void app_init(void)
   app_log("\r\n");
 
   // efr32bg22 iadc calibration
-  // buffer data should be close to 0.6v 
+  // buffer data should be close to 0.6v
   bg22_adc_scale_result = iadc_differential_calibrate();
 
-  // Initialize the IADC 
+  // Initialize the IADC
   init_iadc();
-  // set dac voltage as 1.0v 
+  // set dac voltage as 1.0v
   dac70501_set_volt(dac_voltage_value);
 
   // collect 1024 samples for ENOB calculation
-  // and get the max, min, average 
+  // and get the max, min, average
   adc_max = 0.0;
   adc_min = 1.26;
   adc_ave = 0.0;
@@ -131,23 +131,23 @@ void app_init(void)
     }
   }
 
-  // statistic calculation  
+  // statistic calculation
   adc_peak = (adc_max - adc_min) * 1000;            // in mV unit
   adc_ave = adc_ave / ADC_BUFFER_SIZE;              // in V unit
   adc_rms = rms_cal(buffer, adc_ave);
   adc_ave *= 1000;                                  // in mV unit
 
-  // snr based on peak-peak, please refer to readme.md 
-  adc_peak = adc_peak/6.6;                          // in mV unit
+  // snr based on peak-peak, please refer to readme.md
+  adc_peak = adc_peak / 6.6;                        // in mV unit
   adc_snr = (uint32_t)(ADC_REF_VOLT * 2 / adc_peak);// signal to noise ratio
 
   // enob calculation
-  // adcEnobResult should be higher than 14.3 
-  adc_sinad = 20* log10(adc_snr);
+  // adcEnobResult should be higher than 14.3
+  adc_sinad = 20 * log10(adc_snr);
   adc_enob_result = (adc_sinad - 1.76f) / 6.02;
 
   // dump efr32bg22 adc result via terminal
-  // buffer data should be close to 1.0v 
+  // buffer data should be close to 1.0v
   app_log("efr32bg22 adc voltage in mV:\r\n");
   app_log("sample - value\r\n");
   for (uint32_t i = 0; i < 10; i++) {
@@ -158,7 +158,6 @@ void app_init(void)
   app_log("enob - %f \r\n", adc_enob_result);
   // to save power, you can power down ads1220 and dac70751 here
   // and reset efr32bg22 iadc
-  
 }
 
 /***************************************************************************//**

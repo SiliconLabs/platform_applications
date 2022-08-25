@@ -2,17 +2,20 @@
 
 ## Description ##
 
-The [EFR32BG22](https://www.silabs.com/documents/public/data-sheets/efr32bg22-datasheet.pdf) (Wireless Gecko **Series 2**) **IADC** is an intermediate architecture combining techniques from both **Successive Approximation Register (SAR)** and **Delta-Sigma (ΔΣ)** style converters. 
+The [EFR32BG22](https://www.silabs.com/documents/public/data-sheets/efr32bg22-datasheet.pdf) (Wireless Gecko **Series 2**) **IADC** is an intermediate architecture combining techniques from both **Successive Approximation Register (SAR)** and **Delta-Sigma (ΔΣ)** style converters.
 
-The flexible incremental architecture uses **oversampling** to allow applications to trade speed for **higher resolution**. 
+The flexible incremental architecture uses **oversampling** to allow applications to trade speed for **higher resolution**.
+
 - 1 Msps with oversampling ratio = 2
 - 76.9 ksps with oversampling ratio = 32
 
-This example discusses how to attain 14.3-bit **ENOB** with **oversampling**. It also cover offset and gain **calibration** of the IADC with **external reference**.  
+This example discusses how to attain 14.3-bit **ENOB** with **oversampling**. It also cover offset and gain **calibration** of the IADC with **external reference**.
+
 The ENOB is calculated based on the **formula** below:  
 ![diagram](doc/bgm-iadc-enob.png)  
-The BGM board have precision voltage reference and ADC to evaluate the ADC performance on EFR32BG22. 
+The BGM board has precision voltage reference and ADC to evaluate the ADC performance on EFR32BG22.
 **Key points** to attain 14.3 bit ENOB:
+
 - **Differential** mode input
 - External **reference**
 - 32+ **oversample** rate
@@ -40,7 +43,8 @@ The BGM board have precision voltage reference and ADC to evaluate the ADC perfo
 
 ## Setup ##
 
-**Connect** the [**bgm board**](doc/CGM-Board_Schematic.pdf) to the WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via the 10 pins [**Mini Simplicity Debug Adapter brd8010a**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect the WSTK **mainboard** to **PC** via the **mini USB** connector.
+**Connect** the [**bgm board**](doc/CGM-Board_Schematic.pdf) to the WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via the 10 pins [**Mini Simplicity Debug Adapter brd8010a**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect the WSTK **mainboard** to the **PC** via the **mini USB** connector.
+
 - Set the **Debug Mode** as **External Device (OUT)** in Simplicity Studio **Launcher->Overview->General Information->Debug mode**.
 - Set **Target part** in Simplicity Studio **Launcher->Debug Adapter->Device Configuration->Device hardware** as EFR32BG22C224F512IM32.
 - Read the **Secure FW** version in **Launcher->Overview->General Information->Secure FW**.
@@ -51,7 +55,7 @@ The final **connections** should look like the one in the picture below:
 
 ## Hardware ##
 
-bgm board schematic is [here](doc/CGM-Board_Schematic.pdf)
+The bgm board schematic is [here](doc/CGM-Board_Schematic.pdf).
 
 ### Pins Function Map ###
 
@@ -77,10 +81,11 @@ bgm board schematic is [here](doc/CGM-Board_Schematic.pdf)
 ## How the Project Works ##
 
 ### Memory Layout ###
+
 bootloader + application + nvm3 + lock bits(manufacturing token region)  
 ```
 |--------------------------------------------|
-|                 lock bits (8k)            |
+|                 lock bits (8k)             |
 |--------------------------------------------|
 |                      nvm3 (24k)            |
 |--------------------------------------------|
@@ -90,13 +95,14 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 |--------------------------------------------|
 ```
 
-
 ### Software Workflow ###
+
 ![workflow](doc/bgm-iadc-workflow.png)
 
 ## API Overview ##
+
 **General**:
-| API                                   | Comment                               | 
+| API                                   | Comment |
 |---------------------------------------|---------------------------------------|
 | void initLetimer(void);               |  -                                    |
 | void letimerDelay(uint32_t msec);     | simple delay                          |
@@ -106,7 +112,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | double rmsCal(double buffer[], double adcAve);  | rms calculation             |
 
 **dac70501**:
-| API                                             | Comment                                           | 
+| API                                             | Comment                                           |
 |-------------------------------------------------|---------------------------------------------------|
 | uint16_t dac70501_init(void);                   | dac70501 initialization                           |
 | float dac70501_readRef(void);                   | dac70501 voltage read                             |
@@ -116,7 +122,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | uint16_t dac70501_reStart(void);                | dac70501 power up (restart)                        |
 
 **ads1220**:
-| API                                             | Comment                      | 
+| API                                             | Comment                      |
 |-------------------------------------------------|------------------------------|
 | uint32_t ads1220_init(void);                    | ads1220 initialization       |
 | double ads1220_getAdcTemp(void);                | ads1220 get temperature      |
@@ -125,7 +131,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | void ads1220_powerDown(void);                   | ads1220 power down           |
 
 **efr32bg22 adc**:
-| API                                             | Comment                      | 
+| API                                             | Comment                      |
 |-------------------------------------------------|------------------------------|
 | void resetIADC(void);                           | bg22 iadc reset              |
 | void rescaleIADC(uint32_t newScale);            | bg22 iadc rescale            |
@@ -136,7 +142,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | uint32_t iadcDifferentialCalibrate();           | bg22 iadc calibration        |
 
 **variable**:
-| variable                                        | Comment                      | 
+| variable                                        | Comment                      |
 |-------------------------------------------------|------------------------------|
 | double buffer[ADC_BUFFER_SIZE];                 | buffer to save adc data      |
 | double adcGainResult;                           | adc gain cal result          |
@@ -144,6 +150,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | double adcEnobResult;                           | adc enob result              |
 
 ## Power Consumption ##
+
 | Components(Peripheral) | Power Up       | Power Down       | Comment         |
 |------------------------|----------------|------------------|-----------------|
 | REF3312                | 4.9uA          | -                | ADC reference   |
@@ -153,11 +160,11 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 
 ## .sls Projects Used ##
 
-platform_adc_enob.sls
+[platform_adc_enob.sls](SimplicityStudio/platform_adc_enob.sls)
 
 ## Steps to Create the Project ##
 
-- add **EFR32BG22C224F512IM32** in **Launcher->My Products** and **select** it.
+- Add **EFR32BG22C224F512IM32** in **Launcher->My Products** and **select** it.
 - Start with **Bluetooth - SoC Empty project**, rename the project as **platform_adc_enob**.
 - Check **With project files:->Link sdk and copy project sources**.
 - Open the .slcp file, add software component **Services->IO Stream->IO Stream: USART**, also configure it.
@@ -165,15 +172,16 @@ platform_adc_enob.sls
 - Add component **platform->peripheral->letimer**
 - Add component **platform->peripheral->iadc**
 - Add component **application->utility->log**
-- Add folder **inc** and **drv**.
-- **drag** the source and header files into the folder.
+- Add folder **inc** and **src**.
+- **Drag** the source and header files into the folder.
 - Add the inc path **Project Explorer->Properties->C/C++ Build->Settings->Tool Settings->GNU ARC C Compile->Includes->Include paths**.
 - **Replace** the **app.c**
 
 ## How to Port to Another Part ##
 
 In Simplicity Studio IDE perspective, open the **Project Explorer->Properties** and navigate to the **C/C++ Build -> Board/Part/SDK** item. Select the new **Board** or **Part** to target and **Apply** the changes.  
-**Note**: 
+**Note**:
+
 - There may be **dependencies** that need to be resolved when changing the target architecture.
 - **ONLY** EFR32/EFM32 S2 support this 16-bit ENOB.
 
@@ -185,10 +193,10 @@ The project is built with **relative paths** to the STUDIO_SDK_LOC variable whic
 C:\Users\user_name\SimplicityStudio\SDKs\gecko_sdk
 
 Then:
+
 - **Run** the code in EFR32BG22.
 - **Open** a terminal applicatin and observe if the data printed is expected. 
-- an example log file is [app_log.txt](doc/app_log.txt).
-
+- An example log file is [app_log.txt](doc/app_log.txt).
 
 ## Known **Issues** ##
 
