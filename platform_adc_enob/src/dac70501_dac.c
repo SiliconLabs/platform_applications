@@ -109,22 +109,22 @@ void dac70501_init_i2c0(void)
   CMU_ClockEnable(cmuClock_I2C0, true);
 
   // Using PB1 (SCL) and PB2 (SDA)
-  GPIO_PinModeSet(I2C0_CLK_PORT, I2C0_CLK_PIN, 
+  GPIO_PinModeSet(I2C0_CLK_PORT, I2C0_CLK_PIN,
                   gpioModeWiredAndPullUpFilter, 1);
-  GPIO_PinModeSet(I2C0_SDA_PORT, I2C0_SDA_PIN, 
+  GPIO_PinModeSet(I2C0_SDA_PORT, I2C0_SDA_PIN,
                   gpioModeWiredAndPullUpFilter, 1);
 
   // Route GPIO pins to I2C0 module
-  GPIO->I2CROUTE[0].SDAROUTE =                                \
-    (GPIO->I2CROUTE[0].SDAROUTE & ~_GPIO_I2C_SDAROUTE_MASK)   \
-    | (I2C0_SDA_PORT << _GPIO_I2C_SDAROUTE_PORT_SHIFT         \
-    | (I2C0_SDA_PIN << _GPIO_I2C_SDAROUTE_PIN_SHIFT));
-  GPIO->I2CROUTE[0].SCLROUTE =                                \
-    (GPIO->I2CROUTE[0].SCLROUTE & ~_GPIO_I2C_SCLROUTE_MASK)   \
-    | (I2C0_CLK_PORT << _GPIO_I2C_SCLROUTE_PORT_SHIFT         \
-    | (I2C0_CLK_PIN << _GPIO_I2C_SCLROUTE_PIN_SHIFT));
-  GPIO->I2CROUTE[0].ROUTEEN =                                 \
-    GPIO_I2C_ROUTEEN_SDAPEN | GPIO_I2C_ROUTEEN_SCLPEN;      
+  GPIO->I2CROUTE[0].SDAROUTE =                              \
+    (GPIO->I2CROUTE[0].SDAROUTE & ~_GPIO_I2C_SDAROUTE_MASK) \
+    | (I2C0_SDA_PORT << _GPIO_I2C_SDAROUTE_PORT_SHIFT       \
+       | (I2C0_SDA_PIN << _GPIO_I2C_SDAROUTE_PIN_SHIFT));
+  GPIO->I2CROUTE[0].SCLROUTE =                              \
+    (GPIO->I2CROUTE[0].SCLROUTE & ~_GPIO_I2C_SCLROUTE_MASK) \
+    | (I2C0_CLK_PORT << _GPIO_I2C_SCLROUTE_PORT_SHIFT       \
+       | (I2C0_CLK_PIN << _GPIO_I2C_SCLROUTE_PIN_SHIFT));
+  GPIO->I2CROUTE[0].ROUTEEN = \
+    GPIO_I2C_ROUTEEN_SDAPEN | GPIO_I2C_ROUTEEN_SCLPEN;
 
   // Initializing the I2C
   I2C_Init(I2C0, &i2c_init);
@@ -176,7 +176,7 @@ void dac70501_reg_read(uint16_t slaveAddress, uint8_t targetAddress,
 
 /**************************************************************************//**
  * @brief
- * I2C write numBytes starting at target address (I2C_FLAG_WRITE)
+ *    I2C write numBytes starting at target address (I2C_FLAG_WRITE)
  * @param[in]
  *    slaveAddress:  slave address
  *    targetAddress: register address need to write
@@ -237,7 +237,7 @@ uint16_t dac70501_read_id(void)
   // reserved   resolution    reserved         rstsel            reserved
   // 15         14:12         11:8             7                 6:0
   // b0         b001          b0001            b1                b0010101
-  dac70501_reg_read(I2C_SLAVE_ADDRESS, 
+  dac70501_reg_read(I2C_SLAVE_ADDRESS,
                     DAC70501_REG_DEVICE_ID, i2c_rx_buffer, 2);
 
   // expect 0x1195
@@ -345,8 +345,8 @@ uint16_t dac70501_set_gain(uint8_t gain, uint8_t div)
  *    soft reset DAC
  * @param[in]
  *    ldacMode:
- *      0 -
- *      1 -
+ *    0 -
+ *    1 -
  * @return
  *    self resetting
 ******************************************************************************/
@@ -360,7 +360,7 @@ uint16_t dac70501_update_ldac(uint8_t ldacMode)
   i2c_tx_buffer[0] = 0x0;
   i2c_tx_buffer[1] = ldacMode << 4;
 
-  dac70501_reg_write(I2C_SLAVE_ADDRESS, 
+  dac70501_reg_write(I2C_SLAVE_ADDRESS,
                      DAC70501_REG_TRIGGER, i2c_tx_buffer, 2);
 
   return 1;
@@ -384,7 +384,7 @@ uint16_t dac70501_reset_soft(void)
   i2c_tx_buffer[0] = 0x0;
   i2c_tx_buffer[1] = 0xa;
 
-  dac70501_reg_write(I2C_SLAVE_ADDRESS, 
+  dac70501_reg_write(I2C_SLAVE_ADDRESS,
                      DAC70501_REG_TRIGGER, i2c_tx_buffer, 2);
   letimer_delay(1000);
   return 1;

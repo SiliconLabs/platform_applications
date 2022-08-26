@@ -49,6 +49,6 @@ uint16_t dac70501_restart(void);                 // dac70501 powerup(restart)
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* DAC70501_DAC_H */

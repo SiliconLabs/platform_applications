@@ -93,12 +93,12 @@ uint8_t adc_in_buf[ADC_BUFLEN];
 #define ADS1220_REG_CONFIGURATION3    0x03
 
 // COMMAND registers define
-#define ADS1220_REG_COMMAND_RESET     0x06      //0000 011x
-#define ADS1220_REG_COMMAND_START     0x08      //0000 100x
-#define ADS1220_REG_COMMAND_POWERDOWN 0x02      //0000 001x
-#define ADS1220_REG_COMMAND_RDATA     0x10      //0001 xxxx
-#define ADS1220_REG_COMMAND_RREG      0x20      //0010 rrnn
-#define ADS1220_REG_COMMAND_WREG      0x40      //0100 rrnn
+#define ADS1220_REG_COMMAND_RESET     0x06      // 0000 011x
+#define ADS1220_REG_COMMAND_START     0x08      // 0000 100x
+#define ADS1220_REG_COMMAND_POWERDOWN 0x02      // 0000 001x
+#define ADS1220_REG_COMMAND_RDATA     0x10      // 0001 xxxx
+#define ADS1220_REG_COMMAND_RREG      0x20      // 0010 rrnn
+#define ADS1220_REG_COMMAND_WREG      0x40      // 0100 rrnn
 
 // number of registers to write and read
 uint8_t read_num_byte, write_num_byte;
@@ -142,7 +142,7 @@ void ads1220_init_usart0(void)
   // Route USART0 RX, TX, and CLK to the specified pins. Note that CS is
   // not controlled by USART0 so there is no write to the corresponding
   // USARTROUTE register to do this.
-  
+
   GPIO->USARTROUTE[0].RXROUTE =                       \
     (US0_MISO_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT) \
     | (US0_MISO_PIN << _GPIO_USART_RXROUTE_PIN_SHIFT);
@@ -192,7 +192,7 @@ void ads1220_uart0_test(uint8_t writenumBytes, uint8_t readnumBytes)
   // write registers temporary value 0xaa
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
-  // start from reg0 
+  // start from reg0
   status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
                              | ((writenumBytes - 1) & 0x3));
   for (i = 0; i < writenumBytes; i++) {
@@ -294,7 +294,7 @@ void ads1220_power_down(void)
 
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   // reg1
-  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG 
+  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
                              | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1
                              | (0 & 0x3));                               // 1
 
@@ -326,7 +326,7 @@ void ads1220_conver_mode_metting(uint8_t modeConv)
 
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   // reg1
-  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG 
+  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
                              | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1
                              | (0 & 0x3));                               // 1
   // ads1220 convert mode
@@ -357,7 +357,7 @@ void ads1220_oper_mode_setting(uint8_t modeOpe)
 
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   // reg1
-  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG 
+  status = USART_SpiTransfer(USART0, ADS1220_REG_COMMAND_WREG
                              | ((ADS1220_REG_CONFIGURATION1 << 2) & 0x6) // reg1
                              | (0 & 0x3));                               // 1
 
@@ -378,7 +378,7 @@ void ads1220_oper_mode_setting(uint8_t modeOpe)
  * @Comment
  *    input: dac70501
  *    ref:   ref3312
-*****************************************************************************/
+******************************************************************************/
 void ads1220_reg_config(void)
 {
   uint8_t reg0, reg1, reg2, reg3;
@@ -612,7 +612,7 @@ void ads1220_calibrate(void)
  * @return
  *    none
  *    Vout = data/16384 * vref/div * gain
-*****************************************************************************/
+******************************************************************************/
 uint32_t ads1220_init(void)
 {
   // delay 1mS to allow power supply to settle and power up reset to complete
@@ -637,6 +637,6 @@ uint32_t ads1220_init(void)
   ads1220_sync();
   letimer_delay(100);
 
-  // ret 
+  // ret
   return 1;
 }

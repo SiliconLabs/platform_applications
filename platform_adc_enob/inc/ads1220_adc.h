@@ -46,6 +46,6 @@ void ads1220_power_down(void);                  // ads1220 power down
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* ADS1220_ADC_H */

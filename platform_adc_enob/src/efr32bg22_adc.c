@@ -53,13 +53,13 @@
 #define LED_PIN                     3
 
 // msc
-#define USERDATA                    ((uint32_t*)USERDATA_BASE)
+#define USERDATA                    ((uint32_t *)USERDATA_BASE)
 #define POSITION                    3
 
 /******************************************************************************
  *******************************   DEFINES   **********************************
  *****************************************************************************/
-// Set CLK_ADC to 10MHz 
+// Set CLK_ADC to 10MHz
 // (this corresponds to a sample rate of 77K with OSR = 32)
 // CLK_SRC_ADC; largest division is by 4
 #define CLK_SRC_ADC_FREQ            20000000
@@ -99,7 +99,8 @@ uint32_t cleared_value, write_value;
 volatile uint8_t button_em_mode = 0;
 
 /**************************************************************************//**
- * @brief GPIO Interrupt handler for even pins.
+ * @brief 
+ *    GPIO Interrupt handler for even pins.
  * @comment
  *    em2 support
  *****************************************************************************/
@@ -239,7 +240,7 @@ void init_button_em1(void)
                     true,
                     true);
 
-  // Enable ODD interrupt to catch button press 
+  // Enable ODD interrupt to catch button press
   NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
   NVIC_EnableIRQ(GPIO_ODD_IRQn);
 
@@ -333,8 +334,13 @@ double rms_cal(double buffer[], double adcAve)
 }
 
 /**************************************************************************//**
- * @brief  ADC Handler, never be used/called
- * This code don't use interrupt, instead it use polling mode
+ * @brief  
+ *    ADC Handler, never be used/called
+ *    This code don't use interrupt, instead it use polling mode
+ * @param[in]
+ *    none
+ * @return
+ *    none
  *****************************************************************************/
 void IADC_IRQHandler(void)
 {
@@ -404,9 +410,9 @@ double iadc_poll_single_result(void)
 
   // Wait for conversion to be complete
   // while combined status bits 8 & 6 don't equal 1 and 0 respectively
-  while ((IADC0->STATUS 
-        & (_IADC_STATUS_CONVERTING_MASK | _IADC_STATUS_SINGLEFIFODV_MASK))
-        != IADC_STATUS_SINGLEFIFODV) {}
+  while ((IADC0->STATUS
+          & (_IADC_STATUS_CONVERTING_MASK | _IADC_STATUS_SINGLEFIFODV_MASK))
+         != IADC_STATUS_SINGLEFIFODV) {}
 
   // Read data from the FIFO, 16-bit result
   sample = IADC_pullSingleFifoResult(IADC0);
@@ -419,7 +425,8 @@ double iadc_poll_single_result(void)
 }
 
 /**************************************************************************//**
- * @brief  Take several sequential samples and average the measurement
+ * @brief  
+ *    Take several sequential samples and average the measurement
  * @param[in]
  *    numSamples - number of adc samples
  * @return
@@ -440,9 +447,9 @@ double iadc_average_conversion(uint32_t numSamples)
     // Wait for conversion to be complete
     // while combined status bits 8 & 6 don't equal 1 and 0 respectively
 
-    while ((IADC0->STATUS 
-          & (_IADC_STATUS_CONVERTING_MASK | _IADC_STATUS_SINGLEFIFODV_MASK))
-          != IADC_STATUS_SINGLEFIFODV) {}
+    while ((IADC0->STATUS
+            & (_IADC_STATUS_CONVERTING_MASK | _IADC_STATUS_SINGLEFIFODV_MASK))
+           != IADC_STATUS_SINGLEFIFODV) {}
 
     // Get ADC result and accumulate
     sample = IADC_pullSingleFifoResult(IADC0);
@@ -502,7 +509,7 @@ void init_iadc(void)
   init_all_configs.configs[0].reference = iadcCfgReferenceExt1V25;
   // Divides CLK_SRC_ADC to set the CLK_ADC frequency for desired sample rate
   init_all_configs.configs[0].adcClkPrescale =
-                            IADC_calcAdcClkPrescale(IADC0,
+    IADC_calcAdcClkPrescale(IADC0,
                             CLK_ADC_FREQ,
                             0,
                             iadcCfgModeNormal,
@@ -539,7 +546,8 @@ void init_iadc(void)
 }
 
 /**************************************************************************//**
- * @brief  Initialize IADC function
+ * @brief  
+ *    Initialize IADC function
  * @param[in]
  *    none
  * @return
@@ -556,7 +564,7 @@ void init_iadc_for_cali(void)
   // Enable IADC0 clock branch
   CMU_ClockEnable(cmuClock_IADC0, true);
   // Select clock for IADC
-  CMU_ClockSelectSet(cmuClock_IADCCLK, cmuSelect_FSRCO);   // FSRCO - 20MHz 
+  CMU_ClockSelectSet(cmuClock_IADCCLK, cmuSelect_FSRCO);   // FSRCO - 20MHz
 
   // Set warmup mode
   init.warmup = iadcWarmupKeepWarm;
@@ -569,12 +577,12 @@ void init_iadc_for_cali(void)
   // Force IADC to use bipolar inputs for conversion
   init_all_configs.configs[0].twosComplement = iadcCfgTwosCompBipolar;
   // Divides CLK_SRC_ADC to set the CLK_ADC frequency
-  init_all_configs.configs[0].adcClkPrescale = 
+  init_all_configs.configs[0].adcClkPrescale =
     IADC_calcAdcClkPrescale(IADC0,
-    CLK_ADC_FREQ,
-    0,
-    iadcCfgModeNormal,
-    init.srcClkPrescale);
+                           CLK_ADC_FREQ,
+                            0,
+                            iadcCfgModeNormal,
+                            init.srcClkPrescale);
 
   // 32x OVS mode
   init_all_configs.configs[0].osrHighSpeed = iadcCfgOsrHighSpeed32x;
@@ -626,9 +634,9 @@ uint32_t iadc_differential_calibrate(void)
   // Initialize ADC for calibration
   init_iadc_for_cali();
   iadc_calibrated_gain3_lsb = (IADC0->CFG[0].SCALE & _IADC_SCALE_GAIN13LSB_MASK)
-                              >> _IADC_SCALE_GAIN13LSB_SHIFT;   // 13 bit 
+                              >> _IADC_SCALE_GAIN13LSB_SHIFT;   // 13 bit
   iadc_calibrated_offset = (IADC0->CFG[0].SCALE & _IADC_SCALE_OFFSET_MASK)
-                           >> _IADC_SCALE_OFFSET_SHIFT;         // 18 bit 
+                           >> _IADC_SCALE_OFFSET_SHIFT;         // 18 bit
 
   // range, 0.75x to 1.2499x
   // bitfield GAIN3MSB (3 MSBs of the 16-bit gain value)
@@ -637,7 +645,6 @@ uint32_t iadc_differential_calibrate(void)
   // bitfield GAIN13LSB (13 LSBs of the 16-bit gain value)
   // value   0x0000          0x1FFF
   // gain    0.75/1.0000     1.00/1.2499
-
 
   // Set initial offset to maximum negative and initial gain to 1.0
 
@@ -684,9 +691,9 @@ uint32_t iadc_differential_calibrate(void)
     cali_gain13_lsb = (gain_correction_factor - 1.0) / IADC_GAIN13LSB_LSB;
     // round to the nearest integer
     iadc_calibrated_gain3_lsb = (uint32_t)(cali_gain13_lsb + 0.5);
-    scale = IADC_SCALE_GAIN3MSB_GAIN100                                  // 3 msb  
-            | (iadc_calibrated_gain3_lsb << _IADC_SCALE_GAIN13LSB_SHIFT) // 13 lsb
-            | IADC_SCALE_OFFSET_ZERO;                                    // offset 
+    scale = IADC_SCALE_GAIN3MSB_GAIN100                                  // msb
+            | (iadc_calibrated_gain3_lsb << _IADC_SCALE_GAIN13LSB_SHIFT) // lsb
+            | IADC_SCALE_OFFSET_ZERO;                                    // ofs
   } else {
     // need to decrease gain
     cali_gain1_msb = IADC_SCALE_GAIN3MSB_GAIN011;
@@ -698,7 +705,7 @@ uint32_t iadc_differential_calibrate(void)
             | IADC_SCALE_OFFSET_ZERO;
   }
 
-  // apply the gain correction 
+  // apply the gain correction
   rescale_iadc(scale);
 
   // Correct offset:
