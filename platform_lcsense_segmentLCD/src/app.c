@@ -3,7 +3,7 @@
  * @brief Top level application functions
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -52,7 +52,7 @@
 
 volatile uint32_t counter = 0;  // metal detected counter
 uint32_t no_metal[16];          // store calibration value for no metal
-uint32_t pcnt_top[2] = {0,4};   // PCNT top value for two modes
+uint32_t pcnt_top[2] = { 0, 4 };   // PCNT top value for two modes
 uint32_t update_mode = 0;       // flag for operation mode update
 uint32_t update_counter = 0;    // flag for metal detection counter update
 uint32_t mode = 0;  // Mode 0 updates segment LCD on every metal detection
@@ -68,12 +68,12 @@ void LESENSE_IRQHandler(void)
   LESENSE_IntClear(flag);
 
   // Read from RESFIFO
-  for (int i = 0; i < 16; i ++) {
-      no_metal[i] = LESENSE->RESFIFO;
+  for (int i = 0; i < 16; i++) {
+    no_metal[i] = LESENSE->RESFIFO;
   }
 
   // Set channel threshold to no metal count - 1
-  LESENSE_ChannelThresSet(0, 0, no_metal[6]-1);
+  LESENSE_ChannelThresSet(0, 0, no_metal[6] - 1);
 
   // Disable LESENSE interrupt as it is no longer needed
   LESENSE_IntDisable(_LESENSE_IEN_MASK);
@@ -133,7 +133,7 @@ void initACMP(void)
   ACMP_Enable(ACMP0);
 
   // Wait for warm-up
-  while (!(ACMP0->STATUS && ACMP_IF_ACMPRDY));
+  while (!(ACMP0->STATUS && ACMP_IF_ACMPRDY)) {}
 }
 
 /***************************************************************************//**
@@ -144,9 +144,10 @@ void initGPIO(void)
   // Enable routing for LESENSE channel 0
   // Configure PB3 to be LESENSE channel 0 pin
   GPIO->LESENSEROUTE_SET.ROUTEEN |= GPIO_LESENSE_ROUTEEN_CH0OUTPEN;
-  GPIO->LESENSEROUTE_SET.CH0OUTROUTE = (gpioPortB <<
-                                    _GPIO_LESENSE_CH0OUTROUTE_PORT_SHIFT) |
-                                    (3 << _GPIO_LESENSE_CH0OUTROUTE_PIN_SHIFT);
+  GPIO->LESENSEROUTE_SET.CH0OUTROUTE = (gpioPortB
+                                        << _GPIO_LESENSE_CH0OUTROUTE_PORT_SHIFT)
+                                       | (3
+                                          << _GPIO_LESENSE_CH0OUTROUTE_PIN_SHIFT);
 
   // LESENSE pin PB3 set to push pull alternate for excitation
   GPIO_PinModeSet(gpioPortB, 3, gpioModePushPullAlternate, 0);
@@ -240,27 +241,27 @@ void initLesense(void)
    ***************************************************************************/
   LESENSE_DecStAll_TypeDef initStAll = LESENSE_DECODER_CONF_DEFAULT;
 
-  initStAll.St[0].curState  = 0;     // Make 0 as the defined state (no metal)
+  initStAll.St[0].curState = 0;     // Make 0 as the defined state (no metal)
   initStAll.St[0].nextState = 1;     // Set next state to with metal
-  initStAll.St[0].compMask  = 0xE;   // Only enable channel 0 as decoder input
-  initStAll.St[0].compVal   = 0x01;  // compare match on channel 0 sensorstate
-  initStAll.St[0].prsAct    = lesenseTransActUp;
-  initStAll.St[0].setInt    = true;
+  initStAll.St[0].compMask = 0xE;   // Only enable channel 0 as decoder input
+  initStAll.St[0].compVal = 0x01;  // compare match on channel 0 sensorstate
+  initStAll.St[0].prsAct = lesenseTransActUp;
+  initStAll.St[0].setInt = true;
 
-  initStAll.St[1].curState  = 0;     // Make 0 as the defined state (no metal)
+  initStAll.St[1].curState = 0;     // Make 0 as the defined state (no metal)
   initStAll.St[1].nextState = 0;     // Set next state to no metal
-  initStAll.St[1].compMask  = 0xE;
-  initStAll.St[1].compVal   = 0x00;
+  initStAll.St[1].compMask = 0xE;
+  initStAll.St[1].compVal = 0x00;
 
-  initStAll.St[2].curState  = 1;     // Make 1 as the defined state (with metal)
+  initStAll.St[2].curState = 1;     // Make 1 as the defined state (with metal)
   initStAll.St[2].nextState = 0;     // Set next state to no metal
-  initStAll.St[2].compMask  = 0xE;
-  initStAll.St[2].compVal   = 0x00;
+  initStAll.St[2].compMask = 0xE;
+  initStAll.St[2].compVal = 0x00;
 
-  initStAll.St[3].curState  = 1;     // Make 1 as the defined state (with metal)
+  initStAll.St[3].curState = 1;     // Make 1 as the defined state (with metal)
   initStAll.St[3].nextState = 1;     // Set next state to with metal
-  initStAll.St[3].compMask  = 0xE;
-  initStAll.St[3].compVal   = 0x01;
+  initStAll.St[3].compMask = 0xE;
+  initStAll.St[3].compVal = 0x01;
 
   LESENSE_DecoderStateAllConfig(&initStAll); // Initialize decoder
 
@@ -270,7 +271,7 @@ void initLesense(void)
   LESENSE_ChannelAllConfig(&confChAll);  // Configure LESENSE channel 0
 
   // Wait for SYNCBUSY clear before configuring
-  while(LESENSE->SYNCBUSY);
+  while (LESENSE->SYNCBUSY) {}
 
   // Disable LESENSE module
   LESENSE->EN_CLR = LESENSE_EN_EN;
@@ -278,12 +279,12 @@ void initLesense(void)
     /* Wait for disabling to finish */
   }
   LESENSE->TIMCTRL_SET = (LESENSE_TIMCTRL_PCPRESC_DIV32
-                         | (32 << _LESENSE_TIMCTRL_PCTOP_SHIFT));  // about 8HZ
+                          | (32 << _LESENSE_TIMCTRL_PCTOP_SHIFT));  // about 8HZ
 
   // LESENSE offset 3 = ACMP PB + 3 = ACMP input PB3
   LESENSE->CH_SET[0].INTERACT = (3 << _LESENSE_CH_INTERACT_OFFSET_SHIFT);
   LESENSE->EN_SET = LESENSE_EN_EN;  // Enable LESENSE
-  while(LESENSE->SYNCBUSY);         // SYNCBUSY check
+  while (LESENSE->SYNCBUSY) {}         // SYNCBUSY check
 
   // Enable LESENSE interrupt to configure the compare threshold
   LESENSE_IntEnable(LESENSE_IEN_RESOF);
@@ -353,6 +354,7 @@ void initCMU(void)
   // Enable clock for PCNT
   CMU_ClockEnable(cmuClock_PCNT0, true);
 }
+
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/
@@ -388,7 +390,6 @@ void app_init(void)
   GPIO->LCDSEG &= LCD_SEGMENT_MASK;
 
   SegmentLCD_Number(counter);
-
 }
 
 /***************************************************************************//**
@@ -396,21 +397,21 @@ void app_init(void)
  ******************************************************************************/
 void app_process_action(void)
 {
- // Enter low energy mode
- EMU_EnterEM2(true);
+  // Enter low energy mode
+  EMU_EnterEM2(true);
 
- // If mode update flag set
- if(update_mode) {
-     counter = 0;                        // clear counnter
-     mode = (mode + 1) % 2;              // update mode
-     update_mode = 0;                    // clear mode update flag
-     SegmentLCD_Number(counter);         // update segment LCD
-     PCNT_CounterReset(PCNT0);           // reset PCNT counter
-     PCNT_TopSet(PCNT0, pcnt_top[mode]); // update PCNT top value
- }
- // If update counter flag set
- if(update_counter) {
-     update_counter = 0;            // clear flag
-     SegmentLCD_Number(++counter);  // update counter
- }
+  // If mode update flag set
+  if (update_mode) {
+    counter = 0;                        // clear counnter
+    mode = (mode + 1) % 2;              // update mode
+    update_mode = 0;                    // clear mode update flag
+    SegmentLCD_Number(counter);         // update segment LCD
+    PCNT_CounterReset(PCNT0);           // reset PCNT counter
+    PCNT_TopSet(PCNT0, pcnt_top[mode]); // update PCNT top value
+  }
+  // If update counter flag set
+  if (update_counter) {
+    update_counter = 0;            // clear flag
+    SegmentLCD_Number(++counter);  // update counter
+  }
 }

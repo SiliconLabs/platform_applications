@@ -2,20 +2,23 @@
 ![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
 ![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
-![SDK badge](https://img.shields.io/badge/SDK-v3.2.0-green)
+![SDK badge](https://img.shields.io/badge/SDK-v4.1.1-green)
 ![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcsense_segmentLCD_gcc.json)
 
 ## Summary
 This project shows how to use the FG23 LESENSE peripheral on the BRD2600A board to detect
 metal near the LCSENSE tank circuit, then display the detection via the segment LCD.
 
-## Gecko SDK Version
-v3.2
+## Gecko SDK version
+v4.1.1
 
 ## Hardware Required
 
 * Board:  Silicon Labs EFM32FG23 Dev Kit (BRD2600A)
 	* Device: EFR32FG23B010F512GM48
+
+## Connections Required
+Connect the board via a micro-USB cable to your PC to flash the example.
 
 ## Setup
 Clone the repository with this project from GitHub onto your local machine.
@@ -36,7 +39,7 @@ To test:
 5. Press push button 0, observe the segment LCD display reset to 0
 6. Repeat step 3 five times, observe the segment LCD increment by 1
 
-## How the Project Works
+## How It Works
 The LESENSE peripheral is configured to scan the sensor periodically. The sensor is routed to
 PB3 which in this case is configured as LESENSE channel 0. The pin is also routed to the ACMP, 
 and the ACMP is controlled by the LESENSE to compare the dampling waveform with a divided
