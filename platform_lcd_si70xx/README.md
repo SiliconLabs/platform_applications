@@ -2,7 +2,7 @@
 ![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
 ![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
-![SDK badge](https://img.shields.io/badge/SDK-v4.0.0-green)
+![SDK badge](https://img.shields.io/badge/SDK-v4.1.1-green)
 ![GCC badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_si70xx_gcc.json)
 
 ## Summary
@@ -11,15 +11,16 @@ and record temperature values and how to use the Segment LCD to display those
 values. 
 
 ## Gecko SDK Version
-v3.2
+v4.1.1
 
 ## Hardware Required
-Listed below are the port and pin mappings for working with this example.
-
 * Board:  Silicon Labs EFR32FG23 Dev Kit Board (BRD2600A) 
 	* Device: EFR32FG23B010F512IM48
 * Board:  Silicon Labs EFM32PG23 Pro Kit Board (BRD2504A) 
 	* Device: EFM32PG23B310F512IM48
+
+## Connections Required 
+Connect the board via a micro-USB or USB-C cable to your PC to flash the example. 
 
 ## Setup
 1. Clone this repository from GitHub onto your local machine.
@@ -33,22 +34,16 @@ Listed below are the port and pin mappings for working with this example.
 from the Si70xx RHT sensor. Every 5 seconds the LCD will update with the new
 temperature reading.
 
-## How the Project Works
+## How It Works
 The project uses a periodic sleeptimer that executes a callback function every
-5,000ms. This callback function calls APIs from the Si70xx driver library that
+5 seconds. This callback function calls APIs from the Si70xx driver library that
 measure and read the temperature and relative humidity values from the sensor. 
 This value is then displayed on the segment LCD using APIs from the Segment LCD
 driver library. 
 
 ## .sls Projects Used
-* platform_lcd_si70xx_fg23.sls
-* platform_lcd_si70xx_pg23.sls
-
-## How to Port to Another Part
-Right click on the project and select "Properties" and navigate to "C/C++ 
-Build" then "Board/Part/SDK". Select the new board or part to target and apply 
-the changes. There may be some dependencies that need to be resolved when 
-changing the target architecture. 
+* platform_tempsensor_segmentlcd_fg23.sls
+* platform_tempsensor_segmentlcd_pg23.sls
 
 ## Note
 Although measures have been taken to thermally isolate the sensor from the 
