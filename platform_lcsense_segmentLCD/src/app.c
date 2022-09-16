@@ -33,28 +33,27 @@
  * maintained and there may be no bug maintenance planned for these resources.
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
-#include "sl_segmentlcd.h"
-#include "em_cmu.h"
 #include "em_acmp.h"
-#include "em_device.h"
 #include "em_chip.h"
-#include "em_lesense.h"
-#include "em_vdac.h"
-#include "em_prs.h"
-#include "em_pcnt.h"
-#include "em_letimer.h"
-#include "em_gpio.h"
+#include "em_cmu.h"
+#include "em_device.h"
 #include "em_emu.h"
+#include "em_gpio.h"
+#include "em_lesense.h"
+#include "em_letimer.h"
+#include "em_pcnt.h"
+#include "em_prs.h"
+#include "em_vdac.h"
+
+#include "sl_segmentlcd.h"
+
 #include "app.h"
 
-#define LCD_COM_MASK      0x00FF   // Mask for LCD COM lines
-#define LCD_SEGMENT_MASK  0xC05F3  // Mask for LCD Segment lines
-
-volatile uint32_t counter = 0;  // metal detected counter
-uint32_t no_metal[16];          // store calibration value for no metal
+volatile uint32_t counter = 0;     // metal detected counter
+uint32_t no_metal[16];             // store calibration value for no metal
 uint32_t pcnt_top[2] = { 0, 4 };   // PCNT top value for two modes
-uint32_t update_mode = 0;       // flag for operation mode update
-uint32_t update_counter = 0;    // flag for metal detection counter update
+uint32_t update_mode = 0;          // flag for operation mode update
+uint32_t update_counter = 0;       // flag for metal detection counter update
 uint32_t mode = 0;  // Mode 0 updates segment LCD on every metal detection
                     // Mode 1 updates segment LCD on every 5 metal detection
 
@@ -81,7 +80,7 @@ void LESENSE_IRQHandler(void)
 }
 
 /***************************************************************************//**
- * Initialize ACMP
+ * GPIO_ODD interrupt handler
  ******************************************************************************/
 void GPIO_ODD_IRQHandler()
 {
@@ -345,7 +344,7 @@ void initCMU(void)
   CMU_ClockEnable(cmuClock_LESENSE, true);
   CMU_ClockSelectSet(cmuClock_LESENSEHFCLK, cmuSelect_HFRCOEM23);
   CMU_ClockEnable(cmuClock_HFRCOEM23, true);
-  HFRCOEM23->CTRL_SET = 0x4;  // Enable on demand clocking in EM2/3
+  HFRCOEM23->CTRL_SET = HFRCO_CTRL_EM23ONDEMAND; 
 
   // Enable clock for VDAC
   CMU_ClockSelectSet(cmuClock_VDAC0, cmuSelect_HFRCOEM23);
@@ -353,6 +352,28 @@ void initCMU(void)
 
   // Enable clock for PCNT
   CMU_ClockEnable(cmuClock_PCNT0, true);
+}
+
+/***************************************************************************//**
+* Disable Unused LCD Segments
+*******************************************************************************/
+void disableUnusedLCDSeg(void)
+{
+/***************************************************************************//**
+* The LCD driver enables all segments, even those that are not mapped to
+* segments on the dev kit board. These are disabled below in order to
+* minimize current consumption.
+*******************************************************************************/
+  LCD_SegmentEnable(2, false);
+  LCD_SegmentEnable(3, false);
+  LCD_SegmentEnable(9, false);
+  LCD_SegmentEnable(11, false);
+  LCD_SegmentEnable(12, false);
+  LCD_SegmentEnable(13, false);
+  LCD_SegmentEnable(14, false);
+  LCD_SegmentEnable(15, false);
+  LCD_SegmentEnable(16, false);
+  LCD_SegmentEnable(17, false);
 }
 
 /***************************************************************************//**
@@ -384,11 +405,8 @@ void app_init(void)
   // Segment LCD Initialization
   // Default display 0
   SegmentLCD_Init(false);
-
-  // disable unused segments
-  GPIO->LCDCOM &= LCD_COM_MASK;
-  GPIO->LCDSEG &= LCD_SEGMENT_MASK;
-
+  LCD->BIASCTRL_SET = LCD_BIASCTRL_VDDXSEL_AVDD;
+  disableUnusedLCDSeg();
   SegmentLCD_Number(counter);
 }
 
@@ -397,9 +415,6 @@ void app_init(void)
  ******************************************************************************/
 void app_process_action(void)
 {
-  // Enter low energy mode
-  EMU_EnterEM2(true);
-
   // If mode update flag set
   if (update_mode) {
     counter = 0;                        // clear counnter

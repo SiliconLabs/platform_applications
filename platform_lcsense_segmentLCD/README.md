@@ -13,8 +13,7 @@ metal near the LCSENSE tank circuit, then display the detection via the segment 
 v4.1.1
 
 ## Hardware Required
-
-* Board:  Silicon Labs EFM32FG23 Dev Kit (BRD2600A)
+* Board:  Silicon Labs EFR32FG23 Dev Kit (BRD2600A)
 	* Device: EFR32FG23B010F512GM48
 
 ## Connections Required
@@ -53,10 +52,3 @@ Then the pulse counter will trigger an interrupt when its counter overflows to u
 
 ## .sls Projects Used
 * platform_lcsense_segmentLCD.sls
-
-## How to Port to Another Part
-Right click on the project and select "Properties" and navigate to "C/C++ 
-Build" then "Board/Part/SDK". Select the new board or part to target and apply 
-the changes. There may be some dependencies that need to be resolved when 
-changing the target architecture. This example can only run out of the box on
-BRD2600A device.
