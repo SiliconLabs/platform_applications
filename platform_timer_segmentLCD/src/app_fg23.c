@@ -41,6 +41,11 @@
 #include "em_letimer.h"
 #include "sl_segmentlcd.h"
 
+#define BTN0_GPIO_PORT  gpioPortB
+#define BTN0_GPIO_PIN   1
+#define BTN1_GPIO_PORT  gpioPortA
+#define BTN1_GPIO_PIN   5
+
 uint32_t counter = 0;          // general time counter
 uint32_t compare_mode = 0;     // enter compare mode set up
 uint32_t compare_value = 0;    // compare value for compare mode
@@ -59,16 +64,16 @@ void LETIMER0_IRQHandler(void)
   LETIMER_IntClear(LETIMER0, flags);
 
   // If compare match, re-configure counter as blinking flag
-  if(compare_match) {
-    counter = (counter+1)%2;
+  if (compare_match) {
+    counter = (counter + 1) % 2;
   }
   // If no compare match, continue counting up counter
   else {
-    counter+=1;
+    counter += 1;
     // hold_timer used to determine if compare mode should
     // be entered. This is triggered by holding down PB1 for
     // 2 or more seconds
-    hold_timer+=1;
+    hold_timer += 1;
   }
 }
 
@@ -82,10 +87,10 @@ void GPIO_ODD_IRQHandler(void)
   GPIO_IntClear(flags);
 
   // Interrupt triggered by PB0 falling edge
-  if(flags & GPIO_IF_EXTIF1) {
+  if (flags & GPIO_IF_EXTIF1) {
     // If in compare mode, then each press of PB0 will increment
     // compare_value by 1;
-    if(compare_mode) {
+    if (compare_mode) {
       compare_value++;
     }
     // If a compare_match happened, that is counter == compare_value
@@ -96,17 +101,16 @@ void GPIO_ODD_IRQHandler(void)
     }
     // For all other cases, PB0 is used to start/stop the LETIMER
     else {
-      letimer_enable = (letimer_enable+1)%2;
+      letimer_enable = (letimer_enable + 1) % 2;
       LETIMER_Enable(LETIMER0, letimer_enable);
     }
   }
-
   // Interrupt triggered by PB1 falling edge
-  else if(flags & GPIO_IF_EXTIF5) {
+  else if (flags & GPIO_IF_EXTIF5) {
     LETIMER_Enable(LETIMER0, true);  // Need LETIMER running to detect compare
                                      // mode
     // If in compare mode set up
-    if(compare_mode) {
+    if (compare_mode) {
       compare_start = 1;  // start compare mode
       compare_mode = 0;   // reset compare_mode variable
       letimer_enable = 0; // reset LETIMER flag
@@ -133,16 +137,19 @@ void initCMU(void)
 /***************************************************************************//**
  * Initialize GPIO
  ******************************************************************************/
-void initGPIO(void){
+void initGPIO(void)
+{
   // Configure PB1(Push Button 0) as input with filter enabled
   // Enable PB1 interrupt on falling edge
-  GPIO_PinModeSet(gpioPortB, 1, gpioModeInput, 1);
-  GPIO_ExtIntConfig(gpioPortB, 1, 1, false, true, true);
+  GPIO_PinModeSet(BTN0_GPIO_PORT, BTN0_GPIO_PIN, gpioModeInput, 1);
+  GPIO_ExtIntConfig(BTN0_GPIO_PORT, BTN0_GPIO_PIN, BTN0_GPIO_PIN, false, true,
+                    true);
 
   // Configure PA5(Push Button 1) as input with filter enabled
   // Enable PA5 interrupt on falling edge
-  GPIO_PinModeSet(gpioPortA, 5, gpioModeInput, 1);
-  GPIO_ExtIntConfig(gpioPortA, 5, 5, false, true, true);
+  GPIO_PinModeSet(BTN1_GPIO_PORT, BTN1_GPIO_PIN, gpioModeInput, 1);
+  GPIO_ExtIntConfig(BTN1_GPIO_PORT, BTN1_GPIO_PIN, BTN1_GPIO_PIN, false, true,
+                    true);
 
   // Enable GPIO odd IRQHandler
   NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
@@ -167,6 +174,29 @@ void initLetimer(void)
   NVIC_ClearPendingIRQ(LETIMER0_IRQn);
   NVIC_EnableIRQ(LETIMER0_IRQn);
 }
+
+/***************************************************************************//**
+* Disable Unused LCD Segments
+*******************************************************************************/
+void disableUnusedLCDSeg(void)
+{
+/***************************************************************************//**
+* The LCD driver enables all segments, even those that are not mapped to
+* segments on the dev kit board. These are disabled below in order to
+* minimize current consumption.
+*******************************************************************************/
+  LCD_SegmentEnable(2, false);
+  LCD_SegmentEnable(3, false);
+  LCD_SegmentEnable(9, false);
+  LCD_SegmentEnable(11, false);
+  LCD_SegmentEnable(12, false);
+  LCD_SegmentEnable(13, false);
+  LCD_SegmentEnable(14, false);
+  LCD_SegmentEnable(15, false);
+  LCD_SegmentEnable(16, false);
+  LCD_SegmentEnable(17, false);
+}
+
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/
@@ -181,9 +211,11 @@ void app_init(void)
   // LETIMER configuration
   initLetimer();
 
-  // Configure LCD
+  // Configure LCD to use step down mode and disable unused segments
   // Default display value 0
-  SegmentLCD_Init(true);
+  SegmentLCD_Init(false);
+  LCD->BIASCTRL_SET = LCD_BIASCTRL_VDDXSEL_AVDD;
+  disableUnusedLCDSeg();
   SegmentLCD_Number(0);
 }
 
@@ -204,30 +236,27 @@ void counter_compare(void)
  ******************************************************************************/
 void app_process_action(void)
 {
-  // Enter EM2 to save power
-  EMU_EnterEM2(true);
-
   // compare mode
-  if(compare_mode) {
+  if (compare_mode) {
     // Display compare value and compare symbol
     SegmentLCD_Number(compare_value);
     SegmentLCD_Symbol(LCD_SYMBOL_P5, true);
   }
   // compare mode started
-  else if(compare_start) {
+  else if (compare_start) {
     SegmentLCD_Number(counter);  // display timer counter
     // Check if compare match happened
-    if(counter == compare_value) {
+    if (counter == compare_value) {
       compare_start = 0;  // disable compare start
       compare_match = 1;  // compare match
     }
   }
   // check if compare mode set up should be entered
-  else if(GPIO_PinInGet(gpioPortA, 5) == 0) {
+  else if (GPIO_PinInGet(BTN1_GPIO_PORT, BTN1_GPIO_PIN) == 0) {
     SegmentLCD_Number(0);
     hold_timer = 0;
-    while(GPIO_PinInGet(gpioPortA, 5) == 0){}
-    if(hold_timer > 1) {
+    while (GPIO_PinInGet(BTN1_GPIO_PORT, BTN1_GPIO_PIN) == 0) {}
+    if (hold_timer > 1) {
       counter_compare();
     }
     // Once completed, disable LETIMER to allow reset
@@ -236,21 +265,20 @@ void app_process_action(void)
     LETIMER_Enable(LETIMER0, letimer_enable);
   }
   // compare match
-  else if(compare_match) {
+  else if (compare_match) {
     // reset compare mode related variables
     compare_start = 0;
     compare_mode = 0;
     // counter now behaves as a blinking flag, the LCD display will blink every
     // second to indicate that a compare match happened.
-    if(counter) {
+    if (counter) {
       SegmentLCD_AllOff();
-    }
-    else {
+    } else {
       SegmentLCD_Number(compare_value);
     }
   }
   // regular timer mode
   else {
-      SegmentLCD_Number(counter);
+    SegmentLCD_Number(counter);
   }
 }
