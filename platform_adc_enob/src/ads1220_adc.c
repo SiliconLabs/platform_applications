@@ -100,7 +100,7 @@ uint8_t adc_in_buf[ADC_BUFLEN];
 #define ADS1220_REG_COMMAND_RREG      0x20      // 0010 rrnn
 #define ADS1220_REG_COMMAND_WREG      0x40      // 0100 rrnn
 
-// number of registers to write and read
+// number of bytes to write and read
 uint8_t read_num_byte, write_num_byte;
 uint8_t status = 0;
 
@@ -169,7 +169,8 @@ void ads1220_init_usart0(void)
  *    writenumBytes:
  *    readnumBytes >= writenumBytes
  * @return
- *    none
+ *    succeed - return
+ *    fail - stay in while
  *****************************************************************************/
 void ads1220_uart0_test(uint8_t writenumBytes, uint8_t readnumBytes)
 {
@@ -315,6 +316,8 @@ void ads1220_power_down(void)
  *    set convert mode
  * @param[in]
  *    modeConv, valid value is 0/1
+ *    0 - single-shot mode
+ *    1 - continuous conversion mode
  * @return
  *    none
  * @comment
@@ -342,6 +345,9 @@ void ads1220_conver_mode_metting(uint8_t modeConv)
  *    set operation mode
  * @param[in]
  *    modeOpe, normal/duty-cycle/turbo
+ *    0 - normal mode
+ *    1 - duty-cycle mode
+ *    2 - turbo mode
  * @return
  *    none
  * @comment
@@ -378,42 +384,42 @@ void ads1220_oper_mode_setting(uint8_t modeOpe)
  * @Comment
  *    input: dac70501
  *    ref:   ref3312
-******************************************************************************/
+ *****************************************************************************/
 void ads1220_reg_config(void)
 {
   uint8_t reg0, reg1, reg2, reg3;
   // ADS1220_REG_CONFIGURATION0
-  // 7-4          3:1         0
+  // 7:4          3:1         0
   // mux          gain        pga_bypass
-  // b0101        000         0 (enabled pga)
+  // b0101        b000        b0 
+  // (AIN2/AIN3)  (gain 1)    (enabled pga)
 
-  // default input channel is REF3312 (0x6)
+  // default input channel is REF3312 (0x0)
   // AIN0, AIN1, dac70501
-
   reg0 = 0x50;  // can use pga power down
 
   // ADS1220_REG_CONFIGURATION1
-  // 7-5         4:3          2              1          0
+  // 7:5         4:3          2              1          0
   // DR          MODE         CM             TS         BCS
-  // 000         0 (256k)     0 (single      0 (temp    burn-out
-  // 20 SPS                      shot       disable     off
+  // b000 (20    b00 (256k)   b0 (single     b0 (temp   b0 (burn-out
+  // SPS)                     shot)          disable)   off)
 
   // use default
   reg1 = 0xd0;  // can use duty-cycle mode
 
   // ADS1220_REG_CONFIGURATION2
-  // 7-6           5:4         3               2:0
+  // 7:6           5:4         3               2:0
   // VREF          FIR         PSW             IDAC
-  // 010           NO reject   OPEN            0 (OFF)
-  // ext
+  // b01           b00         b0              b000
+  // ext ref       NO reject   OPE             OFF 
 
-  // external REFP0 and REFN0
+  // external reference, REFP0 and REFN0
   reg2 = 0x40;
 
   // ADS1220_REG_CONFIGURATION3
-  // 7-5          4:2            1              0
+  // 7:5          4:2            1              0
   // I1MUX        I2MUX         DRDYM          res
-  // 000          000            0               x
+  // b000         b000           b0             x
   // disable      disable    dedicated only
 
   // use default
@@ -513,7 +519,7 @@ double ads1220_get_adc_temp(void)
   GPIO_PinOutClear(US0_CS_PORT, US0_CS_PIN);
   letimer_delay(1);
   // ADS1220_REG_CONFIGURATION1
-  // 7-5          4:3         2              1          0
+  // 7:5          4:3         2              1          0
   // DR           MODE        CM             TS         BCS
   // 000          0 (256k)    0 (single      0 (temp    burn-out
   // 20 SPS                      shot        disable    off
@@ -612,7 +618,7 @@ void ads1220_calibrate(void)
  * @return
  *    none
  *    Vout = data/16384 * vref/div * gain
-******************************************************************************/
+ *****************************************************************************/
 uint32_t ads1220_init(void)
 {
   // delay 1mS to allow power supply to settle and power up reset to complete

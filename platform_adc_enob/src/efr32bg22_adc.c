@@ -29,7 +29,7 @@
  ******************************************************************************
  * # Evaluation Quality
  * This code has been minimally tested to ensure that it builds and is suitable
- * as a demonstration for evaluation purposes only. This code will be 
+ * as a demonstration for evaluation purposes only. This code will be
  * maintained at the sole discretion of Silicon Labs.
  *****************************************************************************/
 #include "math.h"
@@ -99,8 +99,8 @@ uint32_t cleared_value, write_value;
 volatile uint8_t button_em_mode = 0;
 
 /**************************************************************************//**
- * @brief 
- *    GPIO Interrupt handler for even pins.
+ * @brief
+ *    GPIO Interrupt handler for odd pins
  * @comment
  *    em2 support
  *****************************************************************************/
@@ -112,8 +112,7 @@ void GPIO_ODD_IRQHandler(void)
 
   // Check if button 1 was pressed
   if (isr_mask & ((1 << EM4WU_PIN) | GPIO_IEN_EM4WUIEN7)) {
-    // add your code here
-    // this toggle the LED
+    // Toggle the LED
     GPIO_PinOutToggle(LED_PORT, LED_PIN);
   }
 }
@@ -179,8 +178,11 @@ void letimer_delay(uint32_t msec)
  *****************************************************************************/
 float get_die_temperature(void)
 {
-  uint32_t di_temp = 0, di_emu = 0;
-  float emu_tempC = 0.0, temp_degC = 0.0, offset_correction = 0.0;
+  uint32_t di_temp = 0;
+  uint32_t di_emu = 0;
+  float emu_tempC = 0.0;
+  float temp_degC = 0.0;
+  float offset_correction = 0.0;
 
   // Read EMU temperature sensor calibration data from device info page
   di_temp = (DEVINFO->CALTEMP & _DEVINFO_CALTEMP_TEMP_MASK)
@@ -269,10 +271,6 @@ void init_button_em2(void)
   GPIO->IEN = 1 << _GPIO_IEN_EM4WUIEN7_SHIFT;
   GPIO->EM4WUEN = 1 << _GPIO_IEN_EM4WUIEN7_SHIFT;
 
-  // Enable EVEN interrupt to catch button press
-  NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
-  NVIC_EnableIRQ(GPIO_EVEN_IRQn);
-
   // Enable ODD interrupt to catch button press
   NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
   NVIC_EnableIRQ(GPIO_ODD_IRQn);
@@ -334,9 +332,10 @@ double rms_cal(double buffer[], double adcAve)
 }
 
 /**************************************************************************//**
- * @brief  
- *    ADC Handler, never be used/called
+ * @brief
+ *    ADC handler, never be used/called
  *    This code don't use interrupt, instead it use polling mode
+ *    Keep this handler for interrupt mode
  * @param[in]
  *    none
  * @return
@@ -385,7 +384,7 @@ void rescale_iadc(uint32_t newScale)
 /**************************************************************************//**
  * @brief reset iadc
  *    note: to save power
-* @param[in]
+ * @param[in]
  *    none
  * @return
  *    none
@@ -425,7 +424,7 @@ double iadc_poll_single_result(void)
 }
 
 /**************************************************************************//**
- * @brief  
+ * @brief
  *    Take several sequential samples and average the measurement
  * @param[in]
  *    numSamples - number of adc samples
@@ -546,8 +545,8 @@ void init_iadc(void)
 }
 
 /**************************************************************************//**
- * @brief  
- *    Initialize IADC function
+ * @brief
+ *    Initialize IADC function for calibration
  * @param[in]
  *    none
  * @return
@@ -579,7 +578,7 @@ void init_iadc_for_cali(void)
   // Divides CLK_SRC_ADC to set the CLK_ADC frequency
   init_all_configs.configs[0].adcClkPrescale =
     IADC_calcAdcClkPrescale(IADC0,
-                           CLK_ADC_FREQ,
+                            CLK_ADC_FREQ,
                             0,
                             iadcCfgModeNormal,
                             init.srcClkPrescale);

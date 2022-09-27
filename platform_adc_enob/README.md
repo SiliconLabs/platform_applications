@@ -9,7 +9,7 @@ The flexible incremental architecture uses **oversampling** to allow application
 - 1 Msps with oversampling ratio = 2
 - 76.9 ksps with oversampling ratio = 32
 
-This example discusses how to attain 14.3-bit **ENOB** with **oversampling**. It also cover offset and gain **calibration** of the IADC with **external reference**.
+This example discusses how to attain 14.3-bit **ENOB** with **oversampling**. It also covers offset and gain **calibration** of the IADC with **external reference**.
 
 The ENOB is calculated based on the **formula** below:  
 ![diagram](doc/bgm-iadc-enob.png)  
@@ -34,6 +34,7 @@ The BGM board has precision voltage reference and ADC to evaluate the ADC perfor
 - One [**bgm board**](doc/CGM-Board_Schematic.pdf)
 ![diagram](doc/bgm-iadc-diagram.png)
 - One [**BRD8010A**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter)
+**Note**: bgm board is a proprietary board and was not available to order.
 
 - The bgm board includes: 
   - TI 14-bit Voltage-Output DAC [DAC70501](https://www.ti.com/lit/ds/symlink/dac70501.pdf)
@@ -43,12 +44,13 @@ The BGM board has precision voltage reference and ADC to evaluate the ADC perfor
 
 ## Setup ##
 
-**Connect** the [**bgm board**](doc/CGM-Board_Schematic.pdf) to the WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via the 10 pins [**Mini Simplicity Debug Adapter brd8010a**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect the WSTK **mainboard** to the **PC** via the **mini USB** connector.
+**Connect** the [**bgm board**](doc/CGM-Board_Schematic.pdf) to the WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via the 10 pin [**Mini Simplicity Debug Adapter brd8010a**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect the WSTK **mainboard** to the **PC** via the **mini USB** connector.
 
 - Set the **Debug Mode** as **External Device (OUT)** in Simplicity Studio **Launcher->Overview->General Information->Debug mode**.
 - Set **Target part** in Simplicity Studio **Launcher->Debug Adapter->Device Configuration->Device hardware** as EFR32BG22C224F512IM32.
 - Read the **Secure FW** version in **Launcher->Overview->General Information->Secure FW**.
 - Flash the **bootloader** first via [**Simplicity Commander**](https://www.silabs.com/developers/mcu-programming-options) or **Flash Programmer** integrated in Simplicity Studio.
+- You can get the [bootloader file](doc/bootloader-storage-internal-single-512k.s37) in doc folder of this project.
 
 The final **connections** should look like the one in the picture below:
 ![brd4001a+bgm](doc/bgm-iadc-connection.png)
@@ -78,7 +80,7 @@ The bgm board schematic is [here](doc/CGM-Board_Schematic.pdf).
 | PC3       | LED_EN     | LED             |
 | PB0       | ISR        | reserved        |
 
-## How the Project Works ##
+## How It Works ##
 
 ### Memory Layout ###
 
@@ -104,11 +106,11 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 **General**:
 | API                                   | Comment |
 |---------------------------------------|---------------------------------------|
-| void initLetimer(void);               |  -                                    |
+| void initLetimer(void);               | init LETIMER for delays                          |
 | void letimerDelay(uint32_t msec);     | simple delay                          |
 | void initButtonEM2(void);             | button in EM2                         |
-| void lightLED(uint8_t onoff)          | LED on/off                            |
-| float getDieTemperature(void);        | bg22 emu die temperature              |
+| void lightLED(uint8_t onoff)          | LED on/ off                            |
+| float getDieTemperature(void);        | get bg22 emu die temperature             |
 | double rmsCal(double buffer[], double adcAve);  | rms calculation             |
 
 **dac70501**:
@@ -141,7 +143,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | double iadcPollSingleResult(void);              | bg22 iadc voltage polling    |
 | uint32_t iadcDifferentialCalibrate();           | bg22 iadc calibration        |
 
-**variable**:
+**variables**:
 | variable                                        | Comment                      |
 |-------------------------------------------------|------------------------------|
 | double buffer[ADC_BUFFER_SIZE];                 | buffer to save adc data      |
@@ -156,14 +158,14 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | REF3312                | 4.9uA          | -                | ADC reference   |
 | DAC70501               | 1.05mA         | 15uA             | ADC input       |
 | ADS1220                | 15uA           | -                | External ADC    |
-| REF3312 IADC           | 150uA          | 3uA              | EFR32BG22 IADC  |
+| REF3312 IADC           | 150uA          | 3uA              | EFR32BG22 IADC reference |
 
 ## .sls Projects Used ##
 
 [platform_adc_enob.sls](SimplicityStudio/platform_adc_enob.sls)
 
 ## Steps to Create the Project ##
-
+**Option 1 (Start from an empty prject)**
 - Add **EFR32BG22C224F512IM32** in **Launcher->My Products** and **select** it.
 - Start with **Bluetooth - SoC Empty project**, rename the project as **platform_adc_enob**.
 - Check **With project files:->Link sdk and copy project sources**.
@@ -177,6 +179,12 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 - Add the inc path **Project Explorer->Properties->C/C++ Build->Settings->Tool Settings->GNU ARC C Compile->Includes->Include paths**.
 - **Replace** the **app.c**
 
+**Options 2 (Import the sls file)**
+ - Import the included **.sls** file to **Simplicity Studio** 
+ - Then **build** and **flash** the project to the bgm board.
+ - In Simplicity Studio select **File->Import** and **navigate** to the directory with the **.sls** project file.
+ - The project is built with **relative paths** to the STUDIO_SDK_LOC variable which was defined as C:\Users\user_name\SimplicityStudio\SDKs\gecko_sdk
+
 ## How to Port to Another Part ##
 
 In Simplicity Studio IDE perspective, open the **Project Explorer->Properties** and navigate to the **C/C++ Build -> Board/Part/SDK** item. Select the new **Board** or **Part** to target and **Apply** the changes.  
@@ -186,13 +194,6 @@ In Simplicity Studio IDE perspective, open the **Project Explorer->Properties** 
 - **ONLY** EFR32/EFM32 S2 support this 16-bit ENOB.
 
 ## How to Test ##
-
-Import the included **.sls** file to **Simplicity Studio** then **build** and **flash** the project to the bgm board.
-In Simplicity Studio select **File->Import** and **navigate** to the directory with the **.sls** project file.
-The project is built with **relative paths** to the STUDIO_SDK_LOC variable which was defined as  
-C:\Users\user_name\SimplicityStudio\SDKs\gecko_sdk
-
-Then:
 
 - **Run** the code in EFR32BG22.
 - **Open** a terminal applicatin and observe if the data printed is expected. 

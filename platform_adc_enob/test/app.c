@@ -27,7 +27,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  *******************************************************************************
- *
  * # Evaluation Quality
  * This code has been minimally tested to ensure that it builds and is suitable
  * as a demonstration for evaluation purposes only. This code will be maintained
@@ -40,6 +39,7 @@
 #include "app_log.h"
 
 #define ADC_REF_VOLT 1250                          // adc reference voltage
+
 float dac_voltage_value;                           // dac70501 output voltage
 float bg22_die_temperature;                        // bg22 emu die temp
 double ads_adc_temperature;                        // ads1220 adc temp
@@ -68,9 +68,8 @@ void app_init(void)
 
   // Initialize dac70501
   dac70501_init();
-  dac70501_set_volt(1.00f);
 
-  // dac set voltage test
+  // set dac output voltage
   dac_voltage_value = 1.00f;
   dac70501_set_volt(dac_voltage_value);
   // suggested by dac70501

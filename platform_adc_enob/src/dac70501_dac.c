@@ -44,14 +44,14 @@
 // i2c read protocol description:
 // |MSB  ...  LSB| ACK |MSB  ...  LSB| ACK |MSB ... LSB| ACK |MSB ... LSB| ACK
 // Address byte         Command byte           MSDB              LSDB
-// DB [32:24]            DB [23:16]          DB [15:8]          DB [7:0]
+// DB [32:24]           DB [23:16]           DB [15:8]          DB [7:0]
 // slaveAddress         targetAddress,       rxBuff[0],         rxBuff[1]
 
 // i2c write protocol description:
 // |MSB  ...  LSB| ACK |MSB  ...  LSB| ACK |MSB ... LSB| ACK |MSB ... LSB| ACK
 // Address byte         Command byte           MSDB              LSDB
-// DB [32:24]            DB [23:16]          DB [15:8]          DB [7:0]
-// slaveAddress         targetAddress,       rxBuff[0],         rxBuff[0]
+// DB [32:24]           DB [23:16]           DB [15:8]          DB [7:0]
+// slaveAddress         targetAddress,       txBuff[0],         txBuff[1]
 
 // TX and RX Buffers size
 #define I2C_TXBUFFER_SIZE                  10
@@ -87,7 +87,7 @@ uint8_t i2c_rx_buffer[I2C_RXBUFFER_SIZE];
 #define DAC70501_MASK_TRIGGER_SOFT_RESET   0xF
 #define DAC70501_MASK_STATUS_REF_ALM       0x1
 
-// I2C initialized
+// I2C initialized status and voltage
 float dac_Volt;
 uint8_t initialized = 0;
 
@@ -252,7 +252,7 @@ uint16_t dac70501_read_id(void)
  * @return
  *    1, if pass
  *    stay in while loop, not pass
-******************************************************************************/
+ *****************************************************************************/
 uint16_t dacx070501_check_id(uint16_t devID)
 {
   if (devID == 0x1195) {
@@ -267,13 +267,15 @@ uint16_t dacx070501_check_id(uint16_t devID)
  *    set DAC sync
  * @param[in]
  *    syncMode, valid value is 0 or 1.
+ *    0 - immediately mode
+ *    1 - synchronous mode
  * @return
  *    1
-******************************************************************************/
+ *****************************************************************************/
 uint16_t dac70501_sync_mode(uint8_t syncMode)
 {
   // reserved        DAC_SYNC_EN
-  // 15~1            0
+  // 15:1            0
   // 0x0             0x1
   i2c_tx_buffer[0] = 0x0;
   // synchronous or immediately mode
@@ -290,15 +292,19 @@ uint16_t dac70501_sync_mode(uint8_t syncMode)
  * @brief
  *    power down DAC
  * @param[in]
- *    dac_pwdwn - dac, 0 or 1
- *    ref_pwdwn - ref, 0 or 1
+ *    dac_pwdwn: power down dac
+ *    0 - enable dac
+ *    1 - power down dac and output is connect to GND through 1k resistor
+ *    ref_pwdwn: power down ref
+ *    0 - enable internal reference
+ *    1 - disable internal reference
  * @return
  *    1
-******************************************************************************/
+ *****************************************************************************/
 uint16_t dac070501_power_down(uint8_t dac_pwdwn, uint8_t ref_pwdwn)
 {
   // reserved        REF_PWDWN      reserved       DAC_PWDWN
-  // 15~9            8              7:1            0
+  // 15:9            8              7:1            0
   // 0x0             b0             0x0            b0
 
   // power down dac and (or) internal ref
@@ -315,24 +321,21 @@ uint16_t dac070501_power_down(uint8_t dac_pwdwn, uint8_t ref_pwdwn)
  *    set DAC gain and div
  * @param[in]
  *    gain: gain set, 0 or 1
- *    div: divider set, 1 or 1
+ *    0 - the buffer amplifier for corresponding DAC has a gain of 1.
+ *    1 - the buffer amplifier for corresponding DAC has a gain of 2.
+ *    div: divider set, 0 or 1
+ *    0 - the reference voltage is unaffected
+ *    1 - reference voltage is internally divided by a factor of 2.
  * @return
  *    1
  *****************************************************************************/
 uint16_t dac70501_set_gain(uint8_t gain, uint8_t div)
 {
   // reserved        REF-DIV        reserved       BUFF-GAIN
-  // 15~9            8              7:1            0
+  // 15:9            8              7:1            0
   // 0x0             b0             0x0            b0
 
-  // reference divider
-  //   0 - the reference voltage is unaffected
-  //   1 - reference voltage is internally divided by a factor of 2.
   i2c_tx_buffer[0] = div;
-
-  // buffer gain:
-  //   0 - the buffer amplifier for corresponding DAC has a gain of 1.
-  //   1 - the buffer amplifier for corresponding DAC has a gain of 2.
   i2c_tx_buffer[1] = gain;
 
   dac70501_reg_write(I2C_SLAVE_ADDRESS, DAC70501_REG_GAIN, i2c_tx_buffer, 2);
@@ -342,18 +345,18 @@ uint16_t dac70501_set_gain(uint8_t gain, uint8_t div)
 
 /**************************************************************************//**
  * @brief
- *    soft reset DAC
+ *    DAC mode setting
  * @param[in]
  *    ldacMode:
- *    0 -
- *    1 -
+ *    0 - asynchronous mode
+ *    1 - synchronous mode
  * @return
- *    self resetting
-******************************************************************************/
+ *    1
+ *****************************************************************************/
 uint16_t dac70501_update_ldac(uint8_t ldacMode)
 {
   // reserved        LDAC   SOFT-RESET
-  // 15~5            4         3:0
+  // 15:5            4         3:0
   // 0x0             bx        0xa
 
   // refer to register sync
@@ -373,11 +376,11 @@ uint16_t dac70501_update_ldac(uint8_t ldacMode)
  *    none
  * @return
  *    1
-******************************************************************************/
+ *****************************************************************************/
 uint16_t dac70501_reset_soft(void)
 {
   // reserved        LDAC   SOFT-RESET
-  // 15~5            4         3:0
+  // 15:5            4         3:0
   // 0x0             bx        0xa
 
   // soft reset command
@@ -401,7 +404,7 @@ uint16_t dac70501_reset_soft(void)
 uint16_t dac70501_read_status(void)
 {
   // reserved REF-ALARM
-  // 15~1      0
+  // 15:1      0
   // 0x0       b0
 
   dac70501_reg_read(I2C_SLAVE_ADDRESS, DAC70501_REG_STATUS, i2c_rx_buffer, 2);
@@ -416,12 +419,12 @@ uint16_t dac70501_read_status(void)
  * @param[in]
  *    none
  * @return
- *    div and gain set
+ *    div and gain settings
  *****************************************************************************/
 uint16_t dac70501_read_gain(void)
 {
   // reserved      REF-DIV       reserved   BUFF-GAIN
-  // 15~9          8                 7:1         b0
+  // 15:9          8                 7:1         b0
   // 0x1           b1                0x0         b0
   dac70501_reg_read(I2C_SLAVE_ADDRESS, DAC70501_REG_GAIN, i2c_rx_buffer, 2);
 
@@ -483,7 +486,7 @@ uint16_t dac70501_set_ref(uint8_t dacValueHigh, uint8_t dacValueLow)
  *    voltValue: target voltage in volt unit
  * @return
  *    1
-******************************************************************************/
+ *****************************************************************************/
 uint16_t dac70501_set_volt(float voltValue)
 {
   uint16_t dac_reg_val;
@@ -518,7 +521,7 @@ uint16_t dac70501_set_volt(float voltValue)
  *    dac70501 status register value
  * @comment
  *    Vout = data/16384 * vref/div * gain
-******************************************************************************/
+ *****************************************************************************/
 uint16_t dac70501_init(void)
 {
   uint16_t dev_ID, status;
@@ -559,6 +562,14 @@ uint16_t dac70501_init(void)
   return status;
 }
 
+/**************************************************************************//**
+ * @brief
+ *    re-start the dac70501
+ * @param[in]
+ *    none
+ * @return
+ *    dac70501 status register value
+ *****************************************************************************/
 uint16_t dac70501_restart(void)
 {
   uint16_t status;
