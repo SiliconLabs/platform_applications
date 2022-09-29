@@ -33,8 +33,7 @@ The BGM board has precision voltage reference and ADC to evaluate the ADC perfor
 - One WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard)
 - One [**bgm board**](doc/CGM-Board_Schematic.pdf)
 ![diagram](doc/bgm-iadc-diagram.png)
-- One [**BRD8010A**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter)
-**Note**: bgm board is a proprietary board and was not available to order.
+- One [**BRD8010A**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter) (bgm board is a proprietary board and was not available to order).
 
 - The bgm board includes: 
   - TI 14-bit Voltage-Output DAC [DAC70501](https://www.ti.com/lit/ds/symlink/dac70501.pdf)
@@ -106,11 +105,11 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 **General**:
 | API                                   | Comment |
 |---------------------------------------|---------------------------------------|
-| void initLetimer(void);               | init LETIMER for delays                          |
+| void initLetimer(void);               | init LETIMER for delays               |
 | void letimerDelay(uint32_t msec);     | simple delay                          |
 | void initButtonEM2(void);             | button in EM2                         |
-| void lightLED(uint8_t onoff)          | LED on/ off                            |
-| float getDieTemperature(void);        | get bg22 emu die temperature             |
+| void lightLED(uint8_t onoff)          | LED on/ off                           |
+| float getDieTemperature(void);        | get bg22 emu die temperature          |
 | double rmsCal(double buffer[], double adcAve);  | rms calculation             |
 
 **dac70501**:
@@ -121,7 +120,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | uint16_t dac70501_setRef(uint8_t dacValueHigh, uint8_t dacValueLow); | dac70501 output register set |
 | uint16_t dac70501_setVolt(float voltValue);     | dac70501 voltage set (in V unit)                  |
 | uint16_t dac070501_powerDown(uint8_t dac_pwdwn, uint8_t ref_pwdwn); | dac70501 power down           |
-| uint16_t dac70501_reStart(void);                | dac70501 power up (restart)                        |
+| uint16_t dac70501_reStart(void);                | dac70501 power up (restart)                       |
 
 **ads1220**:
 | API                                             | Comment                      |
@@ -158,7 +157,7 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 | REF3312                | 4.9uA          | -                | ADC reference   |
 | DAC70501               | 1.05mA         | 15uA             | ADC input       |
 | ADS1220                | 15uA           | -                | External ADC    |
-| REF3312 IADC           | 150uA          | 3uA              | EFR32BG22 IADC reference |
+| REF3312                | 150uA          | 3uA              | EFR32BG22 IADC reference |
 
 ## .sls Projects Used ##
 
@@ -180,9 +179,9 @@ bootloader + application + nvm3 + lock bits(manufacturing token region)
 - **Replace** the **app.c**
 
 **Options 2 (Import the sls file)**
- - Import the included **.sls** file to **Simplicity Studio** 
- - Then **build** and **flash** the project to the bgm board.
  - In Simplicity Studio select **File->Import** and **navigate** to the directory with the **.sls** project file.
+ - Import the included **.sls** file to **Simplicity Studio**. 
+ - Then **build** and **flash** the project to the bgm board.
  - The project is built with **relative paths** to the STUDIO_SDK_LOC variable which was defined as C:\Users\user_name\SimplicityStudio\SDKs\gecko_sdk
 
 ## How to Port to Another Part ##

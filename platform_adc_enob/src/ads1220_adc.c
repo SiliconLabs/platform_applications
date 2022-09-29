@@ -391,7 +391,7 @@ void ads1220_reg_config(void)
   // ADS1220_REG_CONFIGURATION0
   // 7:4          3:1         0
   // mux          gain        pga_bypass
-  // b0101        b000        b0 
+  // b0101        b000        b0
   // (AIN2/AIN3)  (gain 1)    (enabled pga)
 
   // default input channel is REF3312 (0x0)
@@ -411,7 +411,7 @@ void ads1220_reg_config(void)
   // 7:6           5:4         3               2:0
   // VREF          FIR         PSW             IDAC
   // b01           b00         b0              b000
-  // ext ref       NO reject   OPE             OFF 
+  // ext ref       NO reject   OPE             OFF
 
   // external reference, REFP0 and REFN0
   reg2 = 0x40;
