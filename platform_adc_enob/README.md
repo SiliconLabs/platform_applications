@@ -41,6 +41,9 @@ The BGM board has precision voltage reference and ADC to evaluate the ADC perfor
   - 2 TI Low Drift Voltage Reference [REF3312s](https://www.ti.com/lit/pdf/sbos392)
   - Silabs [EFR32BG22](https://www.silabs.com/documents/public/data-sheets/efr32bg22-datasheet.pdf)
 
+## Connections Required ##
+Connect the bgm board via a micro-USB cable to your PC via WSTK mainboard to flash the example.
+
 ## Setup ##
 
 **Connect** the [**bgm board**](doc/CGM-Board_Schematic.pdf) to the WSTK [**mainboard**](https://www.silabs.com/development-tools/wireless/wireless-starter-kit-mainboard) via the 10 pin [**Mini Simplicity Debug Adapter brd8010a**](https://www.silabs.com/development-tools/mcu/32-bit/simplicity-debug-adapter), and connect the WSTK **mainboard** to the **PC** via the **mini USB** connector.
