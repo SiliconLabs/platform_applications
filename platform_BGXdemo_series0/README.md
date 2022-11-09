@@ -1,7 +1,8 @@
 # BGX demo example
-![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
-![License badge](https://img.shields.io/badge/License-Zlib-green)
-![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+
+![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_BGXdemo_series0_common.json&label=Type&query=type&color=green)
+![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_BGXdemo_series0_common.json&label=License&query=license&color=green)
+![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_BGXdemo_series0_common.json&label=Technology&query=technology&color=green)
 
 ## Summary
 This project shows how to communicate between the computer and the EFM32WG starter 

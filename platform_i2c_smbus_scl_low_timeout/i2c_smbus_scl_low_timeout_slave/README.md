@@ -1,7 +1,8 @@
 # I2C SMBus SCL Low Timeout Slave Example #
-![Type badge](https://img.shields.io/badge/Type-Virtual%20application-green)
-![License badge](https://img.shields.io/badge/License-Zlib-green)
-![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+
+![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/i2c_smbus_scl_low_timeout_slave_common.json&label=Type&query=type&color=green)
+![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/i2c_smbus_scl_low_timeout_slave_common.json&label=License&query=license&color=green)
+![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/i2c_smbus_scl_low_timeout_slave_common.json&label=Technology&query=technology&color=green)
 
 ## Summary ##
 
