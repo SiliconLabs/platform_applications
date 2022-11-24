@@ -1,6 +1,7 @@
 ads1220 temp - 27.906250 degC
 efr32bg temp - 28.500006 degC
 
+
 ADS1220 adc voltage in mV:
 sample - value
 0 - 1.000059
