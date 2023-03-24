@@ -97,7 +97,6 @@ void on_periodic_timeout(sl_sleeptimer_timer_handle_t *handle,
     SegmentLCD_Symbol(LCD_SYMBOL_DEGC, 1);  // Display Degree C symbol
     SegmentLCD_Symbol(LCD_SYMBOL_P3, 1);    // Display decimal symbol
   }
-
 // Used when the temperature is between 0-100 degrees Celsius
   else {
     SegmentLCD_Number(temp_data);           // Display the value of temp_data

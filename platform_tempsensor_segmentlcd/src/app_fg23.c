@@ -63,7 +63,7 @@ void on_periodic_timeout(sl_sleeptimer_timer_handle_t *handle,
                                 SI7021_ADDR,
                                 &rh_data,
                                 &temp_data);
-                                
+
   // Read the values for relative humidity and temperature
   sl_si70xx_read_rh_and_temp(sl_i2cspm_sensor,
                              SI7021_ADDR,
@@ -89,7 +89,7 @@ void on_periodic_timeout(sl_sleeptimer_timer_handle_t *handle,
     SegmentLCD_Symbol(LCD_SYMBOL_DEGC, 1);  // Display Degree C symbol
     SegmentLCD_Symbol(LCD_SYMBOL_P3, 1);    // Display decimal symbol
   }
-  
+
 // Used when the temperature is above 100 degrees Celsius
   if (temp_data >= THREE_DIGIT_CASE) {
     temp_data = temp_data / 10;
@@ -97,7 +97,6 @@ void on_periodic_timeout(sl_sleeptimer_timer_handle_t *handle,
     SegmentLCD_Symbol(LCD_SYMBOL_DEGC, 1);  // Display Degree C symbol
     SegmentLCD_Symbol(LCD_SYMBOL_P3, 1);    // Display decimal symbol
   }
-  
 // Used when the temperature is between 0-100 degrees Celsius
   else {
     SegmentLCD_Number(temp_data);           // Display the value of temp_data

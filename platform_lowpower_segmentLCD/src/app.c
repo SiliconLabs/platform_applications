@@ -77,13 +77,12 @@ void initLCD(void)
 
   // Enable common (COM0-COM3) and segment (SEG0-SEG1, SEG4-SEG7,
   // SEG18, SEG19, SEG8, SEG10) lines
-  LCD_ComEnable(0, true);
-  LCD_SegmentEnable(0, true);
 #if ALL_SEGMENTS
+  LCD_ComEnable(0, true);
   LCD_ComEnable(1, true);
   LCD_ComEnable(2, true);
   LCD_ComEnable(3, true);
-
+  LCD_SegmentEnable(0, true);
   LCD_SegmentEnable(1, true);
   LCD_SegmentEnable(4, true);
   LCD_SegmentEnable(5, true);
@@ -93,52 +92,14 @@ void initLCD(void)
   LCD_SegmentEnable(19, true);
   LCD_SegmentEnable(8, true);
   LCD_SegmentEnable(10, true);
-#endif
-
+  LCD_SegmentSetLow(0, 0xFFFFF, 0xFFFFF);
+  LCD_SegmentSetLow(1, 0xFFFFF, 0xFFFFF);
+  LCD_SegmentSetLow(2, 0xFFFFF, 0xFFFFF);
+  LCD_SegmentSetLow(3, 0xFFFFF, 0xFFFFF);
+#else
+  LCD_SegmentEnable(0, true);
+  LCD_ComEnable(0, true);
   LCD_SegmentSet(0, 0, true);
-#if ALL_SEGMENTS
-  LCD_SegmentSet(0, 1, true);
-  LCD_SegmentSet(0, 4, true);
-  LCD_SegmentSet(0, 5, true);
-  LCD_SegmentSet(0, 6, true);
-  LCD_SegmentSet(0, 7, true);
-  LCD_SegmentSet(0, 18, true);
-  LCD_SegmentSet(0, 19, true);
-  LCD_SegmentSet(0, 8, true);
-  LCD_SegmentSet(0, 10, true);
-
-  LCD_SegmentSet(1, 0, true);
-  LCD_SegmentSet(1, 1, true);
-  LCD_SegmentSet(1, 4, true);
-  LCD_SegmentSet(1, 5, true);
-  LCD_SegmentSet(1, 6, true);
-  LCD_SegmentSet(1, 7, true);
-  LCD_SegmentSet(1, 18, true);
-  LCD_SegmentSet(1, 19, true);
-  LCD_SegmentSet(1, 8, true);
-  LCD_SegmentSet(1, 10, true);
-
-  LCD_SegmentSet(2, 0, true);
-  LCD_SegmentSet(2, 1, true);
-  LCD_SegmentSet(2, 4, true);
-  LCD_SegmentSet(2, 5, true);
-  LCD_SegmentSet(2, 6, true);
-  LCD_SegmentSet(2, 7, true);
-  LCD_SegmentSet(2, 18, true);
-  LCD_SegmentSet(2, 19, true);
-  LCD_SegmentSet(2, 8, true);
-  LCD_SegmentSet(2, 10, true);
-
-  LCD_SegmentSet(3, 0, true);
-  LCD_SegmentSet(3, 1, true);
-  LCD_SegmentSet(3, 4, true);
-  LCD_SegmentSet(3, 5, true);
-  LCD_SegmentSet(3, 6, true);
-  LCD_SegmentSet(3, 7, true);
-  LCD_SegmentSet(3, 18, true);
-  LCD_SegmentSet(3, 19, true);
-  LCD_SegmentSet(3, 8, true);
-  LCD_SegmentSet(3, 10, true);
 #endif
 
   LCD_Enable(true);
