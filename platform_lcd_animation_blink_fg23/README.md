@@ -1,29 +1,26 @@
 # Segment LCD with Animation and Blink Functionality
-![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_common.json&label=Type&query=type&color=green)
-![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_common.json&label=Technology&query=technology&color=green)
-![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_common.json&label=License&query=license&color=green)
-![SDK badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_common.json&label=SDK&query=sdk&color=green)
-![Build badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_build_status.json)
-![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_common.json&label=Flash&query=flash&color=blue)
-![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_fg23_common.json&label=RAM&query=ram&color=blue)
 
 ## Summary
+
 This project shows how to use the FG23 LCD peripheral on the BRD2600A board to perform
 auto animation and blink without CPU intervention, and displaying a pattern
 on the segment LCD (more information on "How it works" below).
 
 ## Gecko SDK version
-v4.1.1
+
+v4.3.0
 
 ## Hardware Required
 
 * Board:  Silicon Labs EFR32FG23 Dev Kit (BRD2600A)
-	* Device: EFR32FG23B010F512GM48
+  * Device: EFR32FG23B010F512GM48
 
 ## Connections Required
+
 Connect the board via a micro-USB cable to your PC to flash the example.
 
 ## Setup
+
 1. Clone the repository with this project from GitHub onto your local machine.
 
 2. From within the Simplicity Studio IDE, select Import -> MCU Project... from the Project menu.
@@ -33,6 +30,7 @@ Connect the board via a micro-USB cable to your PC to flash the example.
 4. Click the Next button twice and then click Finish.
 
 ## How It Works
+
 The LCD peripheral has the capability to do animation without involving the LCD data
 registers as well as the CPU. It allows specialized patterns running on the LCD panel while the 
 microcontoller remains in low energy mode. A max of 8 segments can be used for animation feature
@@ -53,25 +51,25 @@ For this example, the LCD segments controlled by the animation feature are: 1D, 
 Refer to the BRD2600A schematic for additional information.
 
 ![fg23_lcd_segment_mapping](https://user-images.githubusercontent.com/66031031/193937564-7755558f-d8a2-4e97-b436-760965fd6afa.png)
-	
-To test:
-1. Build and flash the hex image onto the board. Reset board and observe the
-   segment LCD displaying animation at a 2Hz rate.
-2. Change BLINK_ENABLE define on line 30 of app.c file to 1
-3. Rebuild and flash the hex image onto the board. Reset board and observe the
-   segment LCD displaying animation and blinking at a 2Hz rate. 
-   This example runs as it is and requires no user intervention. 
 
-https://user-images.githubusercontent.com/66031031/193944633-d7a458a9-49b9-4eaa-afec-87ecd30036e5.mov
+To test:
+
+1. Build and flash the hex image onto the board. Reset board and observe the segment LCD displaying animation at a 2Hz rate
+2. Change BLINK_ENABLE define on line 30 of app.c file to 1
+3. Rebuild and flash the hex image onto the board. Reset board and observe the segment LCD displaying animation and blinking at a 2Hz rate. This example runs as it is and requires no user intervention.
+
+![fg23_animation_demo](https://user-images.githubusercontent.com/66031031/193944633-d7a458a9-49b9-4eaa-afec-87ecd30036e5.mov)
 
 **Note**:
 As seen in the video above, the LCD will be blank for 2 seconds since segments 2 and 3 are not
-mapped to the onboard LCD. Blink feature is not enabled in the video. 
+mapped to the onboard LCD. Blink feature is not enabled in the video.
 
 ## .sls Projects Used
+
 * platform_lcd_animation_blink_fg23.sls
 
 ## How to Port to Another Part
+
 Right click on the project and select "Properties" and navigate to "C/C++ 
 Build" then "Board/Part/SDK". Select the new board or part to target and apply 
 the changes. There may be some dependencies that need to be resolved when 

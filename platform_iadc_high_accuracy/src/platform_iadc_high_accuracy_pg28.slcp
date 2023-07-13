@@ -1,0 +1,36 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_iadc_high_accuracy_pg28
+label: platform_iadc_high_accuracy_pg28
+description: |
+  This example project shows an empty configuration that can be used as a starting point to add components and functionality.
+category: Example|Platform
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+package: platform
+quality: production
+source:
+- {path: app.c}
+- {path: main.c}
+include:
+- path: ''
+  file_list:
+  - {path: app.h}
+sdk: {id: gecko_sdk, version: 4.3.0}
+toolchain_settings: []
+component:
+- {id: emlib_iadc}
+- {id: brd2506a}
+- {id: sl_system}
+- {id: emlib_ldma}
+- {id: device_init}
+- {id: emlib_prs}
+- {id: EFM32PG28B310F1024IM68}
+define:
+- {name: DEBUG_EFM}
+ui_hints: {}
+

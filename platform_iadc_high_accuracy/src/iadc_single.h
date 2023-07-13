@@ -1,9 +1,9 @@
 /***************************************************************************//**
  * @file
- * @brief Top level application functions
+ * @brief IADC example functions
  *******************************************************************************
  * # License
- * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -15,17 +15,17 @@
  *
  ******************************************************************************/
 
-#ifndef APP_H
-#define APP_H
+#ifndef IADC_SINGLE_H
+#define IADC_SINGLE_H
 
 /***************************************************************************//**
- * Initialize application.
+ * Initialize IADC for single 20-bit high accuracy conversion.
  ******************************************************************************/
-void app_init(void);
+void iadc_single_init(void);
 
 /***************************************************************************//**
- * App ticking function.
+ * IADC conversion complete process action.
  ******************************************************************************/
-void app_process_action(void);
+void iadc_single_process_action(void);
 
-#endif // APP_H
+#endif // IADC_SINGLE_H
