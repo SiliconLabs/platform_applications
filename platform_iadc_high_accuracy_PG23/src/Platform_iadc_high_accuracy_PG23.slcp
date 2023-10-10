@@ -1,0 +1,37 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: Platform_iadc_high_accuracy_PG23
+label: Platform_iadc_high_accuracy_PG23
+description: |
+  This example project shows how to blink an LED in a bare-metal configuration.
+category: Example|Platform
+package: platform
+quality: production
+source:
+- {path: app.c}
+- {path: main.c}
+- {path: blink.c}
+tag: ['hardware:component:led:1+']
+include:
+- path: ''
+  file_list:
+  - {path: app.h}
+  - {path: blink.h}
+sdk: {id: gecko_sdk, version: 4.3.1}
+toolchain_settings: []
+component:
+- {id: power_manager}
+- {id: emlib_iadc}
+- {id: brd2504a}
+- {id: sl_system}
+- {id: power_manager_deepsleep}
+- {id: EFM32PG23B310F512IM48}
+- {id: cmsis_dsp}
+- instance: [led0]
+  id: simple_led
+- {id: device_init}
+- {id: emlib_prs}
+- {id: sleeptimer}
+define:
+- {name: DEBUG_EFM}
+ui_hints: {}
+
