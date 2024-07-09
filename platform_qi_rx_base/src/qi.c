@@ -53,8 +53,8 @@
 //                            Local function prototypes
 // -----------------------------------------------------------------------------
 
-static qi_status_t qi_create_packet(uint16_t* buffer,
-                                    const qi_message_t* message);
+static qi_status_t qi_create_packet(uint16_t *buffer,
+                                    const qi_message_t *message);
 
 static qi_status_t qi_add_to_spi_stream(uint8_t *out,
                                         uint8_t *curbyte,
@@ -77,9 +77,9 @@ static uint16_t qi_code_byte(uint8_t);
  * The result is returned in a uint16_t buffer array which has
  * message->msglen + 2 elements due to adding header and checksum.
  *****************************************************************************/
-static qi_status_t qi_create_packet(uint16_t *buffer, const qi_message_t *message)
+static qi_status_t qi_create_packet(uint16_t *buffer,
+                                    const qi_message_t *message)
 {
-
   uint8_t curbyte = 0;
   uint8_t chksum = 0;
   uint8_t len = message->msglen;
@@ -204,7 +204,7 @@ qi_status_t qi_create_spi_stream_buffer(uint8_t *outbuffer,
   for (int i = 0; i < qi_message->preamble_bits; i++) {
     qi_status = qi_add_to_spi_stream(outbuffer, &curbyte, &curbit, bitbuf, 2);
     EFM_ASSERT(qi_status == QI_OK);
-  };
+  }
   last_level = 0;
 
   // now code the message first
@@ -255,13 +255,14 @@ void qi_generate_c_code(const char *init_descriptor,
   printf("const uint8_t %s[] = {", init_descriptor);
   for (int i = 0; i < buflen; i++) {
     if ((i % 8) == 0) {
-      if (i != 0)
+      if (i != 0) {
         printf(",");
+      }
       printf("\n  ");
-    } else
+    } else {
       printf(", ");
+    }
     printf("0x%02X", buffer[i]);
   }
   printf("\n};\n");
 }
-

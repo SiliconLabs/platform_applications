@@ -1,0 +1,47 @@
+project_name: platform_segmentLCD_timer
+package: platform
+label: Platform - Segment LCD with Timer
+description: >
+  This project shows how to use the segment LCD peripheral to display timer functions
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: emlib_letimer
+  - id: sl_system
+  - id: device_init
+  - id: segment_lcd_driver
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app.h
+
+source:
+- path: ../src/brd2504a/app.c
+  condition: [brd2504a]
+- path: ../src/brd2506a/app.c
+  condition: [brd2506a]
+- path: ../src/brd2600a/app.c
+  condition: [brd2600a]
+- path: ../src/main.c
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

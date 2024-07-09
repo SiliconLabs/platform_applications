@@ -60,33 +60,32 @@ void generate_food(void)
   uint16_t random_field = rand() % game_state.empty_fields_count;
 
   uint16_t empty_field_counter = 0;
-  for (uint16_t x = 0; x < MAP_SIZE_X; x++)
+  for (uint16_t x = 0; x < MAP_SIZE_X; x++) {
     for (uint16_t y = 0; y < MAP_SIZE_Y; y++) {
       if (game_state.map[x][y].state == EMPTY) {
-        if (empty_field_counter != random_field)
+        if (empty_field_counter != random_field) {
           empty_field_counter++;
-        else {
-            switch (rand() % 3) {
-              case 0:
-                game_state.map[x][y].state = FOOD_1;
-                break;
+        } else {
+          switch (rand() % 3) {
+            case 0:
+              game_state.map[x][y].state = FOOD_1;
+              break;
 
-              case 1:
-                game_state.map[x][y].state = FOOD_2;
-                break;
+            case 1:
+              game_state.map[x][y].state = FOOD_2;
+              break;
 
-              case 2:
-                game_state.map[x][y].state = FOOD_3;
-                break;
-
-            }
-            game_state.empty_fields_count--;
-            return;
+            case 2:
+              game_state.map[x][y].state = FOOD_3;
+              break;
+          }
+          game_state.empty_fields_count--;
+          return;
         }
       }
     }
+  }
 }
-
 
 /***************************************************************************//**
  * Gets the left neighbor coordinates of the given field coordinates.
@@ -96,12 +95,13 @@ void generate_food(void)
  ******************************************************************************/
 map_coords_t get_left_field_coords(const map_coords_t field_coords)
 {
-  map_coords_t left_field_coords = {0, field_coords.y};
+  map_coords_t left_field_coords = { 0, field_coords.y };
 
-  if (field_coords.x - 1 >= 0)
+  if (field_coords.x - 1 >= 0) {
     left_field_coords.x = field_coords.x - 1;
-  else
+  } else {
     left_field_coords.x = MAP_SIZE_X - 1;
+  }
 
   return left_field_coords;
 }
@@ -114,12 +114,13 @@ map_coords_t get_left_field_coords(const map_coords_t field_coords)
  ******************************************************************************/
 map_coords_t get_right_field_coords(const map_coords_t field_coords)
 {
-  map_coords_t right_field_coords = {0, field_coords.y};
+  map_coords_t right_field_coords = { 0, field_coords.y };
 
-  if (field_coords.x + 1 != MAP_SIZE_X)
+  if (field_coords.x + 1 != MAP_SIZE_X) {
     right_field_coords.x = field_coords.x + 1;
-  else
+  } else {
     right_field_coords.x = 0;
+  }
 
   return right_field_coords;
 }
@@ -132,12 +133,13 @@ map_coords_t get_right_field_coords(const map_coords_t field_coords)
  ******************************************************************************/
 map_coords_t get_above_field_coords(const map_coords_t field_coords)
 {
-  map_coords_t above_field_coords = {field_coords.x, 0};
+  map_coords_t above_field_coords = { field_coords.x, 0 };
 
-  if (field_coords.y - 1 >= 0)
+  if (field_coords.y - 1 >= 0) {
     above_field_coords.y = field_coords.y - 1;
-  else
+  } else {
     above_field_coords.y = MAP_SIZE_Y - 1;
+  }
 
   return above_field_coords;
 }
@@ -149,12 +151,13 @@ map_coords_t get_above_field_coords(const map_coords_t field_coords)
  ******************************************************************************/
 map_coords_t get_below_field_coords(const map_coords_t field_coords)
 {
-  map_coords_t above_field_coords = {field_coords.x, 0};
+  map_coords_t above_field_coords = { field_coords.x, 0 };
 
-  if (field_coords.y + 1 != MAP_SIZE_Y)
+  if (field_coords.y + 1 != MAP_SIZE_Y) {
     above_field_coords.y = field_coords.y + 1;
-  else
+  } else {
     above_field_coords.y = 0;
+  }
 
   return above_field_coords;
 }
@@ -166,40 +169,46 @@ map_coords_t get_below_field_coords(const map_coords_t field_coords)
  * @param r_direction next direction relative to the head
  * @returns direction in the direction system of the map
  ******************************************************************************/
-enum direction_t r_direction2direction(const enum relative_direction_t r_direction)
+enum direction_t r_direction2direction(
+  const enum relative_direction_t r_direction)
 {
-  switch (game_state.map[game_state.snake_head.x][game_state.snake_head.y].next_segment) {
+  switch (game_state.map[game_state.snake_head.x][game_state.snake_head.y].
+          next_segment) {
     case RIGHT:
-      if ( r_direction == R_LEFT)
+      if (r_direction == R_LEFT) {
         return DOWN;
-      else if (r_direction == R_FORWARD)
+      } else if (r_direction == R_FORWARD) {
         return LEFT;
-      else if (r_direction == R_RIGHT)
+      } else if (r_direction == R_RIGHT) {
         return UP;
+      }
       break;
     case DOWN:
-      if ( r_direction == R_LEFT)
+      if (r_direction == R_LEFT) {
         return LEFT;
-      else if (r_direction == R_FORWARD)
+      } else if (r_direction == R_FORWARD) {
         return UP;
-      else if (r_direction == R_RIGHT)
+      } else if (r_direction == R_RIGHT) {
         return RIGHT;
+      }
       break;
     case LEFT:
-      if ( r_direction == R_LEFT)
+      if (r_direction == R_LEFT) {
         return UP;
-      else if (r_direction == R_FORWARD)
+      } else if (r_direction == R_FORWARD) {
         return RIGHT;
-      else if (r_direction == R_RIGHT)
+      } else if (r_direction == R_RIGHT) {
         return DOWN;
+      }
       break;
     case UP:
-      if ( r_direction == R_LEFT)
+      if (r_direction == R_LEFT) {
         return RIGHT;
-      else if (r_direction == R_FORWARD)
+      } else if (r_direction == R_FORWARD) {
         return DOWN;
-      else if (r_direction == R_RIGHT)
+      } else if (r_direction == R_RIGHT) {
         return LEFT;
+      }
       break;
   }
 
@@ -218,46 +227,48 @@ enum direction_t r_direction2direction(const enum relative_direction_t r_directi
 enum move_snake_return_t move_snake(const enum direction_t next_field_direction)
 {
   static bool just_ate = false;
-  map_field_t *current_field = &game_state.map[game_state.snake_head.x][game_state.snake_head.y];
-  map_coords_t next_field_coords = get_neighbor_field_coords(game_state.snake_head,
-                                                             next_field_direction);
-  map_field_t *next_field = &game_state.map[next_field_coords.x][next_field_coords.y];
+  map_field_t *current_field =
+    &game_state.map[game_state.snake_head.x][game_state.snake_head.y];
+  map_coords_t next_field_coords = get_neighbor_field_coords(
+    game_state.snake_head,
+    next_field_direction);
+  map_field_t *next_field =
+    &game_state.map[next_field_coords.x][next_field_coords.y];
 
   // check if the next move would be crash
-  if (next_field->state == SNAKE_BODY ||
-      next_field->state == SNAKE_FULL_BELLY ||
-      next_field->state == SNAKE_TAIL ||
-      next_field->state == WALL)
+  if ((next_field->state == SNAKE_BODY)
+      || (next_field->state == SNAKE_FULL_BELLY)
+      || (next_field->state == SNAKE_TAIL)
+      || (next_field->state == WALL)) {
     return CRASH;
+  }
 
   // check if food ahead
   bool food = false;
-  if (next_field->state == FOOD_1 ||
-      next_field->state == FOOD_2 ||
-      next_field->state == FOOD_3)
+  if ((next_field->state == FOOD_1)
+      || (next_field->state == FOOD_2)
+      || (next_field->state == FOOD_3)) {
     food = true;
+  }
 
   // make the move
   if (just_ate) {
     current_field->state = SNAKE_FULL_BELLY;
     just_ate = false;
-  }
-  else
+  } else {
     current_field->state = SNAKE_BODY;
+  }
 
   if (next_field_direction == RIGHT) {
     next_field->next_segment = LEFT;
     current_field->previous_segment = RIGHT;
-  }
-  else if (next_field_direction == LEFT) {
+  } else if (next_field_direction == LEFT) {
     next_field->next_segment = RIGHT;
     current_field->previous_segment = LEFT;
-  }
-  else if (next_field_direction == DOWN) {
+  } else if (next_field_direction == DOWN) {
     next_field->next_segment = UP;
     current_field->previous_segment = DOWN;
-  }
-  else if (next_field_direction == UP) {
+  } else if (next_field_direction == UP) {
     next_field->next_segment = DOWN;
     current_field->previous_segment = UP;
   }
@@ -267,20 +278,23 @@ enum move_snake_return_t move_snake(const enum direction_t next_field_direction)
   game_state.snake_head.y = next_field_coords.y;
 
   if (!food) {
-      map_coords_t before_tail_segment_coords = get_neighbor_field_coords(game_state.snake_tail,
-                                                                      game_state.map[game_state.snake_tail.x][game_state.snake_tail.y].previous_segment);
-      map_field_t *tail = &game_state.map[game_state.snake_tail.x][game_state.snake_tail.y];
-      tail->state = EMPTY;
-      game_state.map[before_tail_segment_coords.x][before_tail_segment_coords.y].state = SNAKE_TAIL;
-      game_state.snake_tail.x = before_tail_segment_coords.x;
-      game_state.snake_tail.y = before_tail_segment_coords.y;
+    map_coords_t before_tail_segment_coords = get_neighbor_field_coords(
+      game_state.snake_tail,
+      game_state.map[
+        game_state.snake_tail.x][game_state.snake_tail.y].previous_segment);
+    map_field_t *tail =
+      &game_state.map[game_state.snake_tail.x][game_state.snake_tail.y];
+    tail->state = EMPTY;
+    game_state.map[before_tail_segment_coords.x][before_tail_segment_coords.y].
+    state = SNAKE_TAIL;
+    game_state.snake_tail.x = before_tail_segment_coords.x;
+    game_state.snake_tail.y = before_tail_segment_coords.y;
 
-      return CLEAN_MOVE;
+    return CLEAN_MOVE;
   } else {
-      just_ate = true;
-      return FOOD;
+    just_ate = true;
+    return FOOD;
   }
-
 }
 
 /*******************************************************************************
@@ -316,16 +330,18 @@ void init_game(void)
 {
   game_state.score = 0;
 
-  //clear the map
-  for (uint16_t x = 0; x < MAP_SIZE_X; x++)
-    for (uint16_t y = 0; y < MAP_SIZE_Y; y++)
-        game_state.map[x][y].state = EMPTY;
+  // clear the map
+  for (uint16_t x = 0; x < MAP_SIZE_X; x++) {
+    for (uint16_t y = 0; y < MAP_SIZE_Y; y++) {
+      game_state.map[x][y].state = EMPTY;
+    }
+  }
 
   // make the snake
   // head
   map_coords_t map_pointer;
-  map_pointer.x = MAP_SIZE_X/3*2+3;
-  map_pointer.y = MAP_SIZE_Y/3;
+  map_pointer.x = MAP_SIZE_X / 3 * 2 + 3;
+  map_pointer.y = MAP_SIZE_Y / 3;
   game_state.map[map_pointer.x][map_pointer.y].state = SNAKE_HEAD;
   game_state.map[map_pointer.x][map_pointer.y].next_segment = RIGHT;
   game_state.snake_head.x = map_pointer.x;
@@ -345,28 +361,35 @@ void init_game(void)
   game_state.snake_tail.y = map_pointer.y;
 
   // generate a maze, if needed
-  if ( maze == BORDER) {
+  if (maze == BORDER) {
     for (uint16_t x = 0; x < MAP_SIZE_X; x++) {
-        game_state.map[x][0].state = WALL;
-        game_state.map[x][MAP_SIZE_Y - 1].state = WALL;
+      game_state.map[x][0].state = WALL;
+      game_state.map[x][MAP_SIZE_Y - 1].state = WALL;
     }
     for (uint16_t y = 0; y < MAP_SIZE_Y; y++) {
-        game_state.map[0][y].state = WALL;
-        game_state.map[MAP_SIZE_X - 1][y].state = WALL;
+      game_state.map[0][y].state = WALL;
+      game_state.map[MAP_SIZE_X - 1][y].state = WALL;
     }
-  } else if ( maze == CROSS ) {
-      for (uint16_t x = MAP_SIZE_X/2 - CROSS_SIZE + 1; x < (MAP_SIZE_X/2 + CROSS_SIZE); x++)
-        game_state.map[x][MAP_SIZE_Y/2].state = WALL;
-      for (uint16_t y = MAP_SIZE_Y/2 - CROSS_SIZE + 1; y < (MAP_SIZE_Y/2 + CROSS_SIZE); y++)
-        game_state.map[MAP_SIZE_X/2][y].state = WALL;
+  } else if (maze == CROSS) {
+    for (uint16_t x = MAP_SIZE_X / 2 - CROSS_SIZE + 1;
+         x < (MAP_SIZE_X / 2 + CROSS_SIZE); x++) {
+      game_state.map[x][MAP_SIZE_Y / 2].state = WALL;
+    }
+    for (uint16_t y = MAP_SIZE_Y / 2 - CROSS_SIZE + 1;
+         y < (MAP_SIZE_Y / 2 + CROSS_SIZE); y++) {
+      game_state.map[MAP_SIZE_X / 2][y].state = WALL;
+    }
   }
 
   // count the initial empty field count for the generate_food function
   game_state.empty_fields_count = 0;
-  for (uint16_t x = 0; x < MAP_SIZE_X; x++)
-    for (uint16_t y = 0; y < MAP_SIZE_Y; y++)
-      if (game_state.map[x][y].state == EMPTY)
+  for (uint16_t x = 0; x < MAP_SIZE_X; x++) {
+    for (uint16_t y = 0; y < MAP_SIZE_Y; y++) {
+      if (game_state.map[x][y].state == EMPTY) {
         game_state.empty_fields_count++;
+      }
+    }
+  }
 
   generate_food();
 }
@@ -383,10 +406,11 @@ enum move_snake_return_t game_turn(const enum relative_direction_t r_direction)
 
   enum move_snake_return_t move_result = move_snake(next_field_direction);
   if (move_result == FOOD) {
-      generate_food();
-      game_state.score = game_state.score + 1 + (difficulty * 0.5);
-      if (maze != NONE)
-        game_state.score++;
+    generate_food();
+    game_state.score = game_state.score + 1 + (difficulty * 0.5);
+    if (maze != NONE) {
+      game_state.score++;
+    }
   }
 
   print_game(&game_state);
@@ -399,7 +423,7 @@ enum move_snake_return_t game_turn(const enum relative_direction_t r_direction)
  *
  * @param touch_slider_state the state of the touch slider to be printed
  ******************************************************************************/
-void game_over_tick (const enum event_t touch_slider_state)
+void game_over_tick(const enum event_t touch_slider_state)
 {
   print_game_over((uint32_t)game_state.score, touch_slider_state);
 }
@@ -413,9 +437,9 @@ void game_over_tick (const enum event_t touch_slider_state)
  * @returns the coordinates of the selected neighbor
  ******************************************************************************/
 map_coords_t get_neighbor_field_coords(map_coords_t field_coords,
-                                const enum direction_t neighbor_field_direction)
+                                       const enum direction_t neighbor_field_direction)
 {
-  map_coords_t next_field_coords = {0, 0};
+  map_coords_t next_field_coords = { 0, 0 };
 
   switch (neighbor_field_direction) {
     case RIGHT:

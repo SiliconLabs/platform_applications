@@ -34,8 +34,6 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-
-#include "sl_simple_led.h"
 #include "sl_simple_led_instances.h"
 #include "sl_sleeptimer.h"
 #include "app_led.h"
@@ -45,11 +43,11 @@
  ******************************************************************************/
 
 #ifndef LED_INSTANCE0
-#define LED_INSTANCE0    sl_led_led0
+#define LED_INSTANCE0           sl_led_led0
 #endif
 
 #ifndef LED_INSTANCE1
-#define LED_INSTANCE1    sl_led_led1
+#define LED_INSTANCE1           sl_led_led1
 #endif
 
 #ifndef TOGGLE_DELAY_MS
@@ -67,8 +65,7 @@ bool toggle_timeout = false;
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
  ******************************************************************************/
 
-static void on_timeout(sl_sleeptimer_timer_handle_t *handle,
-                       void *data);
+static void on_timeout(sl_sleeptimer_timer_handle_t *handle, void *data);
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -82,7 +79,8 @@ void app_led_init(void)
   // Create timer for waking up the system periodically to toggle heartbeat.
   sl_sleeptimer_start_periodic_timer_ms(&timer,
                                         TOGGLE_DELAY_MS,
-                                        on_timeout, NULL,
+                                        on_timeout,
+                                        NULL,
                                         0,
                                         SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
 
@@ -106,21 +104,20 @@ void app_led_process_action(void)
  ******************************************************************************/
 void app_config_led_control(bool state)
 {
-  if(state == ON) {
-      sl_led_turn_on(&LED_INSTANCE0);
-  }
-  else if(state == OFF) {
-      sl_led_turn_off(&LED_INSTANCE0);
+  if (state == ON) {
+    sl_led_turn_on(&LED_INSTANCE0);
+  } else if (state == OFF) {
+    sl_led_turn_off(&LED_INSTANCE0);
   }
 }
 
 /***************************************************************************//**
  * Sleeptimer timeout callback.
  ******************************************************************************/
-static void on_timeout(sl_sleeptimer_timer_handle_t *handle,
-                       void *data)
+static void on_timeout(sl_sleeptimer_timer_handle_t *handle, void *data)
 {
   (void)&handle;
   (void)&data;
+
   toggle_timeout = true;
 }

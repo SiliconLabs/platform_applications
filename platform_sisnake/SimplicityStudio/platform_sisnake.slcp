@@ -1,0 +1,66 @@
+project_name: platform_sisnake
+package: platform
+label: Platform - Sisnake
+description: >
+  A simple snake game for Giant Gecko GG11 started kit inspired by the old-school Snake 2
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: glib
+  - id: emlib_csen
+  - id: memlcd_usart
+  - id: mbedtls_entropy_adc
+  - id: sl_system
+  - instance: [btn0, btn1]
+    id: simple_button
+  - id: mbedtls_random
+  - id: device_init
+  - id: dmd_memlcd
+  - id: ls013b7dh06
+  - id: sl_string
+  
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app_csen.h
+    - path: app.h
+    - path: game.h
+    - path: graphics_bitmaps.h
+    - path: graphics.h
+    - path: menu.h
+    - path: sisnake.h
+    - path: types.h
+
+source:
+- path: ../src/main.c
+- path: ../src/app_csen.c
+- path: ../src/app.c
+- path: ../src/game.c
+- path: ../src/graphics.c
+- path: ../src/menu.c
+- path: ../src/sisnake.c
+
+other_file:
+  - path: ../image/figure1.png
+    directory: "image"
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/result.GIF
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="ASCII"?>
+<model:MDescriptors xmlns:model="http://www.silabs.com/ss/Studio.ecore">
+  <descriptors name="platform_pg23_code_execution_ram" label="Platform - Executing Code from RAM" description="This example aims to show how to set up a project so that the entire code is executed in the RAM memory using Silicon Labs development kits.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_pg23_code_execution_ram.SimplicityStudio.platform_pg23_code_execution_ram.slcp"/>
+    <properties key="projectFilePaths" value="platform_pg23_code_execution_ram/SimplicityStudio/platform_pg23_code_execution_ram.slcp"/>
+    <properties key="readmeFiles" value="platform_pg23_code_execution_ram/README.md"/>
+    <properties key="boardCompatibility" value="brd2504a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_trng" label="Platform - True Random Number Generator (TRNG)" description="This project uses the True Random Number Generator (TRNG) peripheral of the EFM32 to generate random numbers.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_trng.SimplicityStudio.platform_trng.slcp"/>
+    <properties key="projectFilePaths" value="platform_trng/SimplicityStudio/platform_trng.slcp"/>
+    <properties key="readmeFiles" value="platform_trng/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a brd2204c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11b.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_peripheral_lesense_adc" label="Platform - Peripheral LESENSE ADC" description="This project demonstrates using LESENSE to trigger ADC conversions and read the result from the LESENSE interrupt handler.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_peripheral_lesense_adc.SimplicityStudio.platform_peripheral_lesense_adc.slcp"/>
+    <properties key="projectFilePaths" value="platform_peripheral_lesense_adc/SimplicityStudio/platform_peripheral_lesense_adc.slcp"/>
+    <properties key="readmeFiles" value="platform_peripheral_lesense_adc/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a brd2204c"/>
+    <properties key="partCompatibility" value=".*efm32gg11b.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_segmentLCD_lowpower" label="Platform - SegmentLCD Low Power" description="This project demonstrates the LCD peripheral with low power mode.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_segmentLCD_lowpower.SimplicityStudio.platform_segmentLCD_lowpower.slcp"/>
+    <properties key="projectFilePaths" value="platform_segmentLCD_lowpower/SimplicityStudio/platform_segmentLCD_lowpower.slcp"/>
+    <properties key="readmeFiles" value="platform_segmentLCD_lowpower/README.md"/>
+    <properties key="boardCompatibility" value="brd2600a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_segmentLCD_tempsensor" label="Platform - Segment LCD and Temperature Sensor" description="This project demonstrates how to use the Si70xx temperature sensor to measure and record temperature values and how to use the Segment LCD to display those values.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_segmentLCD_tempsensor.SimplicityStudio.platform_segmentLCD_tempsensor.slcp"/>
+    <properties key="projectFilePaths" value="platform_segmentLCD_tempsensor/SimplicityStudio/platform_segmentLCD_tempsensor.slcp"/>
+    <properties key="readmeFiles" value="platform_segmentLCD_tempsensor/README.md"/>
+    <properties key="boardCompatibility" value="brd2600a brd2504a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg23.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_iadc_high_accuracy_PG23" label="Platform - IADC High Accuracy Mode - PG23 (BRD2504A)" description="This project shows an example using IADC with high accuracy mode for PG23 (BRD2504A).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_high_accuracy_PG23.SimplicityStudio.platform_iadc_high_accuracy_pg3.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_high_accuracy_PG23/SimplicityStudio/platform_iadc_high_accuracy_pg23.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_high_accuracy_PG23/README.md"/>
+    <properties key="boardCompatibility" value="brd2504a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_lean_watchdog" label="Platform - Lean Watchdog" description="This example project implements a low-power &quot;Lean Watchdog&quot; solution by combining BURTC and FAILDET peripherals on EFR32 Series 2 devices.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_lean_watchdog.SimplicityStudio.platform_lean_watchdog.slcp"/>
+    <properties key="projectFilePaths" value="platform_lean_watchdog/SimplicityStudio/platform_lean_watchdog.slcp"/>
+    <properties key="readmeFiles" value="platform_lean_watchdog/README.md"/>
+    <properties key="boardCompatibility" value="brd4204d com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32zg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_pcnt_edge_counter_series1" label="Platform - Edge Counting Using the EFM32/EFR32 Series 1 Pulse Counter (PCNT)" description="This project demonstrates a way to count edges using the Pulse Counter (PCNT) on Series 1 EFM32 and EFR32 devices.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_pcnt_edge_counter_series1.SimplicityStudio.platform_pcnt_edge_counter_series1.slcp"/>
+    <properties key="projectFilePaths" value="platform_pcnt_edge_counter_series1/SimplicityStudio/platform_pcnt_edge_counter_series1.slcp"/>
+    <properties key="readmeFiles" value="platform_pcnt_edge_counter_series1/README.md"/>
+    <properties key="boardCompatibility" value="brd2102a brd2204a brd2204c brd2500a brd2501a brd4100a brd4103a brd4104a brd4151a brd4158a brd4162a brd4250a brd4253a brd4255a brd4257a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32tg11b.* .*efm32pg1b.* .*efm32pg12b.* .*efm32gg11b.* .*efr32bg1p.* .*efr32bg12p.* .*efr32bg13p.* .*efr32mg1p.* .*efr32mg13p.* .*efr32mg12p.* .*efr32fg1p.* .*efr32fg12p.* .*efr32fg13p.* .*efr32fg14p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_rht_baremetal" label="Platform - Si7021 RHT Sensor Bare-metal" description="The example showcases the utilization of the Si7021 Relative Humidity and Temperature sensor and the built-in LCD screen on the Wireless Starter Kit (WSTK) in a bare-metal configuration.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_rht_baremetal.SimplicityStudio.platform_rht_baremetal.slcp"/>
+    <properties key="projectFilePaths" value="platform_rht_baremetal/SimplicityStudio/platform_rht_baremetal.slcp"/>
+    <properties key="readmeFiles" value="platform_rht_baremetal/README.md"/>
+    <properties key="boardCompatibility" value="brd4182a brd4161a brd4187c brd4104a brd4257b brd4158a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg22.* .*efr32mg12.* .*efr32mg24.* .*efr32bg13.* .*efr32fg14.* .*efr32mg13.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_peripheral_low_energy" label="Platform - Using Autonomous Peripherals in Low Power EM2 Mode" description="This project configures multiple peripherals to work together in low power EM2 mode.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_peripheral_low_energy.SimplicityStudio.platform_peripheral_low_energy.slcp"/>
+    <properties key="projectFilePaths" value="platform_peripheral_low_energy/SimplicityStudio/platform_peripheral_low_energy.slcp"/>
+    <properties key="readmeFiles" value="platform_peripheral_low_energy/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a brd2204c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_dali_eusart_dmadrv_main" label="Platform - DALI Communication using EUSART (Main device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_eusart.SimplicityStudio.platform_dali_eusart_dmadrv_main.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_eusart/SimplicityStudio/platform_dali_eusart_dmadrv_main.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4186c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_dali_eusart_dmadrv_secondary" label="Platform - DALI Communication using EUSART (Secondary device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_eusart.SimplicityStudio.platform_dali_eusart_dmadrv_secondary.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_eusart/SimplicityStudio/platform_dali_eusart_dmadrv_secondary.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4186c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_dali_spi_bitbang_main" label="Platform - DALI Communication using bitbang SPI (Main device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_spi_bitbang.SimplicityStudio.platform_dali_spi_bitbang_main.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_spi_bitbang/SimplicityStudio/platform_dali_spi_bitbang_main.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4161a brd4181a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12.* .*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_dali_spi_bitbang_secondary" label="Platform - DALI Communication using bitbang SPI (Secondary device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_spi_bitbang.SimplicityStudio.platform_dali_spi_bitbang_secondary.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_spi_bitbang/SimplicityStudio/platform_dali_spi_bitbang_secondary.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4161a brd4181a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12.* .*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_dali_spi_bitbang_dmadrv_main" label="Platform - DALI Communication using bitbang SPI with DMADRV (Main device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_spi_bitbang.SimplicityStudio.platform_dali_spi_bitbang_dmadrv_main.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_spi_bitbang/SimplicityStudio/platform_dali_spi_bitbang_dmadrv_main.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4161a brd4181a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12.* .*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_dali_spi_bitbang_dmadrv_secondary" label="Platform - DALI Communication using bitbang SPI with DMADRV (Secondary device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_spi_bitbang.SimplicityStudio.platform_dali_spi_bitbang_dmadrv_secondary.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_spi_bitbang/SimplicityStudio/platform_dali_spi_bitbang_dmadrv_secondary.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4161a brd4181a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12.* .*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_segmentlcd_ldma" label="Platform - Segment LCD with LDMA" description="This project shows how to use the LCD peripheral with the LDMA on the EFR32FG23 Dev Kit (BRD2600A) board and the EFM32PG28 Pro Kit (BRD2506A) board. The example updates the segment LCD in EM2 using the segment LCD driver.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_segmentLCD_ldma.SimplicityStudio.platform_segmentLCD_ldma.slcp"/>
+    <properties key="projectFilePaths" value="platform_segmentLCD_ldma/SimplicityStudio/platform_segmentLCD_ldma.slcp"/>
+    <properties key="readmeFiles" value="platform_segmentLCD_ldma/README.md"/>
+    <properties key="boardCompatibility" value="brd2600a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_iadc_high_speed_pg23" label="Platform - IADC High-speed Mode" description="This project shows how to use the IADC in high-speed mode on the EFM32PG23 Pro Kit (BRD2504A) board.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_high_speed_PG23.SimplicityStudio.platform_iadc_high_speed_pg23.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_high_speed_PG23/SimplicityStudio/platform_iadc_high_speed_pg23.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_high_speed_PG23/README.md"/>
+    <properties key="boardCompatibility" value="brd2504a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_segmentLCD_timer" label="Platform - Segment LCD with Timer" description="This project shows how to use the segment LCD peripheral to display timer functions.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_segmentLCD_timer.SimplicityStudio.platform_segmentLCD_timer.slcp"/>
+    <properties key="projectFilePaths" value="platform_segmentLCD_timer/SimplicityStudio/platform_segmentLCD_timer.slcp"/>
+    <properties key="readmeFiles" value="platform_segmentLCD_timer/README.md"/>
+    <properties key="boardCompatibility" value="brd2600a brd2504a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg23.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_iadc_high_speed_pg28" label="Platform - IADC High-speed Mode" description="This project shows how to use the IADC in high-speed mode on the EFM32PG28 Pro Kit (BRD2506A) board.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_high_speed_PG28.SimplicityStudio.platform_iadc_high_speed_pg28.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_high_speed_PG28/SimplicityStudio/platform_iadc_high_speed_pg28.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_high_speed_PG28/README.md"/>
+    <properties key="boardCompatibility" value="brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_iadc_high_accuracy" label="Platform - IADC High Accuracy Mode - PG28 (BRD2506A)" description="This project shows an example using IADC with high accuracy mode for PG28 (BRD2506A).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_high_accuracy.SimplicityStudio.platform_iadc_high_accuracy_pg28.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_high_accuracy/SimplicityStudio/platform_iadc_high_accuracy_pg28.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_high_accuracy/README.md"/>
+    <properties key="boardCompatibility" value="brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_segmentLCD_lcsense" label="Platform - Segment LCD with LC Sensor" description="This example project uses the LESENSE peripheral to detect metal near the LCSENSE tank circuit, then display the detection via the segment LCD.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_segmentLCD_lcsense.SimplicityStudio.platform_segmentLCD_lcsense.slcp"/>
+    <properties key="projectFilePaths" value="platform_segmentLCD_lcsense/SimplicityStudio/platform_segmentLCD_lcsense.slcp"/>
+    <properties key="readmeFiles" value="platform_segmentLCD_lcsense/README.md"/>
+    <properties key="boardCompatibility" value="brd2600a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg28.* .*efr32fg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_iadc_ldma_ping_pong" label="Platform - IADC with LDMA Ping-Pong" description="This project shows how to use IADC to trigger a single conversion of a single-ended input, then use LDMA to ping-pong transfers 1024 bytes of data between two buffers.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_ldma_ping_pong.SimplicityStudio.platform_iadc_ldma_ping_pong.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_ldma_ping_pong/SimplicityStudio/platform_iadc_ldma_ping_pong.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_ldma_ping_pong/README.md"/>
+    <properties key="boardCompatibility" value="brd4181a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_uart_ldma_circular_buffer" label="Platform - UART Circular Buffer with LDMA" description="This project uses an EFM32GG11 to receive UART frames into a circular buffer using LDMA.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_uart_ldma_circular_buffer.SimplicityStudio.platform_uart_ldma_circular_buffer.slcp"/>
+    <properties key="projectFilePaths" value="platform_uart_ldma_circular_buffer/SimplicityStudio/platform_uart_ldma_circular_buffer.slcp"/>
+    <properties key="readmeFiles" value="platform_uart_ldma_circular_buffer/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a brd2204c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_sisnake" label="Platform - Sisnake" description="A simple snake game for Giant Gecko GG11 started kit inspired by the old-school Snake 2.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_sisnake.SimplicityStudio.platform_sisnake.slcp"/>
+    <properties key="projectFilePaths" value="platform_sisnake/SimplicityStudio/platform_sisnake.slcp"/>
+    <properties key="readmeFiles" value="platform_sisnake/README.md"/>
+    <properties key="boardCompatibility" value="brd2204c brd2204a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_lcd_animation_blink_pg28" label="Platform - PG28 LCD Animation Blink" description="This project shows how to use LCD peripheral on BRD2506A board to perform auto animation and blink without CPU intervention.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_lcd_animation_blink_pg28.SimplicityStudio.platform_lcd_animation_blink_pg28.slcp"/>
+    <properties key="projectFilePaths" value="platform_lcd_animation_blink_pg28/SimplicityStudio/platform_lcd_animation_blink_pg28.slcp"/>
+    <properties key="readmeFiles" value="platform_lcd_animation_blink_pg28/README.md"/>
+    <properties key="boardCompatibility" value="brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_lcd_animation_blink_pg23" label="Platform - PG23 LCD Animation Blink" description="This project shows how to use LCD peripheral on BRD2504A board to perform auto animation and blink without CPU intervention.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_lcd_animation_blink_pg23.SimplicityStudio.platform_lcd_animation_blink_pg23.slcp"/>
+    <properties key="projectFilePaths" value="platform_lcd_animation_blink_pg23/SimplicityStudio/platform_lcd_animation_blink_pg23.slcp"/>
+    <properties key="readmeFiles" value="platform_lcd_animation_blink_pg23/README.md"/>
+    <properties key="boardCompatibility" value="brd2504a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_lcd_animation_blink_fg23" label="Platform - FG23 LCD Animation Blink" description="This project shows how to use LCD peripheral on BRD2600A board to perform auto animation and blink without CPU intervention.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_lcd_animation_blink_fg23.SimplicityStudio.platform_lcd_animation_blink_fg23.slcp"/>
+    <properties key="projectFilePaths" value="platform_lcd_animation_blink_fg23/SimplicityStudio/platform_lcd_animation_blink_fg23.slcp"/>
+    <properties key="readmeFiles" value="platform_lcd_animation_blink_fg23/README.md"/>
+    <properties key="boardCompatibility" value="brd2600a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_async_em01grpaclk_out_series2" label="Platform - Asynchronous EM01GRPA Clock Output" description="This example drives a 50% duty cycle 6 MHz clock generated by TIMER0.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_async_em01grpaclk_out_series2.SimplicityStudio.platform_async_em01grpaclk_out_series2.slcp"/>
+    <properties key="projectFilePaths" value="platform_async_em01grpaclk_out_series2/SimplicityStudio/platform_async_em01grpaclk_out_series2.slcp"/>
+    <properties key="readmeFiles" value="platform_async_em01grpaclk_out_series2/README.md"/>
+    <properties key="boardCompatibility" value="brd4182a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g22.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_flash_read_while_write" label="Platform - Flash Read-While-Write" description="This project shows how to enable the read-while-write feature and provides an example that shows how read-while-write works in the Series 0 Giant Gecko device.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_flash_read_while_write.SimplicityStudio.platform_flash_read_while_write.slcp"/>
+    <properties key="projectFilePaths" value="platform_flash_read_while_write/SimplicityStudio/platform_flash_read_while_write.slcp"/>
+    <properties key="readmeFiles" value="platform_flash_read_while_write/README.md"/>
+    <properties key="boardCompatibility" value="brd2200a brd2200c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg990f.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_i2c_to_nvm3_test" label="Platform - I2C Read to NVM3 Test" description="This project tests the total system latency when sampling a SI7210 Hall Effect sensor on the I2C bus and storing the information to flash using NVM3.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_i2c_to_nvm3_test.SimplicityStudio.platform_i2c_to_nvm3_test.slcp"/>
+    <properties key="projectFilePaths" value="platform_i2c_to_nvm3_test/SimplicityStudio/platform_i2c_to_nvm3_test.slcp"/>
+    <properties key="readmeFiles" value="platform_i2c_to_nvm3_test/README.md"/>
+    <properties key="boardCompatibility" value="brd4184a brd4184b com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32bg22.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_i2c_test_for_efm8_ioexpander" label="Platform - I2C Test for EFM8 IOExpander (IOEXP)" description="This project provides a test tool for EFM8 IOExpander. The example uses the I2C module for communication, a GPIO pin and a built-in LED to detect and signal the interrupts of EFM8 IOExpander. The command line interface also contains simple command interpreters to read and write registers of EFM8 IOExpander. Furthermore, some additional commands are added to make the example as a basic automated test tool. See AN1304: GPIO Expander Based on EFM8MCU Product Family for more information.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_i2c_test_for_efm8_ioexpander.SimplicityStudio.platform_i2c_test_for_efm8_ioexpander.slcp"/>
+    <properties key="projectFilePaths" value="platform_i2c_test_for_efm8_ioexpander/SimplicityStudio/platform_i2c_test_for_efm8_ioexpander.slcp"/>
+    <properties key="readmeFiles" value="platform_i2c_test_for_efm8_ioexpander/README.md"/>
+    <properties key="boardCompatibility" value="brd4314a brd2601b brd2703a brd4108a brd2704a brd4100a brd4101b brd4103a brd4104a brd4109a brd4110a brd4111a brd4113a brd4150a brd4150b brd4150c brd4151a brd4152a brd4153a brd4155a brd4158a brd4159a brd4161a brd4162a brd4163a brd4164a brd4165b brd4166a brd4167a brd4168a brd4169a brd4169b brd4170a brd4172a brd4172b brd4173a brd4174a brd4174b brd4175a brd4176a brd4179b brd4180a brd4180b brd4181a brd4181b brd4181c brd4182a brd4183a brd4183b brd4183c brd4184a brd4184b brd4185a brd4186a brd4186b brd4186c brd4187a brd4187b brd4187c brd4188a brd4188b brd4190a brd4194a brd4195a brd4196a brd4198a brd4300a brd4300b brd4301a brd4302a brd4303a brd4304a brd4305a brd4305c brd4305d brd4305e brd4306a brd4306b brd4306c brd4306d brd4308a brd4308b brd4308c brd4308d brd4309a brd4309b brd4310a brd4311a brd4311b brd4312a brd4316a brd4317a brd4318a brd4319a brd4330a brd4331a brd4335a brd4400a brd4400b brd4401a brd4401b com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g12p.* .*efr32[bm]g13p.* .*efr32[bm]g1p.* .*efr32[bm]g21.* .*efr32[bm]g22.* .*efr32[bm]g24.* .*efr32[bm]g27.* .*[bm]gm1.* .*[bm]gm13.* .*[bm]gm21.* .*[bm]gm22.* .*[bm]gm24.* .*[bm]gm27.* .*efr32[fz]g28.* .*efr32bg1b.* .*efr32mg14p.* .*mgm12.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_rtcc_lcd_wdog" label="Platform - RTCC and Watchdog Bare-metal" description="This example showcases how to use the RTCC to display time and date on the LCD. A watchdog timer is configured to keep track of the system and reset it if the LCD is not updated with time regularly.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_rtcc_lcd_wdog.SimplicityStudio.platform_rtcc_lcd_wdog.slcp"/>
+    <properties key="projectFilePaths" value="platform_rtcc_lcd_wdog/SimplicityStudio/platform_rtcc_lcd_wdog.slcp"/>
+    <properties key="readmeFiles" value="platform_rtcc_lcd_wdog/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_i2cslave_bootloader" label="Platform - I2C Slave Bootloader" description="This is an example bootloader which can accept data as I2C slave.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_i2cslave_bootloader.SimplicityStudio.platform_i2cslave_bootloader.slcp"/>
+    <properties key="projectFilePaths" value="platform_i2cslave_bootloader/SimplicityStudio/platform_i2cslave_bootloader.slcp"/>
+    <properties key="readmeFiles" value="platform_i2cslave_bootloader/README.md"/>
+    <properties key="boardCompatibility" value="brd4314a brd2601b brd2703a brd4108a brd2704a brd4109a brd4110a brd4111a brd4113a brd4176a brd4179b brd4180a brd4180b brd4181a brd4181b brd4181c brd4182a brd4183a brd4183b brd4183c brd4184a brd4184b brd4185a brd4186a brd4186b brd4186c brd4187a brd4187b brd4187c brd4188a brd4188b brd4194a brd4195a brd4196a brd4198a brd4308a brd4308b brd4308c brd4308d brd4309a brd4309b brd4310a brd4311a brd4311b brd4312a brd4316a brd4317a brd4318a brd4319a brd4330a brd4331a brd4335a brd4400a brd4400b brd4401a brd4401b com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g12p.* .*efr32[bm]g13p.* .*efr32[bm]g1p.* .*efr32[bm]g21.* .*efr32[bm]g22.* .*efr32[bm]g24.* .*efr32[bm]g27.* .*[bm]gm1.* .*[bm]gm13.* .*[bm]gm21.* .*[bm]gm22.* .*[bm]gm24.* .*[bm]gm27.* .*efr32[fz]g28.* .*efr32bg1b.* .*efr32mg14p.* .*mgm12.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_rgb_led" label="Platform - WS2812 RGB LED Driver" description="This demo project is set up to control a string of RGB LEDs using Adafruit Ws2812 and GG11 Starter Kit.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_rgb_led.SimplicityStudio.platform_rgb_led_ws2812.slcp"/>
+    <properties key="projectFilePaths" value="platform_rgb_led/SimplicityStudio/platform_rgb_led_ws2812.slcp"/>
+    <properties key="readmeFiles" value="platform_rgb_led/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="SensiML_IMU_Data_Capture" label="Platform - SensiML IMU Data Capture" description="This project uses the Thunderboard Sense 2 (EFR32MG12) and onboard IMU to measure accelerometer and gyroscope data. After that, the measurement data are transmitted via serial UART for consumption by the SensiML Data Studio application.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_SensiML.platform_SensiML_DataCaptureLab.SensiML_IMU.SimplicityStudio.platform_sensiml_imu_data_capture.slcp"/>
+    <properties key="projectFilePaths" value="platform_SensiML/platform_SensiML_DataCaptureLab/SensiML_IMU/SimplicityStudio/platform_sensiml_imu_data_capture.slcp"/>
+    <properties key="readmeFiles" value="platform_SensiML/platform_SensiML_DataCaptureLab/SensiML_IMU/README.md"/>
+    <properties key="boardCompatibility" value="brd4166a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="SensiML_IMU_Data_Capture_BLE" label="Platform - SensiML IMU Data Capture with BLE" description="This project uses the Thunderboard Sense 2 (EFR32MG12) and onboard IMU to measure accelerometer and gyroscope data. After that, the measurement data are transmitted via Bluetooth Low Energy (BLE) for consumption by SensiML Open Gateway.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_SensiML.platform_SensiML_DataCaptureLab.SensiML_IMU_BLE.SimplicityStudio.platform_sensiml_imu_data_capture_ble.slcp"/>
+    <properties key="projectFilePaths" value="platform_SensiML/platform_SensiML_DataCaptureLab/SensiML_IMU_BLE/SimplicityStudio/platform_sensiml_imu_data_capture_ble.slcp"/>
+    <properties key="readmeFiles" value="platform_SensiML/platform_SensiML_DataCaptureLab/SensiML_IMU_BLE/README.md"/>
+    <properties key="boardCompatibility" value="brd4166a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Advanced Wireless\ Technology|Bluetooth"/>
+  </descriptors>
+  <descriptors name="SensiML_Microphone_Data_Capture" label="Platform - SensiML Microphone Data Capture" description="This project uses the Thunderboard Sense 2 (EFR32MG12) and onboard I2S microphone sensor to take audio measurements and send data via serial UART for consumption by the SensiML Data Studio application.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_SensiML.platform_SensiML_DataCaptureLab.SensiML_Microphone.SimplicityStudio.platform_sensiml_microphone_data_capture.slcp"/>
+    <properties key="projectFilePaths" value="platform_SensiML/platform_SensiML_DataCaptureLab/SensiML_Microphone/SimplicityStudio/platform_sensiml_microphone_data_capture.slcp"/>
+    <properties key="readmeFiles" value="platform_SensiML/platform_SensiML_DataCaptureLab/SensiML_Microphone/README.md"/>
+    <properties key="boardCompatibility" value="brd4166a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="SensiML_IMU_Recognition" label="Platform - SensiML IMU Recognition" description="This example project uses the Knowledge Pack created by SensiML along with the IMU component drivers to take accelerometer and gyroscope data and classify them into Horizontal, Stationary and Vertical movements.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_SensiML.platform_SensiML_Recognition.SensiML_IMU.SimplicityStudio.platform_sensiml_imu_recognition.slcp"/>
+    <properties key="projectFilePaths" value="platform_SensiML/platform_SensiML_Recognition/SensiML_IMU/SimplicityStudio/platform_sensiml_imu_recognition.slcp"/>
+    <properties key="readmeFiles" value="platform_SensiML/platform_SensiML_Recognition/SensiML_IMU/README.md"/>
+    <properties key="boardCompatibility" value="brd4166a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Capability|Machine\ Learning Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="SensiML_IMU_Recognition_BLE" label="Platform - SensiML IMU Recognition with BLE" description="This example project uses the Knowledge Pack created by SensiML along with the IMU component drivers to take accelerometer and gyroscope data and classify them into Horizontal, Stationary and Vertical movements. The output can be viewed over serial VCOM or through SensiML bluetooth app.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_SensiML.platform_SensiML_Recognition.SensiML_IMU_BLE.SimplicityStudio.platform_sensiml_imu_recognition_ble.slcp"/>
+    <properties key="projectFilePaths" value="platform_SensiML/platform_SensiML_Recognition/SensiML_IMU_BLE/SimplicityStudio/platform_sensiml_imu_recognition_ble.slcp"/>
+    <properties key="readmeFiles" value="platform_SensiML/platform_SensiML_Recognition/SensiML_IMU_BLE/README.md"/>
+    <properties key="boardCompatibility" value="brd4166a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Capability|Machine\ Learning Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Advanced Wireless\ Technology|Bluetooth"/>
+  </descriptors>
+  <descriptors name="SensiML_Microphone_Recognition" label="Platform - SensiML Microphone Recogniton" description="This project uses the Thunderboard Sense 2 (EFR32MG12) and the onboard I2S microphone sensor to take audio measurements and classify them into Silence, Finger Snaps and General Talking.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_SensiML.platform_SensiML_Recognition.SensiML_Microphone.SimplicityStudio.platform_sensiml_microphone_recognition.slcp"/>
+    <properties key="projectFilePaths" value="platform_SensiML/platform_SensiML_Recognition/SensiML_Microphone/SimplicityStudio/platform_sensiml_microphone_recognition.slcp"/>
+    <properties key="readmeFiles" value="platform_SensiML/platform_SensiML_Recognition/SensiML_Microphone/README.md"/>
+    <properties key="boardCompatibility" value="brd4166a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Advanced"/>
+  </descriptors>
+  <descriptors name="platform_squash_freertos_glib" label="Platform - Squash FreeRTOS Glib" description="This project demonstrates FreeRTOS tasks using interrupts. The demo uses the integrated LCD, buttons and implements a simple squash game.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_squash_freertos_glib.SimplicityStudio.platform_squash_freertos_glib.slcp"/>
+    <properties key="projectFilePaths" value="platform_squash_freertos_glib/SimplicityStudio/platform_squash_freertos_glib.slcp"/>
+    <properties key="readmeFiles" value="platform_squash_freertos_glib/README.md"/>
+    <properties key="boardCompatibility" value="brd4162a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg12.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_nvm3_integrity_test" label="Platform - NVM3 Integrity Test" description="This project performs frequent NVM3 writes and checks that there has been no corruption of the NVM3 data, or changes to the CRC of the program flash space.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_nvm3_integrity_test.SimplicityStudio.platform_nvm3_integrity_test.slcp"/>
+    <properties key="projectFilePaths" value="platform_nvm3_integrity_test/SimplicityStudio/platform_nvm3_integrity_test.slcp"/>
+    <properties key="readmeFiles" value="platform_nvm3_integrity_test/README.md"/>
+    <properties key="boardCompatibility" value="brd2601b brd2703a brd4100a brd4103a brd4104a brd4109a brd4110a brd4111a brd4113a brd4150a brd4150b brd4150c brd4151a brd4152a brd4153a brd4155a brd4158a brd4159a brd4161a brd4162a brd4163a brd4164a brd4165b brd4166a brd4167a brd4168a brd4169a brd4169b brd4170a brd4172a brd4172b brd4173a brd4174a brd4174b brd4175a brd4176a brd4179b brd4180a brd4180b brd4181a brd4181b brd4181c brd4182a brd4185a brd4186a brd4186b brd4186c brd4187a brd4187b brd4187c brd4188a brd4188b brd4190a brd4194a brd4195a brd4196a brd4198a brd4300a brd4300b brd4301a brd4302a brd4303a brd4304a brd4305a brd4305c brd4305d brd4305e brd4306a brd4306b brd4306c brd4306d brd4308a brd4308b brd4308c brd4308d brd4309a brd4309b brd4310a brd4311a brd4311b brd4312a brd4316a brd4317a brd4318a brd4319a brd4335a brd4400a brd4400b brd4401a brd4401b com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g12p.* .*efr32[bm]g13p.* .*efr32[bm]g1p.* .*efr32[bm]g21.* .*efr32[bm]g22.* .*efr32[bm]g24.* .*efr32[bm]g27.* .*[bm]gm1.* .*[bm]gm13.* .*[bm]gm21.* .*[bm]gm22.* .*[bm]gm24.* .*[bm]gm27.* .*efr32[fz]g28.* .*efr32bg1b.* .*efr32mg14p.* .*mgm12.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_micrium_multiple_adc_ldma_task" label="Platform - Micrium Multiple ADC LMDA Task" description="This project configures ADCs to be triggered by GPIO via PRS. The sampled data is then transferred to memory via LDMA. The sampled data is then converted to voltages and printed on the serial terminal using multiple tasks in Micirum OS.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_micrium_multiple_adc_ldma_task.SimplicityStudio.platform_micrium_multiple_adc_ldma_task.slcp"/>
+    <properties key="projectFilePaths" value="platform_micrium_multiple_adc_ldma_task/SimplicityStudio/platform_micrium_multiple_adc_ldma_task.slcp"/>
+    <properties key="readmeFiles" value="platform_micrium_multiple_adc_ldma_task/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_peripheral_ldma_arbitration" label="Platform - Linked DMA (LDMA) Arbitration" description="This project demonstrates various arbitration configurations of multiple transfers, each consisting of 256 words transferred from CNT of WTIMER0 to memory buffers. Transfers are configured to arbitrate after 32 words. Arbitration changes order in which data is copied. After transfer, the order is reconstructed and shown on Virtual COM.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_peripheral_ldma_arbitration.SimplicityStudio.platform_peripheral_ldma_arbitration.slcp"/>
+    <properties key="projectFilePaths" value="platform_peripheral_ldma_arbitration/SimplicityStudio/platform_peripheral_ldma_arbitration.slcp"/>
+    <properties key="readmeFiles" value="platform_peripheral_ldma_arbitration/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_parse_gbl_metadata_singleshot" label="Platform - Parse GBL Metadata in Single Shot" description="This example demonstrates how to use Application Parser Interface described in UG266. The GBL image in the storage slot is first verified and the metadata in the stored image is parsed in a single shot using image parser function of the gecko bootloader interface API.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_bootloader_interface.parse_gbl_metadata_singleshot.SimplicityStudio.parse_gbl_metadata_singleshot.slcp"/>
+    <properties key="projectFilePaths" value="platform_bootloader_interface/parse_gbl_metadata_singleshot/SimplicityStudio/parse_gbl_metadata_singleshot.slcp"/>
+    <properties key="readmeFiles" value="platform_bootloader_interface/parse_gbl_metadata_singleshot/README.md"/>
+    <properties key="boardCompatibility" value="brd4161a brd4158a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g12p.* .*efr32[bm]g13p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_parse_gbl_metadata_buffersize_steps" label="Platform - Parse GBL Metadata in BufferSize Steps" description="This example demonstrates how to use Application Parser Interface described in UG266. The GBL image in the storage slot is first verified and the metadata in the stored image is parsed in BufferSize steps using image parser function of the gecko bootloader interface API.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_bootloader_interface.parse_gbl_metadata_buffersize_steps.SimplicityStudio.parse_gbl_metadata_buffersize_steps.slcp"/>
+    <properties key="projectFilePaths" value="platform_bootloader_interface/parse_gbl_metadata_buffersize_steps/SimplicityStudio/parse_gbl_metadata_buffersize_steps.slcp"/>
+    <properties key="readmeFiles" value="platform_bootloader_interface/parse_gbl_metadata_buffersize_steps/README.md"/>
+    <properties key="boardCompatibility" value="brd4161a brd4158a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g12p.* .*efr32[bm]g13p.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_qi_rx_base" label="Platform - QI PRx communication protocol" description="This project implements the QI Power Receiver protocol (PRx) as defined by the Wireless Power Consortium on any Silicon Labs EFx32 platform.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_qi_rx_base.SimplicityStudio.platform_qi_rx_base.slcp"/>
+    <properties key="projectFilePaths" value="platform_qi_rx_base/SimplicityStudio/platform_qi_rx_base.slcp"/>
+    <properties key="readmeFiles" value="platform_qi_rx_base/README.md"/>
+    <properties key="boardCompatibility" value="brd4181b com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_qi_rx_base_fast_response" label="Platform - QI PRx communication protocol with fast response" description="This project implements the QI Power Receiver protocol (PRx) as defined by the Wireless Power Consortium on any Silicon Labs EFx32 platform.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_qi_rx_base.SimplicityStudio.platform_qi_rx_base_fast_response.slcp"/>
+    <properties key="projectFilePaths" value="platform_qi_rx_base/SimplicityStudio/platform_qi_rx_base_fast_response.slcp"/>
+    <properties key="readmeFiles" value="platform_qi_rx_base/README.md"/>
+    <properties key="boardCompatibility" value="brd4181b com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC Project\ Difficulty|Advanced"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_spi_flash_bandwidth_ldma" label="Platform - EFR32xG21 LDMA SPI Throughput" description="This project calculates the bandwidth achievable when the LDMA is used to read data from a SPI flash memory with the USART operating in synchronous mode.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_spi_flash_bandwidth.ldma.SimplicityStudio.platform_spi_flash_bandwidth_ldma.slcp"/>
+    <properties key="projectFilePaths" value="platform_spi_flash_bandwidth/ldma/SimplicityStudio/platform_spi_flash_bandwidth_ldma.slcp"/>
+    <properties key="readmeFiles" value="platform_spi_flash_bandwidth/ldma/README.md"/>
+    <properties key="boardCompatibility" value="brd4180a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_spi_flash_bandwidth_polled" label="Platform - EFR32xG21 Polled SPI Throughput" description="This project calculates the bandwidth achievable when data is read from a SPI flash memory using polled transfers with the USART operating in synchronous mode.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_spi_flash_bandwidth.polled.SimplicityStudio.platform_spi_flash_bandwidth_polled.slcp"/>
+    <properties key="projectFilePaths" value="platform_spi_flash_bandwidth/polled/SimplicityStudio/platform_spi_flash_bandwidth_polled.slcp"/>
+    <properties key="readmeFiles" value="platform_spi_flash_bandwidth/polled/README.md"/>
+    <properties key="boardCompatibility" value="brd4180a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_gpcrc_blank_check" label="Platform - Flash blank checking using the GPCRC" description="This project benchmarks the performance of blank checking a page of the flash using the General Purpose Cyclic Redundancy Check (GPCRC) fed by the Linked Direct Memory Access (LDMA) and brute forcing blank checking with the CPU.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_gpcrc_blank_check.SimplicityStudio.platform_gpcrc_blank_check.slcp"/>
+    <properties key="projectFilePaths" value="platform_gpcrc_blank_check/SimplicityStudio/platform_gpcrc_blank_check.slcp"/>
+    <properties key="readmeFiles" value="platform_gpcrc_blank_check/README.md"/>
+    <properties key="boardCompatibility" value="brd2204a brd4161a brd4257b brd4104a brd4180a brd4182a brd4158a brd4187c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32gg11.* .*efr32mg12.* .*efr32fg14.* .*efr32bg13.* .*efr32mg21.* .*efr32mg22.* .*efr32mg13.* .*efr32xg24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+</model:MDescriptors>

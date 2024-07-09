@@ -34,7 +34,6 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,7 +48,7 @@
 #endif
 
 #ifndef M_PI
-#define M_PI    3.14159265358979323846
+#define M_PI     3.14159265358979323846
 #endif
 
 // -----------------------------------------------------------------------------
@@ -121,7 +120,7 @@ static void calc_hsh_parameters(filter_coefficient_t *c);
  *
  * @return Filtered sample.
  ******************************************************************************/
-static sample_t compute(sample_t sample, biquad_t * b);
+static sample_t compute(sample_t sample, biquad_t *b);
 
 // -----------------------------------------------------------------------------
 // Public function definitions
@@ -196,12 +195,16 @@ sl_status_t fil_init(filter_context_t *ctx, filter_parameters_t *fp)
 /***************************************************************************//**
  * Filter audio data.
  ******************************************************************************/
-sl_status_t fil_filter(filter_context_t *ctx, int16_t *in, int16_t *out, uint32_t n_frames)
+sl_status_t fil_filter(filter_context_t *ctx,
+                       int16_t *in,
+                       int16_t *out,
+                       uint32_t n_frames)
 {
   sample_t sample;
   uint32_t idx;
 
-  if ((ctx == NULL) || (in == NULL) || (out == NULL) || (ctx->biquad_list == NULL)) {
+  if ((ctx == NULL) || (in == NULL) || (out == NULL)
+      || (ctx->biquad_list == NULL)) {
     return SL_STATUS_NULL_POINTER;
   }
 
@@ -295,7 +298,8 @@ static sample_t compute(sample_t sample, biquad_t *b)
   sample_t result;
 
   // Compute result.
-  result = b->a0 * sample + b->a1 * b->x1 + b->a2 * b->x2 - b->a3 * b->y1 - b->a4 * b->y2;
+  result = b->a0 * sample + b->a1 * b->x1 + b->a2 * b->x2 - b->a3 * b->y1
+           - b->a4 * b->y2;
 
   // Shift x1 to x2, sample to x1.
   b->x2 = b->x1;

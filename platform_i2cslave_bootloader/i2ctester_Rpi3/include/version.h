@@ -36,7 +36,7 @@
 #ifndef _VERSION_H
 #define _VERSION_H
 
-///i2ctester version string
+/// i2ctester version string
 #define VERSION_STR "v0.1ß"
 
 #endif

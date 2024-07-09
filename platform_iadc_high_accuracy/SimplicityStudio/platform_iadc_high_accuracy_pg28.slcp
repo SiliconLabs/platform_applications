@@ -1,0 +1,56 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_iadc_high_accuracy_PG28
+label: Platform - IADC High Accuracy Mode - PG28 (BRD2506A)
+description: |
+  This project shows an example using IADC with high accuracy mode for PG28 (BRD2506A).
+
+category: Example|Platform
+package: platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+  - path: ../README.md
+
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+- path: ../src/iadc_single.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+  - path: iadc_single.h
+
+component:
+- id: emlib_iadc
+- id: sl_system
+- id: device_init
+- id: emlib_prs
+- id: emlib_ldma
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/add_breakpoint.png
+    directory: "image"
+  - path: ../image/pulse_on_output_pin.png
+    directory: "image"
+  - path: ../image/window_expression.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

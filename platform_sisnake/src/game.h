@@ -57,7 +57,7 @@ void game_over_tick (const enum event_t touch_slider_state);
  * Gets the neighbor field coordinate determined by the given direction.
  ******************************************************************************/
 map_coords_t get_neighbor_field_coords(map_coords_t field_coords,
-                                   const enum direction_t next_field_direction);
+                                       const enum direction_t next_field_direction);
 
 #ifdef __cplusplus
 }

@@ -27,6 +27,7 @@
 #define GRAPHICS_H_
 
 #include "types.h"
+#include "sl_string.h"
 
 #ifdef __cplusplus
 extern "C" {

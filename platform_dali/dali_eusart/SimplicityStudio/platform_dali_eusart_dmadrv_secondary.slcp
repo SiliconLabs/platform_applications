@@ -1,0 +1,62 @@
+project_name: platform_dali_eusart_dmadrv_secondary
+package: platform
+label: Platform - DALI Communication using EUSART (Secondary device)
+description: >
+  This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).
+category: Platform Examples
+quality: experimental
+
+filter:
+  - name: "Device Type"
+    value: ["SoC"]
+  - name: "Project Difficulty"
+    value: ["Advanced"]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: power_manager
+  - id: component_catalog
+  - id: iostream
+  - id: iostream_retarget_stdio
+  - id: iostream_usart
+    instance: [vcom]
+  - id: sleeptimer
+  - id: emlib_eusart
+
+define:
+- name: DALI_SECONDARY
+
+readme:
+- path: ../../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: dali_define.h
+      - path: dali_macro.h
+      - path: dali_config.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+configuration:
+  - name: SL_STACK_SIZE
+    value: "2752"
+  - name: SL_HEAP_SIZE
+    value: "9200"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: "1"
+    condition:
+      - iostream_usart
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+    condition:
+      - iostream_usart
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -4,7 +4,7 @@
  * @version 1.0.0
  *******************************************************************************
  * # License
- * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -36,19 +36,13 @@
  * This code will be maintained at the sole discretion of Silicon Labs.
  *
  ******************************************************************************/
-// -----------------------------------------------------------------------------
-//                                   Includes
-// -----------------------------------------------------------------------------
-#include "printf.h"
+#include "app_log.h"
 #include "sl_sleeptimer.h"
 #include "sl_i2cspm.h"
 #include "sl_i2cspm_instances.h"
 #include "sl_si70xx.h"
 #include "app_rht.h"
 
-// -----------------------------------------------------------------------------
-//                              Macros and Typedefs
-// -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 //                          Static Function Declarations
 // -----------------------------------------------------------------------------
@@ -58,14 +52,12 @@ static void timer_expiration_callback(sl_sleeptimer_timer_handle_t *handle,
 // -----------------------------------------------------------------------------
 //                                Global Variables
 // -----------------------------------------------------------------------------
-static sl_sleeptimer_timer_handle_t delay_timer; //Sleep timer instance
+static sl_sleeptimer_timer_handle_t delay_timer; // Sleep timer instance
 
-// -----------------------------------------------------------------------------
-//                                Static Variables
-// -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 //                          Public Function Definitions
 // -----------------------------------------------------------------------------
+
 /***************************************************************************//**
  * @brief
  *     Verifies if the RHT sensor can be reached.
@@ -74,10 +66,10 @@ void rht_init(void)
 {
   sl_status_t status = SL_STATUS_OK;
 
-  status = sl_si70xx_init(sl_i2cspm_rht_sensor, SI7021_ADDR);
+  status = sl_si70xx_init(sl_i2cspm_sensor, SI7021_ADDR);
 
   if (status != SL_STATUS_OK) {
-    printf("Error 0x%lx during RHT sensor init!", status);
+    app_log("Error 0x%lx during RHT sensor init!", status);
   }
 }
 
@@ -95,14 +87,14 @@ void rht_get_hum_and_temp(uint32_t *rh_data, int32_t *temp_data)
 {
   sl_status_t status = SL_STATUS_OK;
 
-  status = sl_si70xx_measure_rh_and_temp(sl_i2cspm_rht_sensor,
+  status = sl_si70xx_measure_rh_and_temp(sl_i2cspm_sensor,
                                          SI7021_ADDR,
                                          rh_data,
                                          temp_data);
 
-   if (status != SL_STATUS_OK) {
-     printf("Error 0x%lx retrieving sensor data!", status);
-   }
+  if (status != SL_STATUS_OK) {
+    app_log("Error 0x%lx retrieving sensor data!", status);
+  }
 }
 
 /***************************************************************************//**
@@ -129,7 +121,7 @@ void rht_intermeasurement_delay(uint16_t time_ms, volatile bool *ongoing_delay)
                                          timer_expiration_callback,
                                          (void *)ongoing_delay,
                                          0,
-                       SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
+                                         SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
 
   if (error_code != SL_STATUS_OK) {
     while (1) {
@@ -140,6 +132,7 @@ void rht_intermeasurement_delay(uint16_t time_ms, volatile bool *ongoing_delay)
 // -----------------------------------------------------------------------------
 //                          Static Function Definitions
 // -----------------------------------------------------------------------------
+
 /*******************************************************************************
  * Timer expiration callback.
  *
@@ -152,7 +145,6 @@ void rht_intermeasurement_delay(uint16_t time_ms, volatile bool *ongoing_delay)
 static void timer_expiration_callback(sl_sleeptimer_timer_handle_t *handle,
                                       void *data)
 {
-
   volatile bool *wait_flag = (bool *)data;
 
   (void)&handle; // Unused parameter.

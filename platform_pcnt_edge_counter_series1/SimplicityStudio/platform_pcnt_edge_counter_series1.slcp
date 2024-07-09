@@ -1,0 +1,140 @@
+project_name: platform_pcnt_edge_counter_series1
+package: platform
+label: Platform - Edge Counting Using the EFM32/EFR32 Series 1 Pulse Counter (PCNT)
+description: >
+  This project demonstrates a way to count edges using the Pulse Counter (PCNT) on Series 1 EFM32 and EFR32 devices.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: emlib_pcnt
+  - id: emlib_prs
+  - id: simple_led
+    instance: [led0]
+  - id: emlib_gpio_simple_init
+    instance: [pin]
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/gpio_config.png
+    directory: "image"
+
+config_file:
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd2102a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd2102a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd2204a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd2204a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd2204c/sl_emlib_gpio_init_pin_config.h
+    condition: [brd2204c]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd2500a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd2500a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd2501a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd2501a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4100a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4100a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4103a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4103a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4104a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4104a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4151a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4151a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4158a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4158a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4162a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4162a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4250a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4250a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4253a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4253a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4255a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4255a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: pin
+    path: ../config/brd4257a/sl_emlib_gpio_init_pin_config.h
+    condition: [brd4257a]
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -1,0 +1,58 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_gpcrc_blank_check
+label: Platform - Flash blank checking using the GPCRC
+
+description: |
+  This project benchmarks the performance of blank checking a page of the flash using the General Purpose Cyclic Redundancy Check (GPCRC) fed by the Linked Direct Memory Access (LDMA) and brute forcing blank checking with the CPU.
+
+category: Example|Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+
+include:
+- path: ../inc
+  file_list:
+    - path: app.h
+
+component:
+- id: device_init
+- id: sl_system
+- id: emlib_gpcrc
+- id: emlib_timer
+- id: iostream_usart
+  instance: [vcom]
+- id: app_log
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+- path: ../image/create_project.png
+  directory: "image"
+- path: ../image/board_control.png
+  directory: "image"
+- path: ../image/console_log.png
+  directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -1,0 +1,45 @@
+project_name: platform_lean_watchdog
+label: Platform - Lean Watchdog
+description: >
+  This example project implement a low-power “Lean Watchdog” solution by combining BURTC and FAILDET peripherals on EFR32 Series 2 devices.
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h 
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: emlib_rmu
+  - id: emlib_wdog
+  - id: emlib_burtc
+  - id: sleeptimer
+  - id: power_manager
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+  - path: README.md,
+    focus: true

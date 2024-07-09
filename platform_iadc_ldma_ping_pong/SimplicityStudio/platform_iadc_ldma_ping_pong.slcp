@@ -1,0 +1,48 @@
+project_name: platform_iadc_ldma_ping_pong
+package: platform
+label: Platform - IADC with LDMA Ping-Pong
+description: >
+  This project shows how to use IADC to trigger a single conversion of a single-ended input, then use LDMA to ping-pong transfers 1024 bytes of data between two buffers
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: emlib_rtcc
+  - id: emlib_iadc
+  - id: emlib_prs
+  - id: emlib_ldma
+  - id: sl_system
+  - id: device_init
+  - instance: [led0, led1]
+    id: simple_led
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app.h
+
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+
+other_file:
+  - path: ../image/energy_profiler_capture.png
+    directory: "image"
+  - path: ../image/create_example.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

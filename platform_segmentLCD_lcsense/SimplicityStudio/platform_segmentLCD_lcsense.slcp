@@ -1,0 +1,55 @@
+project_name: platform_segmentLCD_lcsense
+label: Platform - Segment LCD with LC Sensor
+description: >
+  This example project uses the LESENSE peripheral to detect metal near the LCSENSE tank circuit, then display the detection via the segment LCD.
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h 
+
+source:
+  - path: ../src/main.c
+  - path: ../src/brd2506a/app.c
+    condition: [brd2506a]
+  - path: ../src/brd2600a/app.c
+    condition: [brd2600a]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: emlib_acmp
+  - id: emlib_lcd
+  - id: emlib_lesense
+  - id: emlib_pcnt
+  - id: emlib_prs
+  - id: emlib_vdac
+  - id: segment_lcd_driver
+  - id: power_manager
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/overview.png
+    directory: "image"
+  - path: ../image/metal_detect.gif
+    directory: "image"
+
+ui_hints:
+  highlight:
+  - path: README.md,
+    focus: true

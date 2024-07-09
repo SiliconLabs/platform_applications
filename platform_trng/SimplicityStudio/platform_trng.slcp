@@ -1,0 +1,51 @@
+project_name: platform_trng
+package: platform
+label: Platform - True Random Number Generator (TRNG)
+description: >
+  This project uses the True Random Number Generator (TRNG) peripheral of the EFM32 to generate random numbers.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: udelay
+  - id: iostream_retarget_stdio
+  - id: iostream_usart
+    instance: [vcom]
+  - id: printf
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: 1
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: 1
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

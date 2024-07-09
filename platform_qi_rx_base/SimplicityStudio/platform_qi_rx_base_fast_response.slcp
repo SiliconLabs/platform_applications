@@ -1,0 +1,56 @@
+project_name: platform_qi_rx_base_fast_response
+package: platform
+label: Platform - QI PRx communication protocol with fast response
+description: >
+  This project implements the QI Power Receiver protocol (PRx) as defined by the Wireless Power Consortium on any Silicon Labs EFx32 platform.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: sl_system
+  - id: emlib_usart
+  - id: emlib_prs
+  - id: emlib_ldma
+  - id: device_init_dpll
+  - id: device_init_hfxo
+  - id: device_init_clocks
+  - id: device_init_nvic
+  - id: device_init_emu
+  - id: device_init_lfrco
+
+readme:
+- path: ../README.md
+
+source:
+  - path: ../test/fixed_fast_after_por_gpio/main.c
+
+other_file:
+  - path: ../image/qi_base_gpio.png
+    directory: "image"
+  - path: ../image/qi_base_por_time_optimized.png
+    directory: "image"
+  - path: ../image/qi_base_por_time.png
+    directory: "image"
+  - path: ../image/qi_class0_prx_init.png
+    directory: "image"
+  - path: ../image/qi_msg_timing.png
+    directory: "image"
+  - path: ../image/qi_sig_msg.png
+    directory: "image"
+  - path: ../image/create_example_1.png
+    directory: "image"
+  - path: ../image/create_example_2.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -1,0 +1,78 @@
+project_name: platform_dali_spi_bitbang_dmadrv_secondary
+package: platform
+label: Platform - DALI Communication using bitbang SPI with DMADRV (Secondary device)
+description: >
+  This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).
+category: Platform Examples
+quality: experimental
+
+filter:
+  - name: "Device Type"
+    value: ["SoC"]
+  - name: "Project Difficulty"
+    value: ["Advanced"]
+
+component:
+  - id: emlib_chip
+  - id: emlib_usart
+  - id: emlib_timer
+  - id: emlib_prs
+  - id: dmadrv
+
+define:
+  - name: DEBUG_EFM
+    value: 1
+  - name: RETARGET_VCOM
+    value: 1
+  - name: DALI_USE_DMADRV
+  - name: DALI_SECONDARY
+
+readme:
+- path: ../../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: dali_define.h
+      - path: dali_macro.h
+      - path: dali_config.h
+  - path: ../../common/inc
+    file_list:
+      - path: retargetserial.h
+      - path: bsp.h
+      - path: bsp_bcp.h
+  - path: ../../common/inc/brd4161a
+    condition:
+      - brd4161a
+    file_list:
+      - path: bspconfig.h
+      - path: retargetserialconfig.h
+  - path: ../../common/inc/brd4181a
+    condition:
+      - brd4181a
+    file_list:
+      - path: bspconfig.h
+      - path: retargetserialconfig.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/dali_tx.c
+  - path: ../src/dali_table.c
+  - path: ../src/dali_rx.c
+  - path: ../../common/src/retargetio.c
+  - path: ../../common/src/retargetserial.c
+
+configuration:
+  - name: SL_STACK_SIZE
+    value: "2752"
+  - name: SL_HEAP_SIZE
+    value: "9200"
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+    condition:
+      - iostream_usart
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

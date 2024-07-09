@@ -34,8 +34,6 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-
-#include "sl_simple_led.h"
 #include "sl_simple_led_instances.h"
 #include "sl_sleeptimer.h"
 
@@ -44,11 +42,11 @@
  ******************************************************************************/
 
 #ifndef LED_INSTANCE0
-#define LED_INSTANCE0    sl_led_led0
+#define LED_INSTANCE0           sl_led_led0
 #endif
 
 #ifndef LED_INSTANCE1
-#define LED_INSTANCE1    sl_led_led1
+#define LED_INSTANCE1           sl_led_led1
 #endif
 
 #ifndef TOGGLE_DELAY_MS
@@ -81,7 +79,8 @@ void app_led_init(void)
   // Create timer for waking up the system periodically to toggle heartbeat.
   sl_sleeptimer_start_periodic_timer_ms(&timer,
                                         TOGGLE_DELAY_MS,
-                                        on_timeout, NULL,
+                                        on_timeout,
+                                        NULL,
                                         0,
                                         SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
 
@@ -105,8 +104,8 @@ void app_led_process_action(void)
  ******************************************************************************/
 void app_config_led_off(void)
 {
-      sl_led_turn_off(&LED_INSTANCE0);
-  }
+  sl_led_turn_off(&LED_INSTANCE0);
+}
 
 /***************************************************************************//**
  * Sleeptimer timeout callback.

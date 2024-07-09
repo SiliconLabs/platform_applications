@@ -70,6 +70,12 @@ SECTIONS
     *(SORT(.dtors.*))
     *(.dtors)
 
+    __code_classification_validator_start__ = .;
+    . = . + 0x20;
+    *(code_classification_validator)
+    . = ALIGN(32);
+    __code_classification_validator_end__ = .;
+
     *(.rodata*)
     *(.eh_frame*)
   } > FLASH
@@ -146,6 +152,7 @@ SECTIONS
     
     linker_code_begin = .;
     *(SORT_BY_ALIGNMENT(.text*))
+    . = ALIGN(32);
     linker_code_end = .;
 
     PROVIDE(__ram_func_section_start = .);
@@ -187,6 +194,27 @@ SECTIONS
     . = ALIGN(4);
     __bss_end__ = .;
   } > RAM
+
+  __ramfuncs_start__ = .;
+
+  __vma_ramfuncs_start__ = .;
+  __lma_ramfuncs_start__ = __etext + SIZEOF(.data);
+
+  __text_application_ram_offset__ = . - __vma_ramfuncs_start__;
+  text_application_ram . : AT(__lma_ramfuncs_start__ + __text_application_ram_offset__)
+  {
+    . = ALIGN(4);
+    __text_application_ram_start__ = .;
+    *(text_application_ram)
+    . = ALIGN(4);
+    __text_application_ram_end__ = .;
+  } > RAM
+
+  . = ALIGN(4);
+  __vma_ramfuncs_end__ = .;
+  __lma_ramfuncs_end__ = __lma_ramfuncs_start__ + __text_application_ram_offset__ + SIZEOF(text_application_ram);
+
+  __ramfuncs_end__ = .;
 
   .heap (COPY):
   {

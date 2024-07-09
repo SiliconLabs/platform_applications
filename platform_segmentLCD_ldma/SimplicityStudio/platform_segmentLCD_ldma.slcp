@@ -1,0 +1,47 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_segmentlcd_ldma
+label: Platform - Segment LCD with LDMA
+description: |
+  This project shows how to use the LCD peripheral with the LDMA on the EFR32FG23 Dev Kit (BRD2600A) board and the EFM32PG28 Pro Kit (BRD2506A) board. The example updates the segment LCD in EM2 using the segment LCD driver.
+
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: emlib_ldma
+  - id: segment_lcd_driver
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+
+source:
+- path: ../src/main.c
+- path: ../src/app_fg23.c
+  condition: [brd2600a]
+- path: ../src/app_pg28.c
+  condition: [brd2506a]
+
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

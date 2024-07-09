@@ -1,38 +1,63 @@
-# Segment LCD with Timer Functionality Example
+# Platform - Segment LCD with Timer #
 
-## Summary
+![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_common.json&label=Type&query=type&color=green)
+![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_common.json&label=Technology&query=technology&color=green)
+![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_common.json&label=License&query=license&color=green)
+![SDK badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_common.json&label=SDK&query=sdk&color=green)
+![Build badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_build_status.json)
+![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_common.json&label=Flash&query=flash&color=blue)
+![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_timer_common.json&label=RAM&query=ram&color=blue)
+## Overview ##
 
 This project shows how to use the segment LCD peripheral on two different xG23 boards and PG28 pro kit to display
 timer functions.
 
-## Gecko SDK Version
+## Gecko SDK Version ##
 
-v4.3.0
+- GSDK v4.4.3
 
-## Hardware Required
+## Hardware Required ##
 
-* Board:  Silicon Labs EFR32FG23 Dev Kit (BRD2600A)
-  * Device: EFR32FG23B010F512GM48
-* Board:  Silicon Labs EFM32PG23 Dev Kit (BRD2504A)
-  * Device: EFM32PG23B310F512IM48
-* Board:  Silicon Labs EFM32PG28 Pro Kit Board (BRD2506A)
-  * Device: EFM32PG28B310F1024IM68
+- [Silicon Labs EFR32FG23 Dev Kit (BRD2600A)](https://www.silabs.com/development-tools/wireless/proprietary/efr32fg23-868-915-mhz-14-dbm-dev-kit?tab=overview)
+- [Silicon Labs EFM32PG23 Pro Kit Board (BRD2504A)](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg23-pro-kit?tab=overview)
+- [Silicon Labs EFM32PG28 Pro Kit Board (BRD2506A)](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg28-pro-kit?tab=overview)
 
-## Connections Required
+## Connections Required ##
 
-Connect the board via a micro-USB cable to your PC to flash the example.
+- Connect the board via a micro-USB cable to your PC to flash the example.
 
-## Setup
+## Setup ##
 
-Clone the repository with this project from GitHub onto your local machine.
+To test this application, you can either create a project based on an example project or start with an empty example project.
 
-From within the Simplicity Studio IDE, select Import -> MCU Project... from the 
-Project menu. Click the Browse button and navigate to the local repository 
-folder, then to the SimplicityStudio folder, select the .sls file for the 
-board, click the Next button twice, and then click Finish.
+### Create a project based on an example project ### 
 
-Build and flash the hex image onto the board. Reset board and observe the
-segment LCD displaying 00000. Press Push Button 0 to start the timer.
+1. Make sure that this repository is added to [Preferences > Simplicity Studio > External Repos](https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-about-the-launcher/welcome-and-device-tabs).
+
+2. From the Launcher Home, add the BRD2504A to My Products, click on it, and click on the **EXAMPLE PROJECTS & DEMOS** tab. Find the example project filtering by **lcd** and **timer**.
+
+3. Click the **Create** button on the **Platform - Segment LCD with Timer** example. Example project creation dialog pops up -> click **Finish** and Project should be generated.
+
+    ![Create_example](image/create_project.png)
+
+4. Build and flash this example to the board.
+
+### Start with an empty example project ###
+
+1. Create an **Empty C Project** project for your hardware using Simplicity Studio 5.
+
+2. Replace the `app.c` file in the project root folder with the provided `app.c` (located in the src folder).
+
+3. Open the .slcp file. Select the SOFTWARE COMPONENTS tab and install the software components:
+
+    - [Platform] → [Board Drivers] → [Segment LCD]
+    - [Platform] → [Peripheral] → [LETIMER]
+
+4. Build and flash the project to your device.
+
+## How It Works ##
+
+At first, the segment LCD displays 00000. Press Push Button 0 to start the timer.
 
 The push buttons also have the following functionalities:
 Regular timer mode (default mode):
@@ -49,24 +74,8 @@ To configure the Compare mode:
 5. When compare match happens, the Segment LCD will blink with the current value
 6. Press Button 0 or 1 to exit compare mode when compare match happens
 
-## How It Works
-
 The segment LCD needs to be configured to display numerical values correctly
 on the selected board. This is taken care of by the LCD driver library.
 The LETIMER is configured to interrupt every 1 Hz and update the segment LCD
 accordingly. The GPIOs for the push buttons are configured as inputs and will
 interrupt once pressed to perform specific operations.
-
-## .sls Projects Used
-
-* platform_timer_segmentLCD_fg23.sls
-* platform_timer_segmentLCD_pg23.sls
-* platform_timer_segmentLCD_pg28.sls
-
-## How to Port to Another Part
-
-Right click on the project and select "Properties" and navigate to "C/C++ 
-Build" then "Board/Part/SDK". Select the new board or part to target and apply 
-the changes. There may be some dependencies that need to be resolved when 
-changing the target architecture. This project can only work out of the box
-on the boards listed in the Hardware Required section of this readme.

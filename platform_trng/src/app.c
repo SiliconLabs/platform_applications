@@ -1,9 +1,9 @@
 /***************************************************************************//**
  * @file app.c
- * @brief GG11 TRNG baremetal example
+ * @brief TRNG baremetal example
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -41,9 +41,7 @@
 
 #include "printf.h"
 
-/***************************************************************************//**
- * Defining test data from GG11-rm section 32.3.4.1
- *******************************************************************************/
+// Defining test data from gg11-rm section 32.3.4.1
 
 /*
  * TRNG_TEST_KEY     0x2B7E151628AED2A6ABF7158809CF4F3C
@@ -135,14 +133,13 @@ void app_init(void)
 void app_process_action(void)
 {
   // get data from trng fifo
-  if(TRNG0->FIFOLEVEL > 0) {
-      printf("0x%08X\r\n", __REV(TRNG0->FIFO));
+  if (TRNG0->FIFOLEVEL > 0) {
+    printf("0x%08lX\r\n", __REV(TRNG0->FIFO));
   }
 
   // delay 500 ms
   sl_udelay_wait(500000);
 }
-
 
 /***************************************************************************//**
  * TRNG0 Interrupt Handler
@@ -151,7 +148,7 @@ void app_process_action(void)
  ******************************************************************************/
 void TRNG0_IRQHandler(void)
 {
-  uint32_t temp;
+  uint32_t temp = 0;
 
   // get which interrupt flags are set
   uint32_t flags = TRNG0->STATUS & 0x270;
@@ -160,28 +157,30 @@ void TRNG0_IRQHandler(void)
   TRNG0->CONTROL &= ~TRNG_CONTROL_ENABLE;
 
   // empty fifo
-  while(TRNG0->FIFOLEVEL != 0) {
-      // dummy read to clear fifo before TRNG reset
-      temp = TRNG0->FIFO;
+  while (TRNG0->FIFOLEVEL != 0) {
+    // dummy read to clear fifo before TRNG reset
+    temp |= TRNG0->FIFO;
   }
 
   // state which flag set
   printf("\r\n====================================================\r\n");
   printf("TRNG noise/failure flag set\r\n");
-  if(flags & _TRNG_STATUS_ALMIF_MASK >> _TRNG_STATUS_ALMIF_SHIFT) {
-      printf("\t- AIS32 Noise alarm detected\r\n");
+  if (flags & _TRNG_STATUS_ALMIF_MASK >> _TRNG_STATUS_ALMIF_SHIFT) {
+    printf("\t- AIS32 Noise alarm detected\r\n");
   }
-  if(flags & _TRNG_STATUS_PREIF_MASK >> _TRNG_STATUS_PREIF_SHIFT) {
-      printf("\t- AIS32 Preliminary Noise alarm detected\r\n");
+  if (flags & _TRNG_STATUS_PREIF_MASK >> _TRNG_STATUS_PREIF_SHIFT) {
+    printf("\t- AIS32 Preliminary Noise alarm detected\r\n");
   }
-  if(flags & _TRNG_STATUS_APT4096IF_MASK >> _TRNG_STATUS_APT4096IF_SHIFT) {
-      printf("\t- Adaptive Proportion test (4096-sample window) failure detected\r\n");
+  if (flags & _TRNG_STATUS_APT4096IF_MASK >> _TRNG_STATUS_APT4096IF_SHIFT) {
+    printf(
+      "\t- Adaptive Proportion test (4096-sample window) failure detected\r\n");
   }
-  if(flags & _TRNG_STATUS_APT64IF_MASK >> _TRNG_STATUS_APT64IF_SHIFT) {
-      printf("\t- Adaptive Proportion test (64-sample window) failure detected\r\n");
+  if (flags & _TRNG_STATUS_APT64IF_MASK >> _TRNG_STATUS_APT64IF_SHIFT) {
+    printf(
+      "\t- Adaptive Proportion test (64-sample window) failure detected\r\n");
   }
-  if(flags & _TRNG_STATUS_REPCOUNTIF_MASK >> _TRNG_STATUS_REPCOUNTIF_SHIFT) {
-      printf("\t- Repetition count test failure detected\r\n");
+  if (flags & _TRNG_STATUS_REPCOUNTIF_MASK >> _TRNG_STATUS_REPCOUNTIF_SHIFT) {
+    printf("\t- Repetition count test failure detected\r\n");
   }
   printf("Reseting TRNG\r\n");
   printf("\r\n====================================================\r\n");
@@ -205,17 +204,15 @@ void TRNG0_IRQHandler(void)
  ******************************************************************************/
 void trng_int_enable(void)
 {
-
   // Enable interrupts for all failure sources
   TRNG0->CONTROL |= TRNG_CONTROL_ALMIEN | TRNG_CONTROL_PREIEN
-                 | TRNG_CONTROL_APT4096IEN | TRNG_CONTROL_APT64IEN
-                 | TRNG_CONTROL_REPCOUNTIEN;
+                    | TRNG_CONTROL_APT4096IEN | TRNG_CONTROL_APT64IEN
+                    | TRNG_CONTROL_REPCOUNTIEN;
 
   // Enable NVIC
   NVIC_ClearPendingIRQ(TRNG0_IRQn);
   NVIC_EnableIRQ(TRNG0_IRQn);
 }
-
 
 /***************************************************************************//**
  * Software Reset the trng
@@ -225,7 +222,6 @@ void trng_reset(void)
   TRNG0->CONTROL |= TRNG_CONTROL_SOFTRESET;
   TRNG0->CONTROL &= ~TRNG_CONTROL_SOFTRESET;
 }
-
 
 /***************************************************************************//**
  * TRNG Check Conditioning
@@ -249,7 +245,6 @@ bool trng_check_conditioning(void)
   // Enable TRNG Peripheral
   TRNG0->CONTROL |= TRNG_CONTROL_ENABLE;
 
-
   // Write key into registers
   TRNG0->KEY0 = __REV(trng_test_key[0]);
   TRNG0->KEY1 = __REV(trng_test_key[1]);
@@ -258,45 +253,45 @@ bool trng_check_conditioning(void)
 
   // write 512bits of data to TESTDATA 32bits at a time
   // wait for STATUS_TESTDATA_BUSY = 0 after each write.
-  for(uint8_t index = 0; index < 512/32; index++) {
-      TRNG0->TESTDATA = __REV(trng_test_data[index]);
-      while(TRNG0->STATUS & TRNG_STATUS_TESTDATABUSY) {};
+  for (uint8_t index = 0; index < 512 / 32; index++) {
+    TRNG0->TESTDATA = __REV(trng_test_data[index]);
+    while (TRNG0->STATUS & TRNG_STATUS_TESTDATABUSY) {}
   }
 
   // wait until fifo has data?
-  while(TRNG0->FIFOLEVEL < 4) {};
+  while (TRNG0->FIFOLEVEL < 4) {}
 
   // describe what is happening
   printf("====================================================\r\n");
   printf("Known-Answer Test for Conditioning Function\r\n");
   printf("====================================================\r\n");
-  printf("\r\n%-18s0x%08X%08X%08X%08X\r\n", "Key", trng_test_key[0],
+  printf("\r\n%-18s0x%08lX%08lX%08lX%08lX\r\n", "Key", trng_test_key[0],
          trng_test_key[1], trng_test_key[2], trng_test_key[3]);
   printf("\r\n");
-  printf("%-18s0x%08X%08X%08X%08X\r\n", "Input", trng_test_data[0],
+  printf("%-18s0x%08lX%08lX%08lX%08lX\r\n", "Input", trng_test_data[0],
          trng_test_data[1], trng_test_data[2], trng_test_data[3]);
-  printf("%-18s0x%08X%08X%08X%08X\r\n", "", trng_test_data[4],
+  printf("%-18s0x%08lX%08lX%08lX%08lX\r\n", "", trng_test_data[4],
          trng_test_data[5], trng_test_data[6], trng_test_data[7]);
-  printf("%-18s0x%08X%08X%08X%08X\r\n", "", trng_test_data[8],
+  printf("%-18s0x%08lX%08lX%08lX%08lX\r\n", "", trng_test_data[8],
          trng_test_data[9], trng_test_data[10], trng_test_data[11]);
-  printf("%-18s0x%08X%08X%08X%08X\r\n", "", trng_test_data[12],
+  printf("%-18s0x%08lX%08lX%08lX%08lX\r\n", "", trng_test_data[12],
          trng_test_data[13], trng_test_data[14], trng_test_data[15]);
   printf("\r\n");
-  printf("%-18s0x%08X%08X%08X%08X\r\n", "Expected Output", trng_test_out[0],
+  printf("%-18s0x%08lX%08lX%08lX%08lX\r\n", "Expected Output", trng_test_out[0],
          trng_test_out[1], trng_test_out[2], trng_test_out[3]);
   printf("%-18s0x", "Received Output");
 
   // read fifo output
   uint32_t trng_fifo_out;
-  for(uint8_t i = 0; i < 4; i++) {
-      trng_fifo_out = TRNG0->FIFO;
-      if(__REV(trng_fifo_out) != trng_test_out[i]) {
-          printf("\r\nERROR\r\n\r\nExpected:\t0x%08X\tReceived:\t0x%08X\r\n",
-                 trng_test_out[i], __REV(trng_fifo_out));
-          return false;
-      } else {
-          printf("%08X", __REV(trng_fifo_out));
-      }
+  for (uint8_t i = 0; i < 4; i++) {
+    trng_fifo_out = TRNG0->FIFO;
+    if (__REV(trng_fifo_out) != trng_test_out[i]) {
+      printf("\r\nERROR\r\n\r\nExpected:\t0x%08lX\tReceived:\t0x%08lX\r\n",
+             trng_test_out[i], __REV(trng_fifo_out));
+      return false;
+    } else {
+      printf("%08lX", __REV(trng_fifo_out));
+    }
   }
 
   printf("\r\n");
@@ -335,39 +330,41 @@ bool trng_check_entropy(void)
 
   // keep reading and discarding until 257 32-bit words have been read
   static uint16_t count = 257;
-  while(count > 0) {
+  while (count > 0) {
     // wait until full
-    while(TRNG0->FIFOLEVEL < 64);
+    while (TRNG0->FIFOLEVEL < 64) {}
 
     // Read from Fifo
-    if(TRNG0->FIFOLEVEL > 0) {
-        printf(" 0x%08X ", __REV(TRNG0->FIFO));
-        --count;
-        if(((257 - count) % 4) == 0) { printf("\r\n"); }
+    if (TRNG0->FIFOLEVEL > 0) {
+      printf(" 0x%08lX ", __REV(TRNG0->FIFO));
+      --count;
+      if (((257 - count) % 4) == 0) {
+        printf("\r\n");
+      }
     }
   }
 
   printf("\r\n\r\n");
-  printf("%-40s: 0x%01X\r\n", "AIS31 Noise Alarm",
+  printf("%-40s: 0x%01lX\r\n", "AIS31 Noise Alarm",
          (TRNG0->STATUS & _TRNG_STATUS_ALMIF_MASK) >> _TRNG_STATUS_ALMIF_SHIFT);
-  printf("%-40s: 0x%01X\r\n", "AIS31 Preliminary Noise Alarm",
+  printf("%-40s: 0x%01lX\r\n", "AIS31 Preliminary Noise Alarm",
          (TRNG0->STATUS & _TRNG_STATUS_PREIF_MASK) >> _TRNG_STATUS_PREIF_SHIFT);
-  printf("%-40s: 0x%01X\r\n", "4096-sample Adaptive Proportion Test",
+  printf("%-40s: 0x%01lX\r\n", "4096-sample Adaptive Proportion Test",
          (TRNG0->STATUS & _TRNG_STATUS_APT4096IF_MASK)
          >> _TRNG_STATUS_APT4096IF_SHIFT);
-  printf("%-40s: 0x%01X\r\n", "64-sample Adaptive Proportion Test",
+  printf("%-40s: 0x%01lX\r\n", "64-sample Adaptive Proportion Test",
          (TRNG0->STATUS & _TRNG_STATUS_APT64IF_MASK)
          >> _TRNG_STATUS_APT64IF_SHIFT);
-  printf("%-40s: 0x%01X\r\n", "Repetition Count Test",
+  printf("%-40s: 0x%01lX\r\n", "Repetition Count Test",
          (TRNG0->STATUS & _TRNG_STATUS_REPCOUNTIF_MASK)
          >> _TRNG_STATUS_REPCOUNTIF_SHIFT);
 
   printf("====================================================\r\n");
 
   // Check status register for any error flags.
-  if(TRNG0->STATUS & ~TRNG_STATUS_FULLIF) {
-      printf("0x%08X\r\n", TRNG0->STATUS);
-      return false;
+  if (TRNG0->STATUS & ~TRNG_STATUS_FULLIF) {
+    printf("0x%08lX\r\n", TRNG0->STATUS);
+    return false;
   }
 
   return true;

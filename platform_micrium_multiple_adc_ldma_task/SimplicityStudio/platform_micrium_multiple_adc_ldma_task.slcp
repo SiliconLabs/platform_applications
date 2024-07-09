@@ -1,0 +1,61 @@
+project_name: platform_micrium_multiple_adc_ldma_task
+package: platform
+label: Platform - Micrium Multiple ADC LDMA Task
+description: |
+  This project configures ADCs to be triggered by GPIO via PRS. The sampled data is then transferred to memory via LDMA.
+  The sampled data is then converted to voltages and printed on the serial terminal using multiple tasks in Micirum OS.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: device_init
+  - id: emlib_adc
+  - id: emlib_prs
+  - instance: [vcom]
+    id: iostream_usart
+  - id: iostream
+  - id: iostream_retarget_stdio
+  - id: iostream_usart_core
+  - id: micriumos_kernel
+  - id: sl_system
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app_iostream_usart.h
+    - path: app.h
+    - path: peripherals.h
+    - path: tasks.h
+
+source:
+- path: ../src/main.c
+- path: ../src/app_iostream_usart.c
+- path: ../src/app.c
+- path: ../src/peripherals.c
+- path: ../src/tasks.c
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+    
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/result.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

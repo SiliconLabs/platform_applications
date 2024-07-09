@@ -45,7 +45,7 @@
  ******************************   DEFINES   ************************************
  ******************************************************************************/
 
-#define MENU_HEADER_DELIMITER 23
+#define MENU_HEADER_DELIMITER   23
 #define INGAME_HEADER_DELIMITER 10
 #define SCREEN_BOTTOM_DELIMITER 108
 
@@ -77,9 +77,9 @@ void clear_screen_area(GLIB_Context_t *pContext,
   GLIB_setClippingRegion(pContext, &clipping_area);
   GLIB_clearRegion(pContext);
 
-  //reset the clipping region to default
+  // reset the clipping region to default
   GLIB_resetClippingRegion(pContext);
-  //apply if for the app
+  // apply if for the app
   GLIB_applyClippingRegion(pContext);
 }
 
@@ -114,9 +114,9 @@ void print_menu_header(const char *title)
  * Prints the bottom part of the screen.
  ******************************************************************************/
 void print_screen_bottom(char *upper_hint_text,
-                  char *lower_hint_text,
-                  char *button_text,
-                  bool is_button_selected)
+                         char *lower_hint_text,
+                         char *button_text,
+                         bool is_button_selected)
 {
   clear_screen_area(&glibContext,
                     0,
@@ -136,13 +136,13 @@ void print_screen_bottom(char *upper_hint_text,
 
   // draw button
   if (is_button_selected) {
-      GLIB_Rectangle_t rectangle = {66,
-                                    111,
-                                    SL_MEMLCD_DISPLAY_WIDTH - 2,
-                                    SL_MEMLCD_DISPLAY_HEIGHT - 2};
-      GLIB_drawRectFilled(&glibContext, &rectangle);
-      glibContext.backgroundColor = Black;
-      glibContext.foregroundColor = White;
+    GLIB_Rectangle_t rectangle = { 66,
+                                   111,
+                                   SL_MEMLCD_DISPLAY_WIDTH - 2,
+                                   SL_MEMLCD_DISPLAY_HEIGHT - 2 };
+    GLIB_drawRectFilled(&glibContext, &rectangle);
+    glibContext.backgroundColor = Black;
+    glibContext.foregroundColor = White;
   }
   GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
   GLIB_drawStringOnLine(&glibContext,
@@ -154,8 +154,8 @@ void print_screen_bottom(char *upper_hint_text,
                         true);
 
   if (is_button_selected) {
-      glibContext.backgroundColor = White;
-      glibContext.foregroundColor = Black;
+    glibContext.backgroundColor = White;
+    glibContext.foregroundColor = Black;
   }
 
   // draw hint texts
@@ -166,7 +166,6 @@ void print_screen_bottom(char *upper_hint_text,
                         1,
                         0,
                         true);
-
 
   GLIB_drawStringOnLine(&glibContext,
                         lower_hint_text,
@@ -188,41 +187,44 @@ void print_menu_items(const menu_t menu)
                     0,
                     SL_MEMLCD_DISPLAY_WIDTH - 1,
                     MENU_HEADER_DELIMITER + 1,
-                    SCREEN_BOTTOM_DELIMITER -1);
+                    SCREEN_BOTTOM_DELIMITER - 1);
 
   uint8_t item_offset = 3;
 
   // Draw element size sensitive selection box,
   // to make the selection a bit more attractive.
   GLIB_Rectangle_t item_pointer_rectangle;
-  uint8_t choosen_element_size = strlen(menu.menu_elements[menu.choosen_menu_element_index]);
-  item_pointer_rectangle.xMin = ((SL_MEMLCD_DISPLAY_WIDTH/2) -
-                                (10 * (choosen_element_size)) / 2) +
-                                choosen_element_size;
-  item_pointer_rectangle.xMax = ((SL_MEMLCD_DISPLAY_WIDTH/2) +
-                                (10 * (choosen_element_size)) / 2) -
-                                choosen_element_size;
-  item_pointer_rectangle.yMin = (item_offset + menu.choosen_menu_element_index) * 10 - 1;
+  uint8_t choosen_element_size =
+    (uint8_t)sl_strlen((char *)menu.menu_elements[menu.
+                                                  choosen_menu_element_index]);
+  item_pointer_rectangle.xMin = ((SL_MEMLCD_DISPLAY_WIDTH / 2)
+                                 - (10 * (choosen_element_size)) / 2)
+                                + choosen_element_size;
+  item_pointer_rectangle.xMax = ((SL_MEMLCD_DISPLAY_WIDTH / 2)
+                                 + (10 * (choosen_element_size)) / 2)
+                                - choosen_element_size;
+  item_pointer_rectangle.yMin =
+    (item_offset + menu.choosen_menu_element_index) * 10 - 1;
   item_pointer_rectangle.yMax = item_pointer_rectangle.yMin + 9;
   GLIB_drawRect(&glibContext, &item_pointer_rectangle);
 
   // draw menu elements
   GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNormal8x8);
-  for (uint8_t i = 0; i<menu.menu_element_count; i++)
-    if (i != menu.choosen_menu_element_index)
+  for (uint8_t i = 0; i < menu.menu_element_count; i++) {
+    if (i != menu.choosen_menu_element_index) {
       GLIB_drawStringOnLine(&glibContext,
                             menu.menu_elements[i],
-                            i+item_offset,
+                            i + item_offset,
                             GLIB_ALIGN_CENTER,
                             0,
                             0,
                             true);
-    else {
+    } else {
       glibContext.backgroundColor = Black;
       glibContext.foregroundColor = White;
       GLIB_drawStringOnLine(&glibContext,
                             menu.menu_elements[i],
-                            i+item_offset,
+                            i + item_offset,
                             GLIB_ALIGN_CENTER,
                             0,
                             0,
@@ -230,8 +232,7 @@ void print_menu_items(const menu_t menu)
       glibContext.backgroundColor = White;
       glibContext.foregroundColor = Black;
     }
-
-
+  }
 
   DMD_updateDisplay();
 }
@@ -241,42 +242,42 @@ void print_menu_items(const menu_t menu)
  ******************************************************************************/
 void print_ingame_header(uint32_t score, bool game_over)
 {
-    clear_screen_area(&glibContext,
-                      0,
-                      SL_MEMLCD_DISPLAY_WIDTH - 1,
-                      0,
-                      INGAME_HEADER_DELIMITER);
+  clear_screen_area(&glibContext,
+                    0,
+                    SL_MEMLCD_DISPLAY_WIDTH - 1,
+                    0,
+                    INGAME_HEADER_DELIMITER);
 
-    // print header delimiter
-    GLIB_drawLineH(&glibContext, 0,
-                   INGAME_HEADER_DELIMITER - 1,
-                   SL_MEMLCD_DISPLAY_WIDTH - 1);
+  // print header delimiter
+  GLIB_drawLineH(&glibContext, 0,
+                 INGAME_HEADER_DELIMITER - 1,
+                 SL_MEMLCD_DISPLAY_WIDTH - 1);
 
-    // print game over if present
-    if (game_over) {
-      GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNormal8x8);
-      GLIB_drawStringOnLine(&glibContext,
-                            "Game Over",
-                            0,
-                            GLIB_ALIGN_LEFT,
-                            1,
-                            1,
-                            true);
-      GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
-    }
-
-    // print score
-    char score_str[sizeof(uint32_t)*8+1];
-    sprintf(score_str, "%d", (int)score);
+  // print game over if present
+  if (game_over) {
+    GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNormal8x8);
     GLIB_drawStringOnLine(&glibContext,
-                          score_str,
+                          "Game Over",
                           0,
-                          GLIB_ALIGN_RIGHT,
-                          -1,
+                          GLIB_ALIGN_LEFT,
+                          1,
                           1,
                           true);
+    GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
+  }
 
-    DMD_updateDisplay();
+  // print score
+  char score_str[sizeof(uint32_t) * 8 + 1];
+  snprintf(score_str, sizeof(uint32_t) * 8 + 1, "%d", (int)score);
+  GLIB_drawStringOnLine(&glibContext,
+                        score_str,
+                        0,
+                        GLIB_ALIGN_RIGHT,
+                        -1,
+                        1,
+                        true);
+
+  DMD_updateDisplay();
 }
 
 /***************************************************************************//**
@@ -286,17 +287,22 @@ void print_ingame_header(uint32_t score, bool game_over)
  *      or open.
  ******************************************************************************/
 bool check_food_at_neighbor(map_coords_t current_field_coords,
-                   const enum direction_t neighbor_field_direction,
-                   const game_state_t *game_state)
+                            const enum direction_t neighbor_field_direction,
+                            const game_state_t *game_state)
 {
-  map_coords_t next_field_coords = get_neighbor_field_coords(current_field_coords,
-                                                             neighbor_field_direction);
-  if (game_state->map[next_field_coords.x][next_field_coords.y].state == FOOD_1 ||
-      game_state->map[next_field_coords.x][next_field_coords.y].state == FOOD_2 ||
-      game_state->map[next_field_coords.x][next_field_coords.y].state == FOOD_3)
+  map_coords_t next_field_coords = get_neighbor_field_coords(
+    current_field_coords,
+    neighbor_field_direction);
+  if ((game_state->map[next_field_coords.x][next_field_coords.y].state
+       == FOOD_1)
+      || (game_state->map[next_field_coords.x][next_field_coords.y].state
+          == FOOD_2)
+      || (game_state->map[next_field_coords.x][next_field_coords.y].state
+          == FOOD_3)) {
     return true;
-  else
+  } else {
     return false;
+  }
 }
 
 /***************************************************************************//**
@@ -309,43 +315,48 @@ void print_snake_head(const uint8_t x,
   const uint8_t *selected_bitmap = NULL;
 
   switch (game_state->
-          map[game_state->snake_head.x][game_state->snake_head.y].next_segment){
+          map[game_state->snake_head.x][game_state->snake_head.y].next_segment)
+  {
     case UP:
-      if (check_food_at_neighbor(game_state->snake_head, DOWN, game_state))
+      if (check_food_at_neighbor(game_state->snake_head, DOWN, game_state)) {
         selected_bitmap = open_mouth_downBitmap;
-      else
+      } else {
         selected_bitmap = head_downBitmap;
+      }
       break;
 
     case DOWN:
-      if (check_food_at_neighbor(game_state->snake_head, UP, game_state))
+      if (check_food_at_neighbor(game_state->snake_head, UP, game_state)) {
         selected_bitmap = open_mouth_upBitmap;
-      else
+      } else {
         selected_bitmap = head_upBitmap;
+      }
       break;
 
     case LEFT:
-      if (check_food_at_neighbor(game_state->snake_head, RIGHT, game_state))
+      if (check_food_at_neighbor(game_state->snake_head, RIGHT, game_state)) {
         selected_bitmap = open_mouth_rightBitmap;
-      else
+      } else {
         selected_bitmap = head_rightBitmap;
+      }
       break;
     case RIGHT:
-      if (check_food_at_neighbor(game_state->snake_head, LEFT, game_state))
+      if (check_food_at_neighbor(game_state->snake_head, LEFT, game_state)) {
         selected_bitmap = open_mouth_leftBitmap;
-      else
+      } else {
         selected_bitmap = head_leftBitmap;
+      }
       break;
 
     default:
       return;
   }
   GLIB_drawBitmap(&glibContext,
-                   x,
-                   y,
-                   FIELD_BITMAP_SIZE,
-                   FIELD_BITMAP_SIZE,
-                   selected_bitmap);
+                  x,
+                  y,
+                  FIELD_BITMAP_SIZE,
+                  FIELD_BITMAP_SIZE,
+                  selected_bitmap);
 }
 
 /***************************************************************************//**
@@ -358,39 +369,33 @@ void print_snake_body(const uint8_t x,
 {
   const uint8_t *selected_bitmap = NULL;
 
-  if ((next_segment == LEFT && previous_segment == RIGHT) ||
-      (next_segment == RIGHT && previous_segment == LEFT))
+  if (((next_segment == LEFT) && (previous_segment == RIGHT))
+      || ((next_segment == RIGHT) && (previous_segment == LEFT))) {
     selected_bitmap = body_horizontalBitmap;
-
-  else if ((next_segment == UP && previous_segment == DOWN) ||
-           (next_segment == DOWN && previous_segment == UP))
+  } else if (((next_segment == UP) && (previous_segment == DOWN))
+             || ((next_segment == DOWN) && (previous_segment == UP))) {
     selected_bitmap = body_verticalBitmap;
-
-  else if ((next_segment == LEFT && previous_segment == UP) ||
-           (next_segment == UP && previous_segment == LEFT))
+  } else if (((next_segment == LEFT) && (previous_segment == UP))
+             || ((next_segment == UP) && (previous_segment == LEFT))) {
     selected_bitmap = body_up_leftBitmap;
-
-  else if ((next_segment == RIGHT && previous_segment == UP) ||
-           (next_segment == UP && previous_segment == RIGHT))
+  } else if (((next_segment == RIGHT) && (previous_segment == UP))
+             || ((next_segment == UP) && (previous_segment == RIGHT))) {
     selected_bitmap = body_up_rightBitmap;
-
-  else if ((next_segment == LEFT && previous_segment == DOWN) ||
-           (next_segment == DOWN && previous_segment == LEFT))
+  } else if (((next_segment == LEFT) && (previous_segment == DOWN))
+             || ((next_segment == DOWN) && (previous_segment == LEFT))) {
     selected_bitmap = body_down_leftBitmap;
-
-  else if ((next_segment == RIGHT && previous_segment == DOWN) ||
-           (next_segment == DOWN && previous_segment == RIGHT))
+  } else if (((next_segment == RIGHT) && (previous_segment == DOWN))
+             || ((next_segment == DOWN) && (previous_segment == RIGHT))) {
     selected_bitmap = body_down_rightBitmap;
-
-  else {
-      return;
+  } else {
+    return;
   }
   GLIB_drawBitmap(&glibContext,
-                   x,
-                   y,
-                   FIELD_BITMAP_SIZE,
-                   FIELD_BITMAP_SIZE,
-                   selected_bitmap);
+                  x,
+                  y,
+                  FIELD_BITMAP_SIZE,
+                  FIELD_BITMAP_SIZE,
+                  selected_bitmap);
 }
 
 /***************************************************************************//**
@@ -400,7 +405,6 @@ void print_snake_tail(const uint8_t x,
                       const uint8_t y,
                       const enum direction_t previous_segment)
 {
-
   const uint8_t *selected_bitmap = NULL;
 
   switch (previous_segment) {
@@ -424,11 +428,11 @@ void print_snake_tail(const uint8_t x,
       return;
   }
   GLIB_drawBitmap(&glibContext,
-                   x,
-                   y,
-                   FIELD_BITMAP_SIZE,
-                   FIELD_BITMAP_SIZE,
-                   selected_bitmap);
+                  x,
+                  y,
+                  FIELD_BITMAP_SIZE,
+                  FIELD_BITMAP_SIZE,
+                  selected_bitmap);
 }
 
 /***************************************************************************//**
@@ -444,84 +448,83 @@ void print_map(const game_state_t *game_state, uint8_t x_coord, uint8_t y_coord)
                     SL_MEMLCD_DISPLAY_WIDTH - 1,
                     y_coord, y_coord + (MAP_SIZE_Y * FIELD_BITMAP_SIZE));
 
-  for (uint8_t x = 0; x < MAP_SIZE_X; x++)
+  for (uint8_t x = 0; x < MAP_SIZE_X; x++) {
     for (uint8_t y = 0; y < MAP_SIZE_Y; y++) {
-        map_field_t selected_field = game_state->map[x][y];
-        switch (selected_field.state) {
-          case EMPTY:
-            break;
+      map_field_t selected_field = game_state->map[x][y];
+      switch (selected_field.state) {
+        case EMPTY:
+          break;
 
-          case SNAKE_HEAD:
-            print_snake_head(x_coord + x*FIELD_BITMAP_SIZE,
-                             y_coord + y*FIELD_BITMAP_SIZE,
-                             game_state);
-            break;
+        case SNAKE_HEAD:
+          print_snake_head(x_coord + x * FIELD_BITMAP_SIZE,
+                           y_coord + y * FIELD_BITMAP_SIZE,
+                           game_state);
+          break;
 
-          case SNAKE_BODY:
-            print_snake_body(x_coord + x*FIELD_BITMAP_SIZE,
-                             y_coord + y*FIELD_BITMAP_SIZE,
-                             selected_field.next_segment,
-                             selected_field.previous_segment);
-            break;
-          case SNAKE_FULL_BELLY:
-            GLIB_drawBitmap(&glibContext,
-                            x_coord + x*FIELD_BITMAP_SIZE,
-                            y_coord + y*FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            full_bellyBitmap);
-            break;
+        case SNAKE_BODY:
+          print_snake_body(x_coord + x * FIELD_BITMAP_SIZE,
+                           y_coord + y * FIELD_BITMAP_SIZE,
+                           selected_field.next_segment,
+                           selected_field.previous_segment);
+          break;
+        case SNAKE_FULL_BELLY:
+          GLIB_drawBitmap(&glibContext,
+                          x_coord + x * FIELD_BITMAP_SIZE,
+                          y_coord + y * FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          full_bellyBitmap);
+          break;
 
-          case SNAKE_TAIL:
-            print_snake_tail(x_coord + x*FIELD_BITMAP_SIZE,
-                             y_coord + y*FIELD_BITMAP_SIZE,
-                             selected_field.previous_segment);
-            break;
+        case SNAKE_TAIL:
+          print_snake_tail(x_coord + x * FIELD_BITMAP_SIZE,
+                           y_coord + y * FIELD_BITMAP_SIZE,
+                           selected_field.previous_segment);
+          break;
 
-          case FOOD_1:
-            GLIB_drawBitmap(&glibContext,
-                            x_coord + x*FIELD_BITMAP_SIZE,
-                            y_coord + y*FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            food_1Bitmap);
-            break;
+        case FOOD_1:
+          GLIB_drawBitmap(&glibContext,
+                          x_coord + x * FIELD_BITMAP_SIZE,
+                          y_coord + y * FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          food_1Bitmap);
+          break;
 
-          case FOOD_2:
-            GLIB_drawBitmap(&glibContext,
-                            x_coord + x*FIELD_BITMAP_SIZE,
-                            y_coord + y*FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            food_2Bitmap);
-            break;
+        case FOOD_2:
+          GLIB_drawBitmap(&glibContext,
+                          x_coord + x * FIELD_BITMAP_SIZE,
+                          y_coord + y * FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          food_2Bitmap);
+          break;
 
-          case FOOD_3:
-            GLIB_drawBitmap(&glibContext,
-                            x_coord + x*FIELD_BITMAP_SIZE,
-                            y_coord + y*FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            food_3Bitmap);
-            break;
+        case FOOD_3:
+          GLIB_drawBitmap(&glibContext,
+                          x_coord + x * FIELD_BITMAP_SIZE,
+                          y_coord + y * FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          food_3Bitmap);
+          break;
 
-          case WALL:
-            GLIB_drawBitmap(&glibContext,
-                            x_coord + x*FIELD_BITMAP_SIZE,
-                            y_coord + y*FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            FIELD_BITMAP_SIZE,
-                            wallBitmap);
-            break;
+        case WALL:
+          GLIB_drawBitmap(&glibContext,
+                          x_coord + x * FIELD_BITMAP_SIZE,
+                          y_coord + y * FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          FIELD_BITMAP_SIZE,
+                          wallBitmap);
+          break;
 
-          default:
-            break;
-
-        }
+        default:
+          break;
+      }
     }
+  }
 
   DMD_updateDisplay();
-
 }
 
 /*******************************************************************************
@@ -565,11 +568,12 @@ void print_error_msg(const char *msg, const int error_code)
 {
   glibContext.backgroundColor = Black;
   glibContext.foregroundColor = White;
+
   /* Fill lcd with background color */
   GLIB_clear(&glibContext);
 
   GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNormal8x8);
-  if (strlen(msg) > MAX_STRING_LENGTH) {
+  if (sl_strlen((char *)msg) > MAX_STRING_LENGTH) {
     GLIB_drawStringOnLine(&glibContext,
                           "Too long err msg",
                           5,
@@ -577,8 +581,7 @@ void print_error_msg(const char *msg, const int error_code)
                           0,
                           0,
                           true);
-  }
-  else {
+  } else {
     GLIB_drawStringOnLine(&glibContext,
                           msg,
                           5,
@@ -587,7 +590,10 @@ void print_error_msg(const char *msg, const int error_code)
                           0,
                           true);
     char return_code_text[MAX_STRING_LENGTH + 1];
-    sprintf(return_code_text, "Error code: %d", error_code);
+    snprintf(return_code_text,
+             MAX_STRING_LENGTH + 1,
+             "Error code: %d",
+             error_code);
     GLIB_drawStringOnLine(&glibContext,
                           return_code_text,
                           6,
@@ -599,11 +605,9 @@ void print_error_msg(const char *msg, const int error_code)
 
   DMD_updateDisplay();
 
-  while (1)
-    ;
+  while (1) {
+  }
 }
-
-
 
 /***************************************************************************//**
  * Print a menu to the screen.
@@ -613,22 +617,18 @@ void print_menu(const menu_t menu)
   // for display performance optimization
   static menu_t last_menu_state;
 
-
-  if (strcmp(menu.title, last_menu_state.title) || menu_flag == false ) {
-
-    strcpy(last_menu_state.title, menu.title);
+  if (strcmp(menu.title, last_menu_state.title) || (menu_flag == false)) {
+    sl_strcpy_s(last_menu_state.title, sizeof(menu.title), menu.title);
     print_menu_header(menu.title);
-
   }
 
-  if (menu_flag == false || (menu.is_ok_selected != last_menu_state.is_ok_selected)) {
-
+  if ((menu_flag == false)
+      || (menu.is_ok_selected != last_menu_state.is_ok_selected)) {
     menu_flag = true;
     print_screen_bottom("BTN1: up",
                         "BTN0: down",
                         "OK",
                         menu.is_ok_selected);
-
   }
 
   last_menu_state = menu;
@@ -641,16 +641,17 @@ void print_menu(const menu_t menu)
  ******************************************************************************/
 void print_ingame_tail(const enum event_t touch_slider_state)
 {
-  if (touch_slider_state == TOUCH_SLIDER_RIGHT_PUSH)
+  if (touch_slider_state == TOUCH_SLIDER_RIGHT_PUSH) {
     print_screen_bottom("BTN1:left",
-                      "BTN0:right",
-                      "pause",
-                      true);
-  else if (touch_slider_state == TOUCH_SLIDER_RIGHT_CANCEL)
+                        "BTN0:right",
+                        "pause",
+                        true);
+  } else if (touch_slider_state == TOUCH_SLIDER_RIGHT_CANCEL) {
     print_screen_bottom("BTN1:left",
-                      "BTN0:right",
-                      "pause",
-                      false);
+                        "BTN0:right",
+                        "pause",
+                        false);
+  }
 }
 
 /***************************************************************************//**
@@ -661,17 +662,17 @@ void print_game(const game_state_t *game_state)
   static float last_score = FLT_MAX;
   uint32_t current_score = (uint32_t)game_state->score;
 
-  if (last_score != current_score || menu_flag == true ) {
+  if ((last_score != current_score) || (menu_flag == true)) {
     print_ingame_header(game_state->score, false);
     last_score = (uint32_t)game_state->score;
   }
 
   if (menu_flag == true) {
-      print_screen_bottom("BTN1:left",
+    print_screen_bottom("BTN1:left",
                         "BTN0:right",
                         "menu",
                         false);
-      menu_flag = false;
+    menu_flag = false;
   }
 
   print_map(game_state, 1, 11);
@@ -680,23 +681,24 @@ void print_game(const game_state_t *game_state)
 /***************************************************************************//**
  * Prints the game over screen to the screen.
  ******************************************************************************/
-void print_game_over(const uint32_t score, const enum event_t touch_slider_state)
+void print_game_over(const uint32_t score,
+                     const enum event_t touch_slider_state)
 {
-  //used for the first call
-  if (touch_slider_state == UNDETERMINED)
+  // used for the first call
+  if (touch_slider_state == UNDETERMINED) {
     print_ingame_header(score, true);
+  }
 
-
-  if (touch_slider_state == TOUCH_SLIDER_RIGHT_PUSH)
+  if (touch_slider_state == TOUCH_SLIDER_RIGHT_PUSH) {
     print_screen_bottom("",
                         "",
                         "main menu",
                         true);
-  else if (touch_slider_state == UNDETERMINED ||
-           touch_slider_state == TOUCH_SLIDER_RIGHT_CANCEL)
+  } else if ((touch_slider_state == UNDETERMINED)
+             || (touch_slider_state == TOUCH_SLIDER_RIGHT_CANCEL)) {
     print_screen_bottom("",
                         "",
                         "main menu",
                         false);
+  }
 }
-

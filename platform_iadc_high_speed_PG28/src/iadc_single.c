@@ -59,12 +59,12 @@
 #define IADC_INPUT_0_PORT_PIN     iadcPosInputPadAna0;
 #define IADC_INPUT_1_PORT_PIN     iadcPosInputDvdd;
 
-// Use specified LDMA channel
-#define IADC_LDMA_CH              0
-
 // GPIO output toggle to notify LDMA transfer complete
 #define GPIO_OUTPUT_0_PORT        gpioPortB
 #define GPIO_OUTPUT_0_PIN         1
+
+// Use specified LDMA channel
+#define IADC_LDMA_CH              0
 
 /*******************************************************************************
  ***************************   GLOBAL VARIABLES

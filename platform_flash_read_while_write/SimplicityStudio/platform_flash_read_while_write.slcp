@@ -1,0 +1,40 @@
+project_name: platform_flash_read_while_write
+package: platform
+label: Platform - Flash Read-While-Write
+description: >
+  This project shows how to enable the read-while-write feature and provides an example that shows how read-while-write works in the Series 0 Giant Gecko device.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

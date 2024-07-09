@@ -1,0 +1,62 @@
+project_name: platform_pg23_code_execution_ram
+package: platform
+label: Platform - Executing Code from RAM
+description: >
+  This example aims to show how to set up a project so that the entire code is executed in the RAM memory using Silicon Labs development kits
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: ram_interrupt_vector_init
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+toolchain_settings:
+  - option: linkerfile
+    value: linkerfile.ld
+
+other_file:
+  - path: linkerfile.ld
+  - path: ../image/code_in_flash.png
+    directory: "image"
+  - path: ../image/code_in_ram.png
+    directory: "image"
+  - path: ../image/debug_btn0.png
+    directory: "image"
+  - path: ../image/debug_btn1.png
+    directory: "image"
+  - path: ../image/debug_main.png
+    directory: "image"
+  - path: ../image/debug_reset.png
+    directory: "image"
+  - path: ../image/startup_in_flash.png
+    directory: "image"
+  - path: ../image/settings.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

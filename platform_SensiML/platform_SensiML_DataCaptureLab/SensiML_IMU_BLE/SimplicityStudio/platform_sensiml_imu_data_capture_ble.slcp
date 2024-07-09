@@ -1,0 +1,80 @@
+project_name: platform_sensiml_imu_data_capture_ble
+package: platform
+label: Platform - SensiML IMU Data Capture with BLE
+description: >
+  This project uses the Thunderboard Sense 2 (EFR32MG12) and onboard IMU to measure accelerometer and gyroscope data. After that, the measurement data are transmitted via Bluetooth Low Energy (BLE) for consumption by SensiML Open Gateway.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: bluetooth_stack
+  - id: gatt_configuration
+  - id: gatt_service_device_information
+  - id: bluetooth_feature_legacy_advertiser
+  - id: bluetooth_feature_connection
+  - id: bluetooth_feature_gatt
+  - id: bluetooth_feature_gatt_server
+  - id: bluetooth_feature_legacy_scanner
+  - id: bluetooth_feature_system
+  - id: bluetooth_feature_sm
+  - id: rail_util_pti
+  - id: mpu
+  - id: bt_post_build
+  - id: sl_system
+  - id: device_init
+  - id: iostream_retarget_stdio
+  - id: iostream_usart
+    instance: [vcom]
+  - id: sleeptimer
+  - id: app_assert
+  - id: app_log
+  - id: imu_driver
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: gatt_service_sensiml.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/gatt_service_sensiml.c
+
+config_file:
+  - override:
+      component: gatt_configuration
+      file_id: gatt_configuration_file_id
+    path: "../config/btconf/gatt_configuration.btconf"
+    directory: "btconf"
+
+other_file:
+  - path: ../image/imu_data_capture.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/sensiml_gateway_config.png
+    directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_IMU
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: "1"
+
+ui_hints:
+  highlight:
+    - path: config/btconf/gatt_configuration.btconf
+    - path: README.md
+      focus: true

@@ -49,24 +49,26 @@
  ******************************************************************************/
 
 // How many samples to capture
-#define NUM_SAMPLES         1024
+#define NUM_SAMPLES               1024
 
 // Set CLK_ADC to 10 MHz
-#define CLK_SRC_ADC_FREQ   39000000  // CLK_SRC_ADC
-#define CLK_ADC_FREQ       19500000  // CLK_ADC - 20 MHz max in high speed mode
+#define CLK_SRC_ADC_FREQ          39000000 // CLK_SRC_ADC
+#define CLK_ADC_FREQ              19500000 // CLK_ADC - 20 MHz max in high speed
+                                           //   mode
 
 #define IADC_INPUT_0_PORT_PIN     iadcPosInputPadAna0;
 #define IADC_INPUT_1_PORT_PIN     iadcPosInputDvdd;
-
-// Use specified LDMA channel
-#define IADC_LDMA_CH              0
 
 // GPIO output toggle to notify LDMA transfer complete
 #define GPIO_OUTPUT_0_PORT        gpioPortA
 #define GPIO_OUTPUT_0_PIN         5
 
- /*******************************************************************************
- ***************************   GLOBAL VARIABLES   *******************************
+// Use specified LDMA channel
+#define IADC_LDMA_CH              0
+
+/*******************************************************************************
+ ***************************   GLOBAL VARIABLES
+ ***************************     *******************************
  ******************************************************************************/
 
 /// Globally declared LDMA link descriptor
@@ -83,8 +85,8 @@ void initCMU(void)
   CMU_ClockSelectSet(cmuClock_EM01GRPACLK, cmuSelect_HFXO);
   CMU_ClockSelectSet(cmuClock_IADCCLK, cmuSelect_EM01GRPACLK);
   CMU_ClockEnable(cmuClock_IADC0, true);
-
 }
+
 /**************************************************************************//**
  * @brief  GPIO initialization
  *****************************************************************************/
@@ -172,13 +174,12 @@ void initIADC(void)
    * EMLIB currently does not calculate the correct prescalers
    * for high speed mode.
    */
-  while ((IADC0->STATUS & IADC_STATUS_SYNCBUSY) != 0U) { }
+  while ((IADC0->STATUS & IADC_STATUS_SYNCBUSY) != 0U) {}
   IADC0->EN_CLR = IADC_EN_EN;
-  while (IADC0->EN & _IADC_EN_DISABLING_MASK) { }
-  IADC0->CTRL_CLR = 0x30000000; //Set HSCLKRATE to 0
-  IADC0->CFG[0].SCHED = 1;      //set PRESSCALE to 1
+  while (IADC0->EN & _IADC_EN_DISABLING_MASK) {}
+  IADC0->CTRL_CLR = 0x30000000; // Set HSCLKRATE to 0
+  IADC0->CFG[0].SCHED = 1;      // set PRESSCALE to 1
   IADC0->EN_SET = IADC_EN_EN;
-
 }
 
 /**************************************************************************//**
@@ -209,14 +210,17 @@ void initLDMA(uint32_t *buffer, uint32_t size)
    * descriptors), transfers will run continuously until firmware
    * otherwise stops them.
    */
-  descriptor =
-    (LDMA_Descriptor_t)LDMA_DESCRIPTOR_LINKREL_P2M_WORD(&(IADC0->SINGLEFIFODATA), buffer, size, 0);
+  descriptor = (LDMA_Descriptor_t)LDMA_DESCRIPTOR_LINKREL_P2M_WORD(
+    &(IADC0->SINGLEFIFODATA),
+    buffer,
+    size,
+    0);
 
   /*
    * Start the transfer.  The LDMA request and interrupt after saving
    * the specified number of IADC conversion results.
    */
-  LDMA_StartTransfer(IADC_LDMA_CH, (void*)&transferCfg, (void*)&descriptor);
+  LDMA_StartTransfer(IADC_LDMA_CH, (void *)&transferCfg, (void *)&descriptor);
 }
 
 /**************************************************************************//**
@@ -243,7 +247,6 @@ void LDMA_IRQHandler(void)
  ******************************************************************************/
 void iadc_single_init(void)
 {
-
   // Initialize Oscillators
   initCMU();
 
@@ -259,4 +262,3 @@ void iadc_single_init(void)
   // Start single conversion, IADC converts continuously after
   IADC_command(IADC0, iadcCmdStartSingle);
 }
-

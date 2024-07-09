@@ -1,0 +1,35 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_nvm3_intergrity_test
+label: platform_nvm3_intergrity_test
+description: This project performs frequent NVM3 writes and checks that there has been no corruption of the NVM3 data, or changes to the CRC of the program flash space.
+category: Example|Platform
+package: Platform
+quality: experimental
+readme:
+- path: ../README.md
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+component:
+- id: sl_system
+- id: device_init
+- id: nvm3_lib
+- id: nvm3_default
+- id: sleeptimer
+- id: emlib_gpcrc
+- id: simple_led
+  instance: [led0, led1]
+- id: simple_button
+  instance: [btn0]
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+  - {path: README.md, focus: true}

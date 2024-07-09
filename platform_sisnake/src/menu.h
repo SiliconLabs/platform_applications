@@ -27,6 +27,7 @@
 #define MENU_H_
 
 #include "types.h"
+#include "sl_string.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,7 +46,7 @@ void init_pause(void);
 /***************************************************************************//**
  * Make a menu tick.
  ******************************************************************************/
-bool menu_tick( const enum event_t irq);
+bool menu_tick(const enum event_t irq);
 
 #ifdef __cplusplus
 }

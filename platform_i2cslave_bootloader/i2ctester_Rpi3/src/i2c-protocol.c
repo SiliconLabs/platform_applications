@@ -68,8 +68,8 @@ uint16_t crc16(const uint8_t newByte, uint16_t prevResult)
 }
 
 uint16_t crc16s(const uint8_t *buffer,
-                         size_t        length,
-                         uint16_t      prevResult)
+                size_t        length,
+                uint16_t      prevResult)
 {
   size_t position = 0;
   for (; position < length; position++) {
@@ -92,7 +92,7 @@ static int i2c_write(int i2c_handle,
                      uint8_t commandSeqLength)
 {
   struct i2c_msg i2c_msgs[2] = {
-    {.addr = address, .flags = 0, .len = commandSeqLength, .buf = commandSeq }
+    { .addr = address, .flags = 0, .len = commandSeqLength, .buf = commandSeq }
   };
   struct i2c_rdwr_ioctl_data msgset = {
     .msgs = i2c_msgs, .nmsgs = 1
@@ -100,8 +100,8 @@ static int i2c_write(int i2c_handle,
 
   if (ioctl(i2c_handle, I2C_RDWR, &msgset) < 0) {
     perror("ioctl(I2C_RDWR) in i2c_write");
-    for(int k = 0; k<commandSeqLength; k++) {
-      if (!(k&0x1F)) {
+    for (int k = 0; k < commandSeqLength; k++) {
+      if (!(k & 0x1F)) {
         fprintf(stderr, "\n");
       }
       fprintf(stderr, "%02X ", commandSeq[k]);
@@ -130,16 +130,16 @@ static int i2c_read(int i2c_handle,
 {
   struct i2c_msg i2c_msgs[2] = {
     {
-     .addr = address,
-     .flags = 0,
-     .len = commandSeqLength,
-     .buf = commandSeq
+      .addr = address,
+      .flags = 0,
+      .len = commandSeqLength,
+      .buf = commandSeq
     },
     {
-     .addr = address,
-     .flags = I2C_M_RD,
-     .len = readBufferLength,
-     .buf = readBuffer
+      .addr = address,
+      .flags = I2C_M_RD,
+      .len = readBufferLength,
+      .buf = readBuffer
     }
   };
   struct i2c_rdwr_ioctl_data msgset = {
@@ -148,7 +148,7 @@ static int i2c_read(int i2c_handle,
 
   if (ioctl(i2c_handle, I2C_RDWR, &msgset) < 0) {
     perror("ioctl(I2C_RDWR) in i2c_read");
-    for(int k = 0; k<commandSeqLength; k++) {
+    for (int k = 0; k < commandSeqLength; k++) {
       fprintf(stderr, "%02X ", commandSeq[k]);
     }
     fprintf(stderr, "\n");
@@ -170,7 +170,7 @@ int open_i2c(int bus)
   snprintf(filename, 64, "/dev/i2c-%d", bus);
   file = open(filename, O_RDWR);
 
-  if (file < 0 && (errno == ENOENT || errno == ENOTDIR)) {
+  if ((file < 0) && ((errno == ENOENT) || (errno == ENOTDIR))) {
     snprintf(filename, 64, "/dev/i2c/%d", bus);
     open(filename, O_RDWR);
   }
@@ -202,7 +202,7 @@ int last_command_status(int i2c_handle, int address)
     /// the slave should have time to process the issued command
     /// we have to wait a while to prevent flooding
     usleep(1000);
-    if (!i2c_read(i2c_handle, address, &command,1, &result, 1 )) {
+    if (!i2c_read(i2c_handle, address, &command, 1, &result, 1)) {
       return result;
     }
   }
@@ -218,7 +218,7 @@ int last_command_status(int i2c_handle, int address)
 int abort_last_command(int i2c_handle, int address)
 {
   uint8_t command = BOOT_ABORT_OPERATION;
-  if (i2c_write(i2c_handle, address, &command,1)) {
+  if (i2c_write(i2c_handle, address, &command, 1)) {
     return -1;
   }
   return 0;
@@ -235,8 +235,8 @@ int get_version_info(int i2c_handle, int address,
                      btl_version_info_t *versionInfo)
 {
   uint8_t command = BOOT_VERSION;
-  if (i2c_read(i2c_handle, address, &command,1,
-                (uint8_t*)versionInfo, sizeof(btl_version_info_t))) {
+  if (i2c_read(i2c_handle, address, &command, 1,
+               (uint8_t *)versionInfo, sizeof(btl_version_info_t))) {
     return -1;
   }
   return 0;
@@ -252,8 +252,8 @@ int get_version_info(int i2c_handle, int address,
 *******************************************************************************/
 int boot_application(int i2c_handle, int address, int application_slot)
 {
-  uint8_t command[2] = {BOOT_BOOT_APP, application_slot &0xFF};
-  if (i2c_write(i2c_handle, address, command,(application_slot<0) ? 1 : 2)) {
+  uint8_t command[2] = { BOOT_BOOT_APP, application_slot & 0xFF };
+  if (i2c_write(i2c_handle, address, command, (application_slot < 0) ? 1 : 2)) {
     return -1;
   }
   return 0;
@@ -270,13 +270,13 @@ int verify_app(int i2c_handle, int address, uint8_t *verifyResult)
 {
   uint8_t command = BOOT_VERIFY;
   int status;
-  if (i2c_write(i2c_handle, address, &command,1)) {
+  if (i2c_write(i2c_handle, address, &command, 1)) {
     return -1;
   }
   do {
-    status = last_command_status(i2c_handle, address)
+    status = last_command_status(i2c_handle, address);
   } while (status == BOOT_REPLY_PENDING);
-  if (status <0) {
+  if (status < 0) {
     *verifyResult = BOOT_REPLY_ERR_UNKNOWN;
     return status;
   }
@@ -302,10 +302,10 @@ static int send_chunk_of_stream(int i2c_handle,
   i2c_download_frame_data_t downloadData;
   int status;
   downloadData.frame.frame_seq_nr = frame_sequence_number;
-  downloadData.frame.crc16   = 0;
-  downloadData.frame.length  = chunkSize + BOOT_DOWNLOAD_FRAME_HEADER_SIZE;
+  downloadData.frame.crc16 = 0;
+  downloadData.frame.length = chunkSize + BOOT_DOWNLOAD_FRAME_HEADER_SIZE;
   downloadData.frame.command = BOOT_OPERATION_DOWNLOAD_FRAME;
-  for(int k = 0; k< chunkSize; k++) {
+  for (int k = 0; k < chunkSize; k++) {
     downloadData.frame.frame_data[k] = chunkData[k];
   }
 
@@ -314,7 +314,7 @@ static int send_chunk_of_stream(int i2c_handle,
                                     CRC16_INIT);
 
   if (i2c_write(i2c_handle, address,
-                downloadData.bytes, downloadData.frame.length))  {
+                downloadData.bytes, downloadData.frame.length)) {
     return -1;
   }
   do {
@@ -327,11 +327,12 @@ static int send_chunk_of_stream(int i2c_handle,
 /***************************************************************************//**
 * @brief puts a spiner character to stderr (console)
 *******************************************************************************/
-static void progress_spinner() {
+static void progress_spinner()
+{
   static int spinner_index = 0;
   const char *spinnerCharset = "-\\|/";
   fprintf(stderr, "\b%c", spinnerCharset[spinner_index++]);
-  spinner_index &=0x3;
+  spinner_index &= 0x3;
 }
 
 /***************************************************************************//**
@@ -341,21 +342,22 @@ static void progress_spinner() {
 * @param fhandle      file (stream) handle
 * @return negative value on error, 0 on success
 *******************************************************************************/
-static int send_stream_as_file(int i2c_handle, int address, int fhandle) {
+static int send_stream_as_file(int i2c_handle, int address, int fhandle)
+{
   uint8_t chunk[BOOT_MAX_DOWNLOAD_FRAME_DATA_LENGTH];
   size_t readSize;
   int status = BOOT_REPLY_OK;
   uint8_t command = BOOT_GBL_DOWNLOAD;
-  uint32_t frame_sequence =0;
-  uint32_t repetitions =0;
+  uint32_t frame_sequence = 0;
+  uint32_t repetitions = 0;
 
-  if (fhandle <0) {
+  if (fhandle < 0) {
     return -1;
   }
   if (i2c_write(i2c_handle, address, &command, 1)) {
     return -2;
   }
-  while (last_command_status(i2c_handle, address) != BOOT_REPLY_OK);
+  while (last_command_status(i2c_handle, address) != BOOT_REPLY_OK) {}
   fprintf(stderr, "Download ... ");
   do {
     if (status == BOOT_REPLY_OK) {
@@ -364,8 +366,9 @@ static int send_stream_as_file(int i2c_handle, int address, int fhandle) {
       progress_spinner();
       repetitions = 0;
     } else {
-      if (++repetitions == BOOT_SEQUENCE_REPETITIONS_MAX)
+      if (++repetitions == BOOT_SEQUENCE_REPETITIONS_MAX) {
         break;
+      }
     }
     if (readSize) {
       status = send_chunk_of_stream(i2c_handle, address, frame_sequence,
@@ -382,7 +385,7 @@ static int send_stream_as_file(int i2c_handle, int address, int fhandle) {
     return (status ? status : -3);
   }
   do {
-    status = last_command_status(i2c_handle, address)
+    status = last_command_status(i2c_handle, address);
   } while (status == BOOT_REPLY_PENDING);
   return status;
 }
@@ -394,7 +397,7 @@ static int send_stream_as_file(int i2c_handle, int address, int fhandle) {
 * @param filename     name of the GBL image file
 * @return negative value on error, 0 on success
 *******************************************************************************/
-int download_gbl_file(int i2c_handle, int address, const char* filename)
+int download_gbl_file(int i2c_handle, int address, const char *filename)
 {
   int fhandle = open(filename, O_RDONLY);
   struct timeval startTime, endTime;
@@ -402,16 +405,16 @@ int download_gbl_file(int i2c_handle, int address, const char* filename)
   struct stat buffer;
   int         status;
 
-  gettimeofday(&startTime,NULL);
+  gettimeofday(&startTime, NULL);
   int result = send_stream_as_file(i2c_handle, address, fhandle);
   if (!result) {
     status = stat(filename, &buffer);
-    if(status == 0) {
+    if (status == 0) {
       gettimeofday(&endTime, NULL);
       elapsedMicrosecs = ((endTime.tv_sec - startTime.tv_sec) * 1000000)
-                          + (endTime.tv_usec - startTime.tv_usec);
+                         + (endTime.tv_usec - startTime.tv_usec);
       fprintf(stderr, "\n Transfer speed was %8.2f B/s",
-              1000000.0*((double)buffer.st_size/(double)elapsedMicrosecs));
+              1000000.0 * ((double)buffer.st_size / (double)elapsedMicrosecs));
     }
   }
   close(fhandle);

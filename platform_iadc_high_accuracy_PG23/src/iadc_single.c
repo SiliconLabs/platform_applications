@@ -27,10 +27,10 @@
  ******************************************************************************/
 
 // Use specified PRS channel
-#define IADC_PRS_CH              0
+#define IADC_PRS_CH               0
 
 // Set HFRCOEM23 to lowest frequency (1MHz)
-#define HFRCOEM23_FREQ          cmuHFRCOEM23Freq_1M0Hz
+#define HFRCOEM23_FREQ            cmuHFRCOEM23Freq_1M0Hz
 
 // Set CLK_ADC to 10MHz
 #define CLK_SRC_ADC_FREQ          1000000 // CLK_SRC_ADC
@@ -82,7 +82,8 @@ void initGPIO(void)
   // Enable GPIO clock branch
   CMU_ClockEnable(cmuClock_GPIO, true);
 
-  // Configure GPIO as output, will indicate when conversions are being performed
+  // Configure GPIO as output, will indicate when conversions are being
+  //   performed
   GPIO_PinModeSet(GPIO_OUTPUT_0_PORT, GPIO_OUTPUT_0_PIN, gpioModePushPull, 0);
 }
 
@@ -99,7 +100,8 @@ void initPRS(void)
                            PRS_ASYNC_CH_CTRL_SIGSEL_IADC0SINGLEDONE);
 
   // Route PRS channel to GPIO output to indicate a conversion complete
-  PRS_PinOutput(IADC_PRS_CH, prsTypeAsync, GPIO_OUTPUT_0_PORT, GPIO_OUTPUT_0_PIN);
+  PRS_PinOutput(IADC_PRS_CH, prsTypeAsync, GPIO_OUTPUT_0_PORT,
+                GPIO_OUTPUT_0_PIN);
 }
 
 /**************************************************************************//**
@@ -134,10 +136,10 @@ void initIADC(void)
 
   // Divides CLK_SRC_ADC to set the CLK_ADC frequency for desired sample rate
   initAllConfigs.configs[0].adcClkPrescale = IADC_calcAdcClkPrescale(IADC0,
-                                                                    CLK_ADC_FREQ,
-                                                                    0,
-                                                                    iadcCfgModeNormal,
-                                                                    init.srcClkPrescale);
+                                                                     CLK_ADC_FREQ,
+                                                                     0,
+                                                                     iadcCfgModeNormal,
+                                                                     init.srcClkPrescale);
 
   initAllConfigs.configs[0].adcMode = iadcCfgModeHighAccuracy;
 

@@ -66,10 +66,11 @@ enum state_t app_state;
 void sl_button_on_change(const sl_button_t *handle)
 {
   if (sl_button_get_state(handle) == SL_SIMPLE_BUTTON_PRESSED) {
-    if (&sl_button_btn0 == handle)
+    if (&sl_button_btn0 == handle) {
       irq_type = BTN0;
-    else if (&sl_button_btn1 == handle)
+    } else if (&sl_button_btn1 == handle) {
       irq_type = BTN1;
+    }
   }
 }
 
@@ -157,7 +158,7 @@ void sisnake_init(void)
 void sisnake_process_action(void)
 {
   // 2 elements for register double push (for quick turns)
-  static enum relative_direction_t next_direction[2] = {R_FORWARD, R_FORWARD};
+  static enum relative_direction_t next_direction[2] = { R_FORWARD, R_FORWARD };
 
   enum move_snake_return_t turn_result;
 
@@ -171,22 +172,24 @@ void sisnake_process_action(void)
   switch (app_state)
   {
     case MENUS:
-      if (event == BTN0 || event == BTN1 )
+      if ((event == BTN0) || (event == BTN1)) {
         menu_tick(event);
-      else if (event == TOUCH_SLIDER_RIGHT_PUSH ||
-               event == TOUCH_SLIDER_RIGHT_RELEASE ||
-               event == TOUCH_SLIDER_RIGHT_CANCEL) {
+      } else if ((event == TOUCH_SLIDER_RIGHT_PUSH)
+                 || (event == TOUCH_SLIDER_RIGHT_RELEASE)
+                 || (event == TOUCH_SLIDER_RIGHT_CANCEL)) {
         enum menu_return_t menu_return = menu_tick(event);
         if (menu_return == START_NEW_GAME) {
           sl_sleeptimer_restart_periodic_timer_ms(&turn_timer,
-                                                  800/(get_difficulty()+1),
-                                                  turn_callback, NULL,
+                                                  800 / (get_difficulty() + 1),
+                                                  turn_callback,
+                                                  NULL,
                                                   0,
-                  SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
+                                                  SL_SLEEPTIMER_NO_HIGH_PRECISION_HF_CLOCKS_REQUIRED_FLAG);
           init_game();
           app_state = GAME;
-        } else if (menu_return == CONTINUE)
+        } else if (menu_return == CONTINUE) {
           app_state = GAME;
+        }
       }
       break;
 
@@ -200,40 +203,41 @@ void sisnake_process_action(void)
           next_direction[0] = R_FORWARD;
         }
         if (turn_result == CRASH) {
-            sl_sleeptimer_stop_timer(&turn_timer);
+          sl_sleeptimer_stop_timer(&turn_timer);
           game_over_tick(UNDETERMINED);
           app_state = GAME_OVER;
         }
       } else if (event == BTN0) {
-        if (next_direction[0] == R_FORWARD)
+        if (next_direction[0] == R_FORWARD) {
           next_direction[0] = R_RIGHT;
-        else if (next_direction[1] == R_FORWARD)
+        } else if (next_direction[1] == R_FORWARD) {
           next_direction[1] = R_RIGHT;
+        }
       } else if (event == BTN1) {
-        if (next_direction[0] == R_FORWARD)
+        if (next_direction[0] == R_FORWARD) {
           next_direction[0] = R_LEFT;
-        else if (next_direction[1] == R_FORWARD)
+        } else if (next_direction[1] == R_FORWARD) {
           next_direction[1] = R_LEFT;
-      }
-      else if (event == TOUCH_SLIDER_RIGHT_PUSH ||
-               event == TOUCH_SLIDER_RIGHT_CANCEL)
+        }
+      } else if ((event == TOUCH_SLIDER_RIGHT_PUSH)
+                 || (event == TOUCH_SLIDER_RIGHT_CANCEL)) {
         print_ingame_tail(event);
-      else if (event == TOUCH_SLIDER_RIGHT_RELEASE) {
+      } else if (event == TOUCH_SLIDER_RIGHT_RELEASE) {
         app_state = MENUS;
         init_pause();
-        }
+      }
       break;
 
     case GAME_OVER:
       if (event == TOUCH_SLIDER_RIGHT_RELEASE) {
         app_state = MENUS;
         init_main_menu();
-      } else if (event == TOUCH_SLIDER_RIGHT_PUSH ||
-                 event == TOUCH_SLIDER_RIGHT_CANCEL)
+      } else if ((event == TOUCH_SLIDER_RIGHT_PUSH)
+                 || (event == TOUCH_SLIDER_RIGHT_CANCEL)) {
         game_over_tick(event);
+      }
       break;
   }
-
 }
 
 #pragma GCC pop_options

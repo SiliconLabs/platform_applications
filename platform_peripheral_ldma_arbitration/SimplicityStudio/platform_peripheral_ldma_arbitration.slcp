@@ -1,0 +1,52 @@
+project_name: platform_peripheral_ldma_arbitration
+package: platform
+label: Platform - Linked DMA (LDMA) Arbitration
+description: |
+  This project demonstrates various arbitration configurations of multiple transfers, each consisting of 256 words transferred from WTIMER0→CNT to memory buffers.
+  Transfers are configured to arbitrate after 32 words. Arbitration changes order in which data is copied.
+  After transfer, the order is reconstructed and shown on Virtual COM.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: device_init
+  - instance: [vcom]
+    id: iostream_usart
+  - id: emlib_timer
+  - id: iostream_retarget_stdio
+  - id: sl_system
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app.h
+
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+    
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/result.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

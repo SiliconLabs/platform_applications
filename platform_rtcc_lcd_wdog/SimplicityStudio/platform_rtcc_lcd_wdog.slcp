@@ -1,0 +1,72 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_rtcc_lcd_wdog
+label: Platform - RTCC and Watchdog Bare-metal
+
+description: |
+  This example showcases how to use the RTCC to display time and date on the built-in LCD. A watchdog timer is configured to keep track of the system and reset it if the LCD is not updated with time regularly.
+
+category: Example|Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+- path: ../src/gpio.c
+- path: ../src/lcd.c
+- path: ../src/rtcc.c
+- path: ../src/wdog.c
+
+include:
+- path: ../inc
+  file_list:
+    - path: app.h
+    - path: gpio.h
+    - path: lcd.h
+    - path: rtcc.h
+    - path: wdog.h
+
+component:
+- id: device_init
+- id: sl_system
+- id: dmd_memlcd
+- id: emlib_rtc
+- id: emlib_rtcc
+- id: emlib_wdog
+- id: glib
+- id: memlcd_usart
+- id: power_manager
+
+configuration:
+  - name: SL_SLEEPTIMER_PERIPHERAL
+    value: "SL_SLEEPTIMER_PERIPHERAL_RTC"
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/system_reset.png
+    directory: "image"
+  - path: ../image/timer_configuration.png
+    directory: "image"
+  - path: ../image/warning.png
+    directory: "image"
+  - path: ../image/wdog_resetdisable.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

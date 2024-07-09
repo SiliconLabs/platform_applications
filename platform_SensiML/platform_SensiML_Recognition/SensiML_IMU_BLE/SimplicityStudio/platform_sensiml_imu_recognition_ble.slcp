@@ -1,0 +1,106 @@
+project_name: platform_sensiml_imu_recognition_ble
+package: platform
+label: Platform - SensiML IMU Recognition with BLE
+description: >
+  This example project uses the Knowledge Pack created by SensiML along with the IMU component drivers to take accelerometer and gyroscope data and classify them into Horizontal, Stationary and Vertical movements. The output can be viewed over serial VCOM or through SensiML bluetooth app.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: "Capability"
+    value: ["Machine Learning"]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: bluetooth_stack
+  - id: gatt_configuration
+  - id: gatt_service_device_information
+  - id: bluetooth_feature_legacy_advertiser
+  - id: bluetooth_feature_connection
+  - id: bluetooth_feature_gatt
+  - id: bluetooth_feature_gatt_server
+  - id: bluetooth_feature_legacy_scanner
+  - id: bluetooth_feature_system
+  - id: bluetooth_feature_sm
+  - id: rail_util_pti
+  - id: mpu
+  - id: bt_post_build
+  - id: sl_system
+  - id: device_init
+  - id: iostream_usart
+    instance: [vcom]
+  - id: iostream_retarget_stdio
+  - id: simple_led
+    instance: [led0, led1]
+  - id: app_assert
+  - id: app_log
+  - id: imu_driver
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: app_iostream_usart.h
+      - path: app_led.h
+      - path: app_sensor_imu.h
+      - path: app_bt.h
+#------------- knowledgepack package ----------------
+  - path: knowledgepack
+    file_list:
+    - path: sml_output.h
+    - path: sml_recognition_run.h
+  - path: knowledgepack/lib
+    file_list:
+    - path: kb_defines.h
+    - path: kb_typedefs.h
+    - path: kb.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/app_iostream_usart.c
+  - path: ../src/app_led.c
+  - path: ../src/app_sensor_imu.c
+  - path: ../src/app_output.c
+  - path: ../src/app_bt.c
+  - path: knowledgepack/sml_recognition_run.c
+
+config_file:
+  - override:
+      component: gatt_configuration
+      file_id: gatt_configuration_file_id
+    path: "../config/btconf/gatt_configuration.btconf"
+    directory: "btconf"
+
+other_file:
+  - path: ../image/sensiml_app.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/logs.png
+    directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_IMU
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: "1"
+
+library:
+  - path: knowledgepack/lib/libsensiml.a
+    condition:
+    - "toolchain_gcc"
+
+ui_hints:
+  highlight:
+    - path: config/btconf/gatt_configuration.btconf
+    - path: README.md
+      focus: true

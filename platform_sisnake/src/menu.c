@@ -47,11 +47,11 @@ static menu_t menu;
  ******************************************************************************/
 void set_main_menu(menu_t *menu)
 {
-  strcpy(menu->title,"Sisnake");
+  sl_strcpy_s(menu->title, sl_strlen("Sisnake\n"), "Sisnake");
   menu->menu_element_count = 3;
-  strcpy(menu->menu_elements[0],"new game");
-  strcpy(menu->menu_elements[1],"difficulty");
-  strcpy(menu->menu_elements[2],"maze");
+  sl_strcpy_s(menu->menu_elements[0], sl_strlen("new game\n"), "new game");
+  sl_strcpy_s(menu->menu_elements[1], sl_strlen("difficulty\n"), "difficulty");
+  sl_strcpy_s(menu->menu_elements[2], sl_strlen("maze\n"), "maze");
   menu->choosen_menu_element_index = 0;
   menu->is_ok_selected = false;
 }
@@ -61,15 +61,15 @@ void set_main_menu(menu_t *menu)
  ******************************************************************************/
 void set_difficulty_menu(menu_t *menu)
 {
-  strcpy(menu->title,"Select diff");
+  sl_strcpy_s(menu->title, sl_strlen("Select diff\n"), "Select diff");
   menu->menu_element_count = 7;
-  strcpy(menu->menu_elements[0],"level 1");
-  strcpy(menu->menu_elements[1],"level 2");
-  strcpy(menu->menu_elements[2],"level 3");
-  strcpy(menu->menu_elements[3],"level 4");
-  strcpy(menu->menu_elements[4],"level 5");
-  strcpy(menu->menu_elements[5],"level 6");
-  strcpy(menu->menu_elements[6],"level 7");
+  sl_strcpy_s(menu->menu_elements[0], sl_strlen("level 1\n"), "level 1");
+  sl_strcpy_s(menu->menu_elements[1], sl_strlen("level 2\n"), "level 2");
+  sl_strcpy_s(menu->menu_elements[2], sl_strlen("level 3\n"), "level 3");
+  sl_strcpy_s(menu->menu_elements[3], sl_strlen("level 4\n"), "level 4");
+  sl_strcpy_s(menu->menu_elements[4], sl_strlen("level 5\n"), "level 5");
+  sl_strcpy_s(menu->menu_elements[5], sl_strlen("level 6\n"), "level 6");
+  sl_strcpy_s(menu->menu_elements[6], sl_strlen("level 7\n"), "level 7");
   menu->choosen_menu_element_index = 0;
   menu->is_ok_selected = false;
 }
@@ -79,11 +79,11 @@ void set_difficulty_menu(menu_t *menu)
  ******************************************************************************/
 void set_maze_menu(menu_t *menu)
 {
-  strcpy(menu->title,"Select maze");
+  sl_strcpy_s(menu->title, sl_strlen("Select maze\n"), "Select maze");
   menu->menu_element_count = 3;
-  strcpy(menu->menu_elements[0],"none");
-  strcpy(menu->menu_elements[1],"border");
-  strcpy(menu->menu_elements[2],"cross");
+  sl_strcpy_s(menu->menu_elements[0], sl_strlen("none\n"), "none");
+  sl_strcpy_s(menu->menu_elements[1], sl_strlen("border\n"), "border");
+  sl_strcpy_s(menu->menu_elements[2], sl_strlen("cross\n"), "cross");
   menu->choosen_menu_element_index = 0;
   menu->is_ok_selected = false;
 }
@@ -93,11 +93,11 @@ void set_maze_menu(menu_t *menu)
  ******************************************************************************/
 void set_pause_menu(menu_t *menu)
 {
-  strcpy(menu->title,"Paused");
+  sl_strcpy_s(menu->title, sl_strlen("Paused\n"), "Paused");
   menu->menu_element_count = 3;
-  strcpy(menu->menu_elements[0],"continue");
-  strcpy(menu->menu_elements[1],"new game");
-  strcpy(menu->menu_elements[2],"main menu");
+  sl_strcpy_s(menu->menu_elements[0], sl_strlen("continue\n"), "continue");
+  sl_strcpy_s(menu->menu_elements[1], sl_strlen("new game\n"), "new game");
+  sl_strcpy_s(menu->menu_elements[2], sl_strlen("main menu\n"), "main menu");
   menu->choosen_menu_element_index = 0;
   menu->is_ok_selected = false;
 }
@@ -133,21 +133,23 @@ void init_pause(void)
  * Or else with no_action.
  *
  ******************************************************************************/
-enum menu_return_t menu_tick( const enum event_t event)
+enum menu_return_t menu_tick(const enum event_t event)
 {
   switch (event) {
     case BTN0:
-      if ( menu.choosen_menu_element_index == menu.menu_element_count - 1)
+      if (menu.choosen_menu_element_index == menu.menu_element_count - 1) {
         menu.choosen_menu_element_index = 0;
-      else
+      } else {
         menu.choosen_menu_element_index++;
+      }
       break;
 
     case BTN1:
-      if ( menu.choosen_menu_element_index == 0)
+      if (menu.choosen_menu_element_index == 0) {
         menu.choosen_menu_element_index = menu.menu_element_count - 1;
-      else
+      } else {
         menu.choosen_menu_element_index--;
+      }
       break;
 
     case TOUCH_SLIDER_RIGHT_PUSH:
@@ -156,11 +158,10 @@ enum menu_return_t menu_tick( const enum event_t event)
 
     case TOUCH_SLIDER_RIGHT_RELEASE:
       menu.is_ok_selected = false;
-      if (!strcmp(menu.title,"Sisnake"))
+      if (!strcmp(menu.title, "Sisnake")) {
         switch (menu.choosen_menu_element_index) {
           case 0:
             return START_NEW_GAME;
-            break;
 
           case 1:
             set_difficulty_menu(&menu);
@@ -170,40 +171,37 @@ enum menu_return_t menu_tick( const enum event_t event)
             set_maze_menu(&menu);
             break;
         }
+      } else if (!strcmp(menu.title, "Select diff")) {
+        set_difficulty(menu.choosen_menu_element_index);
+        set_main_menu(&menu);
+      } else if (!strcmp(menu.title, "Select maze")) {
+        switch (menu.choosen_menu_element_index) {
+          case 0:
+            set_maze(NONE);
+            break;
 
-       else if (!strcmp(menu.title,"Select diff")) {
-            set_difficulty(menu.choosen_menu_element_index);
+          case 1:
+            set_maze(BORDER);
+            break;
+
+          case 2:
+            set_maze(CROSS);
+            break;
+        }
+        set_main_menu(&menu);
+      } else if (!strcmp(menu.title, "Paused")) {
+        switch (menu.choosen_menu_element_index) {
+          case 0:
+            return CONTINUE;
+
+          case 1:
+            return START_NEW_GAME;
+
+          case 2:
             set_main_menu(&menu);
-       } else if (!strcmp(menu.title,"Select maze")) {
-           switch (menu.choosen_menu_element_index) {
-             case 0:
-               set_maze(NONE);
-               break;
-
-             case 1:
-               set_maze(BORDER);
-               break;
-
-             case 2:
-               set_maze(CROSS);
-               break;
-           }
-            set_main_menu(&menu);
-       } else if (!strcmp(menu.title,"Paused")) {
-           switch (menu.choosen_menu_element_index) {
-             case 0:
-               return CONTINUE;
-               break;
-
-             case 1:
-               return START_NEW_GAME;
-               break;
-
-             case 2:
-               set_main_menu(&menu);
-               break;
-           }
-       }
+            break;
+        }
+      }
       break;
 
     case TOUCH_SLIDER_RIGHT_CANCEL:

@@ -58,7 +58,7 @@ void app_process_action(void)
     app_config_process_action();
     app_iostream_usart_process_action();
   } else { // once connected, no longer necessary to listen for commands
-      app_iostream_usart_process_action();
+    app_iostream_usart_process_action();
     app_voice_process_action();
   }
   app_led_process_action();

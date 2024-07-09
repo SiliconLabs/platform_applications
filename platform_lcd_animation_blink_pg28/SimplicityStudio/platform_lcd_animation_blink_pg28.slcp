@@ -1,0 +1,50 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_lcd_animation_blink_pg28
+label: Platform - PG28 LCD Animation Blink
+description: |
+  This project shows how to use LCD peripheral to perform auto animation and blink without CPU intervention, and display a pattern on the segment LCD.
+category: Example|Platform
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+package: platform
+
+readme:
+  - path: ../README.md
+
+quality: experimental
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+
+component:
+- id: device_init
+- id: emlib_lcd
+- id: power_manager
+- id: sl_system
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_example.png
+    directory: image
+  - path: ../image/pg28_lcd_segment_mapping.png
+    directory: image
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -53,9 +53,9 @@ void app_init(void)
 
 void app_process_action(void)
 {
-  app_iostream_usart_process_action();	
+  app_iostream_usart_process_action();
   app_led_process_action();
-  
+
   // Send JSON configuration and wait to receive "connect" command
   if (!config_received) {
     app_config_process_action();

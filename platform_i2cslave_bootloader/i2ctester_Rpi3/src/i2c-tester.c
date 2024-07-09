@@ -34,7 +34,7 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-#define _BSD_SOURCE 1 /* for glibc <= 2.19 */
+#define _BSD_SOURCE     1 /* for glibc <= 2.19 */
 #define _DEFAULT_SOURCE 1 /* for glibc >= 2.19 */
 
 #include <sys/types.h>
@@ -50,19 +50,19 @@
 #include "version.h"
 #include <time.h>
 
-///all command function using the standard argc/argv format
+/// all command function using the standard argc/argv format
 typedef void (*command_function)(int argc, char *argv[]);
 
-///forwarding structure def
+/// forwarding structure def
 typedef struct COMMAND_TABLE_ITEM command_table_item_t;
 
-///command might be a function or (sub-)table
+/// command might be a function or (sub-)table
 typedef union {
   command_function fx;
   command_table_item_t *table;
 } command_p;
 
-///command type
+/// command type
 typedef enum {
   function,
   table,
@@ -70,7 +70,7 @@ typedef enum {
   EOT
 } command_type;
 
-///an item of a command table
+/// an item of a command table
 typedef struct COMMAND_TABLE_ITEM {
   /// type
   command_type type;
@@ -80,8 +80,8 @@ typedef struct COMMAND_TABLE_ITEM {
   command_p command;
 } command_table_item_t;
 
-///special end of table descriptor
-#define END_OF_TABLE {.type = EOT, .command_id = 0, .command.fx = NULL}
+/// special end of table descriptor
+#define END_OF_TABLE { .type = EOT, .command_id = 0, .command.fx = NULL }
 
 /// command prototypes
 void cmd_print_boot_version(int argc, char *argv[]);
@@ -92,13 +92,13 @@ void cmd_print_help(int argc, char *argv[]);
 
 /// main command table
 static command_table_item_t main_command_table[] = {
-   {.type = function, .command_id = 'G', .command.fx = cmd_download_file},
-   {.type = function, .command_id = 'B', .command.fx = cmd_boot_application},
-   {.type = function, .command_id = 'V', .command.fx = cmd_verify_application},
-   {.type = function, .command_id = 'I', .command.fx = cmd_print_boot_version},
-   {.type = function, .command_id = 'H', .command.fx = cmd_print_help},
-   {.type = function, .command_id = 'h', .command.fx = cmd_print_help},
-   END_OF_TABLE
+  { .type = function, .command_id = 'G', .command.fx = cmd_download_file },
+  { .type = function, .command_id = 'B', .command.fx = cmd_boot_application },
+  { .type = function, .command_id = 'V', .command.fx = cmd_verify_application },
+  { .type = function, .command_id = 'I', .command.fx = cmd_print_boot_version },
+  { .type = function, .command_id = 'H', .command.fx = cmd_print_help },
+  { .type = function, .command_id = 'h', .command.fx = cmd_print_help },
+  END_OF_TABLE
 };
 
 /// this holds the I2C handle which is opened
@@ -113,7 +113,8 @@ static int address;
 *******************************************************************************/
 void print_usage()
 {
-  fprintf(stderr, "i2c-tester %s\n"
+  fprintf(stderr,
+          "i2c-tester %s\n"
           "Usage:\n"
           "i2c-tester BUS I2CADDR CMD [command opts]\n\n"
           " BUS: the bus number\n"
@@ -123,7 +124,8 @@ void print_usage()
           "    I        - show boot version\n"
           "    V        - verify application\n"
           "    B        - Boot application\n"
-          "    (H or h) - this help\n", VERSION_STR
+          "    (H or h) - this help\n",
+          VERSION_STR
           );
 }
 
@@ -156,17 +158,17 @@ void call_command(int argc, char *argv[])
 {
   command_table_item_t *table_item = main_command_table;
   while (1) {
-    if (argv[0][1] != '\0' ||
-        table_item->type == EOT) {
-        print_usage(),
-        exit(1);
+    if ((argv[0][1] != '\0')
+        || (table_item->type == EOT)) {
+      print_usage(),
+      exit(1);
     }
     if (table_item->command_id == argv[0][0]) {
-      switch (table_item->type )  {
-        case function :
+      switch (table_item->type) {
+        case function:
           table_item->command.fx(argc, argv);
           break;
-        case table :
+        case table:
           table_item = table_item->command.table;
           if (argc == 0) {
             print_usage();
@@ -194,8 +196,7 @@ int main(int argc, char *argv[])
   const char *value;
   char *parse_end;
   srand(time(NULL));
-  if (argc <4)
-  {
+  if (argc < 4) {
     print_usage();
     exit(1);
   }
@@ -210,8 +211,8 @@ int main(int argc, char *argv[])
   value = *argv;
   address = strtol(value, &parse_end, 0);
   fprintf(stderr, "bus: %lX, address: %X\n", bus, address);
-  if (*parse_end || !*value ||
-      address < 0 || address > 0x7F) {
+  if (*parse_end || !*value
+      || (address < 0) || (address > 0x7F)) {
     print_usage();
     exit(1);
   }
@@ -226,7 +227,7 @@ void cmd_print_boot_version(int argc, char *argv[])
 {
   int result;
   i2c_handle = open_i2c(bus);
-  if (i2c_handle <0 ) {
+  if (i2c_handle < 0) {
     fprintf(stderr, "Error: Cannot open i2c bus %lx\n", bus);
     exit(1);
   }
@@ -241,12 +242,12 @@ void cmd_print_boot_version(int argc, char *argv[])
 void cmd_download_file(int argc, char *argv[])
 {
   int result = 0;
-  if (argc<2) {
+  if (argc < 2) {
     print_usage();
     exit(1);
   }
   i2c_handle = open_i2c(bus);
-  if (i2c_handle <0 ) {
+  if (i2c_handle < 0) {
     fprintf(stderr, "Error: Cannot open i2c bus %lx\n", bus);
     exit(1);
   }
@@ -266,16 +267,16 @@ void cmd_download_file(int argc, char *argv[])
 *******************************************************************************/
 void cmd_boot_application(int argc, char *argv[])
 {
-  int result =0;
+  int result = 0;
   i2c_handle = open_i2c(bus);
-  if (i2c_handle <0 ) {
+  if (i2c_handle < 0) {
     fprintf(stderr, "Error: Cannot open i2c bus %lx\n", bus);
     exit(1);
   }
   print_bootloader_version_info(address);
   result = boot_application(i2c_handle, address, -1);
   if (!result) {
-   fprintf(stderr, "boot! \n");
+    fprintf(stderr, "boot! \n");
   }
   close_i2c(i2c_handle);
   exit(result);
@@ -290,7 +291,7 @@ void cmd_verify_application(int argc, char *argv[])
   int result = 0;
   int status;
   uint8_t verifyResult;
-  if (i2c_handle <0 ) {
+  if (i2c_handle < 0) {
     fprintf(stderr, "Error: Cannot open i2c bus %lx\n", bus);
     exit(1);
   }
@@ -315,4 +316,3 @@ void cmd_print_help(int argc, char *argv[])
   print_usage();
   exit(0);
 }
-

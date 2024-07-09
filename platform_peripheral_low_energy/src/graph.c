@@ -34,15 +34,14 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
+#include "em_cmu.h"
+#include "glib.h"
 #include "graph.h"
 
-#include "em_cmu.h"
-#include "display.h"
-#include "retargettextdisplay.h"
-#include "textdisplay.h"
-#include "dmd.h"
-
-GLIB_Rectangle_t graphArea = { .xMin = 0, .xMax = GRAPH_WIDTH, .yMin = 0, .yMax = GRAPH_HEIGHT };
+GLIB_Rectangle_t graphArea = { .xMin = 0,
+                               .xMax = GRAPH_WIDTH,
+                               .yMin = 0,
+                               .yMax = GRAPH_HEIGHT };
 GLIB_Context_t context;
 
 /// Enumerated 3 bit color options
@@ -66,11 +65,11 @@ void Graph_Init(void)
 
   EMSTATUS status = DMD_init(0);
   if (DMD_OK != status) {
-	  while (1) ;
+    while (1) {}
   }
   status = GLIB_contextInit(&context);
-  if(status != GLIB_OK){
-	  while(1);
+  if (status != GLIB_OK) {
+    while (1) {}
   }
 
   context.foregroundColor = White;
@@ -102,4 +101,3 @@ void FillPoint(uint32_t x, uint32_t y)
   GLIB_drawPixel(&context, x, y + 1);
   GLIB_drawPixel(&context, x + 1, y + 1);
 }
-

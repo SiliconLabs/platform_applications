@@ -39,4 +39,3 @@ void app_process_action(void)
 {
   sisnake_process_action();
 }
-

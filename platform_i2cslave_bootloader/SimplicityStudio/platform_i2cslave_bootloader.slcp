@@ -1,0 +1,93 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_i2cslave_bootloader
+label: Platform - I2C slave bootloader
+description: |
+  This is an example bootloader which can accept data as I2C slave.
+category: Example|Platform
+package: Platform
+quality: experimental
+readme:
+- path: ../README.md
+source:
+- path: ../src/btl_i2c_communication.c
+  directory: "communication"
+- path: ../src/btl_i2c_queue.c
+  directory: "driver"
+- path: ../src/btl_i2c_slave_driver.c
+  directory: "driver"
+- path: ../src/i2c_activation.c
+  directory: "activation"
+include:
+- path: ../inc
+  file_list:
+  - path: board_i2c_slave_config.h
+  - path: bootloader-version.h
+- path: ../inc/communication
+  file_list:
+    - path: btl_i2c_communication.h
+    - path: btl_communication.h
+  directory: "communication"
+- path: ../inc/driver
+  file_list:
+  - path: btl_i2c_queue.h
+  - path: btl_i2c_slave_driver.h
+  directory: "driver"
+- path: ../inc/activation
+  file_list:
+  - path: i2c_activation.h
+  directory: "activation"
+component:
+- id: bootloader_crc
+- id: bootloader_debug
+- id: bootloader_image_parser
+- id: bootloader_core
+- id: bootloader_gpio_activation
+- id: bootloader_delay_driver
+define:
+- name: BOOTLOADER_SUPPORT_COMMUNICATION
+- name: BTL_PLUGIN_I2C_ACTIVATION
+other_file:
+- path: ../doc/index.md
+  directory: "doc"
+- path: ../doc/resources/image1.png
+  directory: "doc/resources"
+- path: ../doc/resources/image10.png
+  directory: "doc/resources"
+- path: ../doc/resources/image11.png
+  directory: "doc/resources"
+- path: ../doc/resources/image2.png
+  directory: "doc/resources"
+- path: ../doc/resources/image3.png
+  directory: "doc/resources"
+- path: ../doc/resources/image4.png
+  directory: "doc/resources"
+- path: ../doc/resources/image5.png
+  directory: "doc/resources"
+- path: ../doc/resources/image6.png
+  directory: "doc/resources"
+- path: ../doc/resources/image7.png
+  directory: "doc/resources"
+- path: ../doc/resources/image8.png
+  directory: "doc/resources"
+- path: ../doc/resources/image9.png
+  directory: "doc/resources"
+- path: ../image/boot_version.png
+  directory: "image"
+- path: ../image/booting.png
+  directory: "image"
+- path: ../image/build_option.png
+  directory: "image"
+- path: ../image/connection.png
+  directory: "image"
+- path: ../image/create_project.png
+  directory: "image"
+- path: ../image/download_gbl.png
+  directory: "image"
+- path: ../image/i2ctester.png
+  directory: "image"
+- path: ../image/verify_application.png
+  directory: "image"
+ui_hints:
+  highlight:
+  - {path: README.md, focus: true}
+post_build: {path: platform_i2cslave_bootloader.slpb, profile: platform_i2cslave_bootloader}

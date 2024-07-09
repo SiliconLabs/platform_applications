@@ -39,6 +39,7 @@
 #include "os.h"
 #include <stdio.h>
 #include "em_ldma.h"
+#include "dmadrv.h"
 
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
@@ -51,9 +52,6 @@
 #ifndef TASK_PRIO
 #define TASK_PRIO            (20)
 #endif
-
-#define LDMA_CH0_INT         (0x0001)
-#define LDMA_CH1_INT         (0x0002)
 
 /*******************************************************************************
  ***************************  LOCAL VARIABLES   ********************************
@@ -68,8 +66,8 @@ static CPU_STK stack_task2[TASK_STACK_SIZE];
 
 // Create Mutex, Semaphores, event flags to use in tasks.
 static OS_MUTEX mutex_vol_val;
-static OS_SEM sem_adc0;
-static OS_SEM sem_adc1;
+OS_SEM sem_adc0;
+OS_SEM sem_adc1;
 static OS_FLAG_GRP array_full_flag;
 
 // Arrays to store voltage values.
@@ -167,8 +165,8 @@ void consumer_task_1(void *p_arg)
 
   // Initialize peripherals
   adc_init();
-  ldma_init();
   gpio_init();
+  dma_init();
 
   uint32_t *data1 = NULL;
   uint32_t *data0 = NULL;
@@ -209,7 +207,7 @@ void consumer_task_1(void *p_arg)
       arr_voltage1[i] = ((data1[i] * 2500) / 4095);
     }
 
-    LDMA_Tx();
+    dma_tx();
 
     // Post flag indicating that voltages have been calculated
     OSFlagPost(&array_full_flag,
@@ -276,33 +274,4 @@ void consumer_task_2(void *p_arg)
       EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
     }
   }
-}
-
-/***************************************************************************//**
- * LDMA Interrupt Handler
- ******************************************************************************/
-void LDMA_IRQHandler(void)
-{
-  RTOS_ERR err;
-  OSIntEnter();
-  uint32_t flags = LDMA_IntGet();
-
-  /* When transfer is completed, the bit corresponding to the channel is set */
-  if ((flags & LDMA_CH0_INT) != 0x0000) { // channel 0
-    LDMA_IntClear(flags);
-    OSSemPost(&sem_adc0,
-              OS_OPT_POST_ALL,
-              &err);
-    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-  }
-
-  if ((flags & LDMA_CH1_INT) != 0x0000) { // channel 1
-    LDMA_IntClear(flags);
-
-    OSSemPost(&sem_adc1,
-              OS_OPT_POST_ALL,
-              &err);
-    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-  }
-  OSIntExit();
 }

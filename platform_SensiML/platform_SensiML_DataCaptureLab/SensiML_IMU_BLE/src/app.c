@@ -6,7 +6,7 @@
  * # License
  * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
-*
+ *
  * SPDX-License-Identifier: Zlib
  *
  * The licensor of this software is Silicon Laboratories Inc.
@@ -35,20 +35,14 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-#include <em_gpio.h>
-#include <em_cmu.h>
-#include <stdio.h>
-
-#include "gatt_service_sensiml.h"
 #include "em_common.h"
 #include "app_assert.h"
 #include "sl_bluetooth.h"
 #include "gatt_db.h"
 #include "app.h"
-#include "sl_imu.h"
+#include "gatt_service_sensiml.h"
 
 static uint8_t advertising_set_handle = 0xff;
-
 
 /***************************************************************************//**
  * Initialize application.
@@ -77,6 +71,7 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
   bd_addr address;
   uint8_t address_type;
   uint8_t system_id[8];
+
   gatt_service_sensiml_imu_on_event(evt);
   switch (SL_BT_MSG_ID(evt->header)) {
     // -------------------------------
@@ -104,6 +99,11 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
       sc = sl_bt_advertiser_create_set(&advertising_set_handle);
       app_assert_status(sc);
 
+      // Generate data for advertising
+      sc = sl_bt_legacy_advertiser_generate_data(advertising_set_handle,
+                                                 sl_bt_advertiser_general_discoverable);
+      app_assert_status(sc);
+
       // Set advertising interval to 100ms.
       sc = sl_bt_advertiser_set_timing(
         advertising_set_handle,
@@ -112,11 +112,9 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
         0,   // adv. duration
         0);  // max. num. adv. events
       app_assert_status(sc);
-      // Start general advertising and enable connections.
-      sc = sl_bt_advertiser_start(
-        advertising_set_handle,
-        advertiser_general_discoverable,
-        advertiser_connectable_scannable);
+      // Start advertising and enable connections.
+      sc = sl_bt_legacy_advertiser_start(advertising_set_handle,
+                                         sl_bt_advertiser_connectable_scannable);
       app_assert_status(sc);
       break;
     // -------------------------------
@@ -126,11 +124,14 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // -------------------------------
     // This event indicates that a connection was closed.
     case sl_bt_evt_connection_closed_id:
+      // Generate data for advertising
+      sc = sl_bt_legacy_advertiser_generate_data(advertising_set_handle,
+                                                 sl_bt_advertiser_general_discoverable);
+      app_assert_status(sc);
+
       // Restart advertising after client has disconnected.
-      sc = sl_bt_advertiser_start(
-        advertising_set_handle,
-        advertiser_general_discoverable,
-        advertiser_connectable_scannable);
+      sc = sl_bt_legacy_advertiser_start(advertising_set_handle,
+                                         sl_bt_advertiser_connectable_scannable);
       app_assert_status(sc);
       break;
     default:

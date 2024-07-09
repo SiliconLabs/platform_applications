@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 #ifndef LED_INSTANCE
-#define LED_INSTANCE    sl_led_led0
+#define LED_INSTANCE            sl_led_led0
 #endif
 
 #ifndef TOOGLE_DELAY_MS

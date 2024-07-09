@@ -1,4 +1,4 @@
-# Executing Code from RAM #
+# Platform - Executing Code from RAM #
 
 ![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_pg23_code_execution_ram_common.json&label=Type&query=type&color=green)
 ![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_pg23_code_execution_ram_common.json&label=Technology&query=technology&color=green)
@@ -9,15 +9,15 @@
 ![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_pg23_code_execution_ram_common.json&label=RAM&query=ram&color=blue)
 ## Overview ##
 
-Normally, in the embedded system architectures, firmware is stored in the microcontroller’s flash memory (code flash/ program flash) and directly executes in place. RAM is a volatile memory and contains nothing upon reset or power cycle. It is used to store data and hold the value of variables at run time.
+Normally, in the embedded system architectures, firmware is stored in the flash memory of the microcontroller (code flash/ program flash) and directly executes in place. RAM is a volatile memory and contains nothing upon reset or power cycle. It is used to store data and hold the value of variables at run time.
 
 There are certain situations where it becomes mandatory to run code from RAM. For example, when using flash as emulated EEPROM. While performing write/erase operations on flash, it is not possible to execute code from flash, but it is still possible to execute code from RAM to have low latency interrupts.
 
-This example aims to show how to set up a project so that the entire code is executed in the RAM memory using Silicon Labs development kits.
+This example aims to show how to set up a project so that the entire code is executed in the RAM using Silicon Labs development kits.
 
 ## Gecko SDK Suite version ##
 
-- GSDK v4.3.2
+- GSDK v4.4.3
 
 ## Hardware Required ##
 
@@ -29,15 +29,29 @@ This example aims to show how to set up a project so that the entire code is exe
 
 ## Setup ##
 
-To test this application, you can either import the provided `platform_pg23_code_execution_ram.sls` project file or start with an empty example project as the following:
+To test this application, you can either create a project based on an example project or start with an empty example project.
+
+### Create a project based on an example project ###
+
+1. Make sure that this repository is added to [Preferences > Simplicity Studio > External Repos](https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-about-the-launcher/welcome-and-device-tabs).
+
+2. From the Launcher Home, add the BRD2504A to My Products, click on it, and click on the **EXAMPLE PROJECTS & DEMOS** tab. Find the example project filtering by **code** and **ram**.
+
+3. Click the **Create** button on the **Platform - Executing Code from RAM** example. Example project creation dialog pops up -> click **Finish** and Project should be generated.
+
+    ![Create_example](image/create_project.png)
+
+4. Build and flash this example to the board.
+
+### Start with an empty example project ###
 
 1. Create an **Empty C Project** project for your hardware using Simplicity Studio 5.
 
-2. Replace the `app.c` file in the project root folder with the provided app.c (located in the src folder).
+2. Replace the `app.c` file in the project root folder with the provided `app.c` (located in the src folder).
 
-3. Copy the provided `linkerfile.ld` file (located in the SimplicityStudio folder) into the project root folder and change the Linker Script path with following: `${workspace_loc:/${ProjName}/linkerfile.ld}`
+3. Copy the provided `linkerfile.ld` file (located in the SimplicityStudio folder) into the project root folder and change the Linker Script path with the following: `${workspace_loc:/${ProjName}/linkerfile.ld}`
 
-    ![linker path](doc/settings.png)
+    ![linker path](image/settings.png)
 
 4. Open the .slcp file. Select the SOFTWARE COMPONENTS tab and install the software components:
 
@@ -60,15 +74,15 @@ found in the following path `autogen/linkerfile.ld`.
 
 In this file, we can see the section dedicated to program code (.text), placed by default in the flash memory.
 
-![code in flash](doc/code_in_flash.png)
+![code in flash](image/code_in_flash.png)
 
 Our goal is to place all code in RAM with a section placement that is defined in section .data. Therefore, these lines should be moved to section .data as shown below:
 
-![code in ram](doc/code_in_ram.png)
+![code in ram](image/code_in_ram.png)
 
 But as mentioned above, before the code can be executed from the RAM, it must first be copied to the RAM from flash memory on startup by invoking the Reset_Handler (entry point). Therefore, the startup code should be kept in flash by adding these lines to the section .text in the flash memory.
 
-![startup in flash](doc/startup_in_flash.png)
+![startup in flash](image/startup_in_flash.png)
 
 Refer to the provided `linkerfile.ld` file (located in the SimplicityStudio folder) for more details.
 
@@ -103,7 +117,7 @@ void sl_ram_interrupt_vector_init(void)
 
 The related files to this component can be found at the path: `${StudioSdkPath}/platform/service/ram_interrupt_vector_init`. Please note that the `sl_ram_interrupt_vector_init()` function is invoked in the `main()` function after the device is started up. By this way, the exceptions (Default_Handler) are handled during the startup of the MCU.
 
-The next step is to implement a new Default_Handler function that can be used from RAM in the application code to catch exceptions and external interrupts not handled by specific ISRs. In the `app.c` file add the `RAM_Default_Handler()` function as below:
+The next step is to implement a new Default_Handler function that can be used from RAM in the application code to catch exceptions and external interrupts not handled by specific ISRs. In the `app.c` file, add the `RAM_Default_Handler()` function as below:
 
 ```c
 /***************************************************************************//**
@@ -112,7 +126,7 @@ The next step is to implement a new Default_Handler function that can be used fr
  ******************************************************************************/
 void RAM_Default_Handler(void)
 {
-  GPIO_PinOutSet(BSP_GPIO_LED0_PORT, BSP_GPIO_LED0_PIN);
+  GPIO_PinOutSet(BSP_GPIO_LED1_PORT, BSP_GPIO_LED1_PIN);
   while (true) {
   }
 }
@@ -142,7 +156,7 @@ void ram_interrupt_vector_update(void)
 Now the interrupt table the interrupt handlers will be placed in RAM.
 
 So why the vector table should still be kept at the start address of the flash memory?
-The reason is the Cortex-M devices will boot from fetching the first two words in the vector table, which are the initial value of the Main Stack Pointer (MSP) and the starting address of the reset handler. Without vector table relocation, the vector table is by default allocated at the start address of the flash memory. See the startup_efm32pg23.c file that can be found at: `${StudioSdkPath}/platform/Device/SiliconLabs/EFM32PG23/Source` for more information. This file contains code that is executed when the device starts up before entering the main() function.
+The reason is the Cortex-M devices will boot from fetching the first two words in the vector table, which are the initial value of the Main Stack Pointer (MSP) and the starting address of the reset handler. Without vector table relocation, the vector table is by default allocated at the start address of the flash memory. See the `startup_efm32pg23.c` file that can be found at: `${StudioSdkPath}/platform/Device/SiliconLabs/EFM32PG23/Source` for more information. This file contains code that is executed when the device starts up before entering the `main()` function.
 
 ## Testing ##
 
@@ -158,30 +172,26 @@ To be sure the project will be executed from RAM, follow these steps to check:
 
 2. Open Simplicity Debugger, place three breakpoints:
 
-    - In Reset_Handler() at line SystemInit() in the startup_efm32pg23.c file (line 362)
-    - In GPIO_ODD_IRQHandler() at line 107 in the app.c file
-    - In RAM_Default_Handler() at line 119 in the app.c file
+    - In `Reset_Handler()` at line SystemInit() in the `startup_efm32pg23.c` file (line 382)
+    - In `GPIO_ODD_IRQHandler()` at line 107 in the `app.c` file
+    - In `RAM_Default_Handler()` at line 119 in the `app.c` file
 
-3. Run the debugger. At first time, the CPU is halted into Reset_Handler() in the startup_efm32pg23.c file. Check the Registers -> General Registers watch expression, the PC counter is at address 0x8000176.
-That means that the Reset_Handler() is executed in flash.
+3. Run the debugger. At first time, the CPU is halted into `Reset_Handler()` in the `startup_efm32pg23.c` file. Check the Registers -> General Registers watch expression, the PC counter is at address 0x8000176.
+That means that the `Reset_Handler()` is executed in flash.
 
-    ![execute IRQ from flash](doc/debug_reset.png)
+    ![execute IRQ from flash](image/debug_reset.png)
 
-4. Resume the debugger, the CPU is halted into the main() function. Check the Registers -> General Registers watch expression, the PC counter is at address 0x2000297a.
-That means that the main() function is executed in RAM.
+4. Resume the debugger, the CPU is halted into the `main()` function. Check the Registers -> General Registers watch expression, the PC counter is at address 0x2000297a.
+That means that the `main()` function is executed in RAM.
 
-    ![execute function from RAM](doc/debug_main.png)
+    ![execute a function from RAM](image/debug_main.png)
 
-5. Resume the debugger and press the button BTN0 on the PG23 Pro Kit board, the CPU is halted into GPIO_ODD_IRQHandler() in the app.c file. Check the Registers -> General Registers watch expression, the PC counter is at address 0x200011cc.
-That means that the GPIO_ODD_IRQHandler() is executed in RAM.
+5. Resume the debugger and press the button BTN0 on the PG23 Pro Kit board, the CPU is halted into `GPIO_ODD_IRQHandler()` in the `app.c` file. Check the Registers -> General Registers watch expression, the PC counter is at address 0x200011cc.
+That means that the `GPIO_ODD_IRQHandler()` is executed in RAM.
 
-    ![execute IRQ from RAM](doc/debug_btn0.png)
+    ![execute IRQ from RAM](image/debug_btn0.png)
 
-6. Resume the debugger and press the button BTN1 on the PG23 Pro Kit board, the CPU is halted into RAM_Default_Handler() in the app.c file. Check the Registers -> General Registers watch expression, the PC counter is at address 0x2000113e.
+6. Resume the debugger and press the button BTN1 on the PG23 Pro Kit board, the CPU is halted into `RAM_Default_Handler()` in the `app.c` file. Check the Registers -> General Registers watch expression, the PC counter is at address 0x2000113e.
 That means that the new Default Handler function is executed in RAM.
 
-    ![execute IRQ from RAM](doc/debug_btn1.png)
-
-## .sls Projects Used ##
-
-`platform_pg23_code_execution_ram.sls`
+    ![execute IRQ from RAM](image/debug_btn1.png)

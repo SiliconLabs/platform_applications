@@ -1,0 +1,60 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_rgb_led_ws2812
+label: Platform - WS2812 RGB LED Driver
+description: |
+  This demo project is set up to control a string of RGB LEDs using Adafruit Ws2812 and GG11 DevKit.
+category: Example|Platform
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+package: platform
+
+readme:
+  - path: ../README.md
+
+quality: experimental
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/ws2812.c
+  - path: ../src/colors.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+  - path: ws2812.h
+  - path: colors.h
+
+component:
+- id: device_init
+- id: sl_system
+- id: emlib_ldma
+- id: emlib_usart
+- id: emlib_gpio
+- id: emlib_letimer
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/connection.png
+    directory: "image"
+  - path: ../image/GG11_PinOut.png
+    directory: "image"
+  - path: ../image/pulse_capture.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

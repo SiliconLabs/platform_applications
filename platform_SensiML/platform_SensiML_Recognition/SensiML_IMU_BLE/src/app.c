@@ -34,7 +34,7 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-//SensiML Includes
+// SensiML Includes
 #include "kb.h"
 #include "kb_defines.h"
 #include <stdbool.h>
@@ -55,7 +55,6 @@ void app_init(void)
 
   app_sensor_imu_init();
   app_sensor_imu_enable(true);
-
 }
 
 void app_process_action(void)
@@ -64,5 +63,3 @@ void app_process_action(void)
   app_sensor_imu_process_action();
   app_led_process_action();
 }
-
-

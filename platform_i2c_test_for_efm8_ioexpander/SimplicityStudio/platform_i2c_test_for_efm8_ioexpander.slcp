@@ -1,0 +1,95 @@
+project_name: platform_i2c_test_for_efm8_ioexpander
+package: platform
+label: Platform - I2C Test For EFM IOExpander (IOEXP)
+description: >
+  This project provides a test tool for EFM8 IOExpander. The example uses I2C module for communication, a GPIO and a LED to detect and signal the interrupts of EFM8 IOExpander. It also contains a simple command interpreter to read, write registers of EFM8 IOExpander, furthermore its additional commands make possible to use it as basic automated test tool. See AN1304 for more information.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: iostream_usart
+    instance: [vcom]
+  - id: printf
+  - id: iostream_retarget_stdio
+  - id: simple_led
+    instance: [led0]
+  - id: rail_util_init
+    instance: [inst]
+  - id: cli
+    instance: [inst]
+  - id: gpiointerrupt
+  - id: app_assert
+  - id: i2cspm
+    instance: [ioexp]
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: cli_cmd_function.h
+      - path: cli_cmd_registration.h
+      - path: gpio.h
+      - path: ioexp_drv.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/cli_cmd_function.c
+  - path: ../src/cli_cmd_registration.c
+  - path: ../src/gpio.c
+  - path: ../src/ioexp_drv.c
+
+config_file:
+  - override:
+      component: i2cspm
+      instance: ioexp
+      file_id: i2cspm_config
+    path: "../config/sl_i2cspm_ioexp_config.h"
+  - override:
+      component: simple_led
+      instance: led0
+      file_id: simple_led_config
+    path: "../config/brd4101b/sl_simple_led_led0_config.h"
+    condition: [brd4101b]
+
+other_file:
+  - path: ../image/connections.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/create_project_efm8.png
+    directory: "image"
+  - path: ../image/i2cspm_config.png
+    directory: "image"
+  - path: ../image/loop_command.png
+    directory: "image"
+  - path: ../image/mod_command.png
+    directory: "image"
+  - path: ../image/vcom_config.png
+    directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: 1
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: 1
+  - name: SL_IOSTREAM_USART_VCOM_RESTRICT_ENERGY_MODE_TO_ALLOW_RECEPTION
+    value: 0
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -108,7 +108,7 @@ int verify_app(int i2c_handle, int address, uint8_t *verifyResult);
 * @param filename     name of the GBL image file
 * @return negative value on error, 0 on success
 *******************************************************************************/
-int download_gbl_file(int i2c_handle, int address, const char* filename);
+int download_gbl_file(int i2c_handle, int address, const char *filename);
 
 #ifdef __cplusplus
 } // extern "C"

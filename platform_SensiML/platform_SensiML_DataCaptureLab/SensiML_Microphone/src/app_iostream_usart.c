@@ -33,7 +33,6 @@
  * maintained and there may be no bug maintenance planned for these resources.
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
-#include <app_voice.h>
 #include <stdio.h>
 #include <string.h>
 #include "em_chip.h"
@@ -45,6 +44,7 @@
 
 #include "sl_mic.h"
 #include "app_led.h"
+#include "app_voice.h"
 
 #include "ssi_comms.h"
 
@@ -77,8 +77,8 @@ void app_iostream_usart_init(void)
 {
   /* Prevent buffering of output/input.*/
 #if !defined(__CROSSWORKS_ARM) && defined(__GNUC__)
-  setvbuf(stdout, NULL, _IONBF, 0);   /*Set unbuffered mode for stdout (newlib)*/
-  setvbuf(stdin, NULL, _IONBF, 0);   /*Set unbuffered mode for stdin (newlib)*/
+  setvbuf(stdout, NULL, _IONBF, 0); // Set unbuffered mode for stdout (newlib)
+  setvbuf(stdin, NULL, _IONBF, 0); // Set unbuffered mode for stdin (newlib)
 #endif
 }
 
@@ -93,7 +93,7 @@ void app_iostream_usart_process_action(void)
   /* Retrieve characters, print local echo and full line back */
   c = getchar();
   if (c > 0) {
-    if (c == '\r' || c == '\n') {
+    if ((c == '\r') || (c == '\n')) {
       buffer[index] = '\0';
       index = 0;
     } else {
@@ -109,7 +109,7 @@ void app_iostream_usart_process_action(void)
     buffer[index] = '\0';
     index = 0;
     if ((strcmp("connect", buffer) == 0) || (strcmp("cnnect", buffer) == 0)) {
-      //initialize microphone
+      // initialize microphone
       app_voice_init();
 
       // Start sampling
@@ -123,15 +123,14 @@ void app_iostream_usart_process_action(void)
       app_config_led_off();
       // reset sequence number for this connection, for default channel
       ssi_seqnum_reset(SSI_CHANNEL_DEFAULT);
-    }
-    else if ((strcmp("disconnect", buffer) == 0)) {
-              //initialize IMU and start measurement
-              app_voice_stop();
+    } else if ((strcmp("disconnect", buffer) == 0)) {
+      // initialize IMU and start measurement
+      app_voice_stop();
 
-              config_received = false;
-              app_config_mic();
-              // Turn off LED0 (red) to indicate open connection; data transfer
-              app_led_init();
-            }
+      config_received = false;
+      app_config_mic();
+      // Turn off LED0 (red) to indicate open connection; data transfer
+      app_led_init();
+    }
   }
 }

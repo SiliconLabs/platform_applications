@@ -34,12 +34,11 @@
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
 
-
 #include <stdio.h>
 #include "sl_board_control.h"
 #include "sl_iostream.h"
 #include "sl_imu.h"
-#include "sl_app_assert.h"
+#include "app_assert.h"
 #include "app_sensor_imu.h"
 #include "sl_sleeptimer.h"
 #include "kb.h"
@@ -54,7 +53,8 @@
 #define APP_IMU_SAMPLES_PER_PACKET     10
 #define APP_IMU_NUMBER_SENSORS         2
 #define APP_IMU_AXES_PER_SENSOR        3
-#define APP_IMU_BYTES_TO_WRITE (APP_IMU_SAMPLES_PER_PACKET * APP_IMU_NUMBER_SENSORS)
+#define APP_IMU_BYTES_TO_WRITE         (APP_IMU_SAMPLES_PER_PACKET \
+                                        * APP_IMU_NUMBER_SENSORS)
 
 /*******************************************************************************
  *********************   LOCAL FUNCTION PROTOTYPES   ***************************
@@ -77,9 +77,8 @@ void app_sensor_imu_process_action(void)
   sl_status_t sc;
 
   sc = app_sensor_imu_get(&data[APP_IMU_AXES_PER_SENSOR], data);
-  if(sc == SL_STATUS_OK)
-  {
-      sml_recognition_run(data, 1, 6, 1);
+  if (sc == SL_STATUS_OK) {
+    sml_recognition_run(data, 1, 6, 1);
   }
 }
 
@@ -108,9 +107,9 @@ void app_sensor_imu_enable(bool enable)
   uint8_t state = sl_imu_get_state();
   if (enable && (IMU_STATE_DISABLED == state)) {
     sc = sl_imu_init();
-    sl_app_assert(sc == SL_STATUS_OK,
-                  "[E: 0x%04x] IMU init failed\n",
-                  (int)sc);
+    app_assert(sc == SL_STATUS_OK,
+               "[E: 0x%04x] IMU init failed\n",
+               (int)sc);
     sl_imu_configure(get_acc_gyro_odr());
   } else if (!enable && (IMU_STATE_READY == state)) {
     sl_imu_deinit();
@@ -137,30 +136,29 @@ sl_status_t app_sensor_imu_get(int16_t ovec[3], int16_t avec[3])
  ******************************************************************************/
 static float get_acc_gyro_odr(void)
 {
-    switch (ACCEL_GYRO_DEFAULT_ODR)
-    {
-        case ACCEL_GYRO_ODR_4p4HZ:
-            return 4.4;
-        case ACCEL_GYRO_ODR_17p6HZ:
-            return 17.6;
-        case ACCEL_GYRO_ODR_35p2HZ:
-            return 35.2;
-        case ACCEL_GYRO_ODR_48p9HZ:
-            return 48.9;
-        case ACCEL_GYRO_ODR_70p3HZ:
-            return 70.3;
-        case ACCEL_GYRO_ODR_102p3HZ:
-            return 102.3;
-        case ACCEL_GYRO_ODR_140p6HZ:
-            return 140.6;
-        case ACCEL_GYRO_ODR_187p5HZ:
-            return 187.5;
-        case ACCEL_GYRO_ODR_281p3HZ:
-            return 281.3;
-        case ACCEL_GYRO_ODR_562p5HZ:
-            return 562.5;
-        default:
-            return 102.3;
-    }
+  switch (ACCEL_GYRO_DEFAULT_ODR)
+  {
+    case ACCEL_GYRO_ODR_4p4HZ:
+      return 4.4;
+    case ACCEL_GYRO_ODR_17p6HZ:
+      return 17.6;
+    case ACCEL_GYRO_ODR_35p2HZ:
+      return 35.2;
+    case ACCEL_GYRO_ODR_48p9HZ:
+      return 48.9;
+    case ACCEL_GYRO_ODR_70p3HZ:
+      return 70.3;
+    case ACCEL_GYRO_ODR_102p3HZ:
+      return 102.3;
+    case ACCEL_GYRO_ODR_140p6HZ:
+      return 140.6;
+    case ACCEL_GYRO_ODR_187p5HZ:
+      return 187.5;
+    case ACCEL_GYRO_ODR_281p3HZ:
+      return 281.3;
+    case ACCEL_GYRO_ODR_562p5HZ:
+      return 562.5;
+    default:
+      return 102.3;
+  }
 }
-

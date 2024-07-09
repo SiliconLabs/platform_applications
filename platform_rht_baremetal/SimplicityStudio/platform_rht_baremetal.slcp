@@ -1,0 +1,76 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_rht_baremetal
+label: Platform - Si7021 RHT Sensor Bare-metal
+description: |
+  The example showcases the utilization of the Si7021 Relative Humidity and Temperature sensor and the built-in LCD screen on the Wireless Starter Kit (WSTK) in a bare-metal configuration.
+
+category: Example|Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+- path: ../src/app_rht.c
+- path: ../src/app_display.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+  - path: app_rht.h
+  - path: app_display.h
+  - path: rht_lcd_bitmap.h
+
+component:
+- id: device_init
+- id: sl_system
+- id: app_log
+- id: dmd_memlcd
+- id: glib
+- id: iostream_retarget_stdio
+- id: iostream_recommended_stream
+- id: memlcd_usart
+- id: si70xx_driver
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+- path: ../image/create_project.png
+  directory: "image"
+- path: ../image/board_screen.jpg
+  directory: "image"
+- path: ../image/console_log.png
+  directory: "image"
+- path: ../image/install_float.png
+  directory: "image"
+- path: ../image/board_control_configuration.png
+  directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+  - name: SL_BOARD_ENABLE_DISPLAY
+    value: "1"
+  - name: SL_BOARD_ENABLE_SENSOR_RHT
+    value: "1"
+
+toolchain_settings:
+  - option: gcc_linker_option
+    value: "-u _printf_float"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

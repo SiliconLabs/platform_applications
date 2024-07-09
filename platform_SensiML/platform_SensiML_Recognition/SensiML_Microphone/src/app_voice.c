@@ -38,7 +38,7 @@
 #include <string.h>
 #include "em_common.h"
 #include "sl_board_control.h"
-#include "sl_app_assert.h"
+#include "app_assert.h"
 #include "circular_buff.h"
 #include "filter.h"
 #include "sl_mic.h"
@@ -50,16 +50,17 @@
 // -----------------------------------------------------------------------------
 // Private macros
 
-#define VOICE_SAMPLE_RATE_DEFAULT sr_16k
-#define VOICE_CHANNELS_DEFAULT    1
-#define VOICE_FILTER_DEFAULT      true
-#define VOICE_ENCODE_DEFAULT      false
+#define VOICE_SAMPLE_RATE_DEFAULT      sr_16k
+#define VOICE_CHANNELS_DEFAULT         1
+#define VOICE_FILTER_DEFAULT           true
+#define VOICE_ENCODE_DEFAULT           false
 
-#define MIC_CHANNELS_MAX        2
-#define MIC_SAMPLE_SIZE         2
-#define MIC_SAMPLE_BUFFER_SIZE  112
-#define MIC_SEND_BUFFER_SIZE    (MIC_SAMPLE_BUFFER_SIZE * MIC_SAMPLE_SIZE)
-#define CIRCULAR_BUFFER_SIZE    (MIC_SAMPLE_BUFFER_SIZE * 10)
+#define MIC_CHANNELS_MAX               2
+#define MIC_SAMPLE_SIZE                2
+#define MIC_SAMPLE_BUFFER_SIZE         112
+#define MIC_SEND_BUFFER_SIZE           (MIC_SAMPLE_BUFFER_SIZE \
+                                        * MIC_SAMPLE_SIZE)
+#define CIRCULAR_BUFFER_SIZE           (MIC_SAMPLE_BUFFER_SIZE * 10)
 
 #define SR2FS(sr)               ((sr) * 1000)
 
@@ -120,9 +121,9 @@ void app_voice_init(void)
   voice_config.channels = VOICE_CHANNELS_DEFAULT;
   voice_config.filter_enabled = VOICE_FILTER_DEFAULT;
   err = cb_init(&circular_buffer, CIRCULAR_BUFFER_SIZE, sizeof(uint8_t));
-  sl_app_assert(err == cb_err_ok,
-                "[E: 0x%04x] Circular buffer init failed\n",
-                (int)err);
+  app_assert(err == cb_err_ok,
+             "[E: 0x%04x] Circular buffer init failed\n",
+             (int)err);
 }
 
 /***************************************************************************//**
@@ -137,17 +138,19 @@ void app_voice_start(void)
   }
   // Power up microphone
   sc = sl_board_enable_sensor(SL_BOARD_SENSOR_MICROPHONE);
-  if ( sc != SL_STATUS_OK ) {
+  if (sc != SL_STATUS_OK) {
     return;
   }
   // Microphone initialization
   sc = sl_mic_init(SR2FS(voice_config.sampleRate), voice_config.channels);
-  if ( sc != SL_STATUS_OK ) {
+  if (sc != SL_STATUS_OK) {
     return;
   }
   // Start microphone sampling
-  sc = sl_mic_start_streaming(mic_buffer, MIC_SAMPLE_BUFFER_SIZE / voice_config.channels, mic_buffer_ready);
-  if ( sc != SL_STATUS_OK ) {
+  sc = sl_mic_start_streaming(mic_buffer,
+                              MIC_SAMPLE_BUFFER_SIZE / voice_config.channels,
+                              mic_buffer_ready);
+  if (sc != SL_STATUS_OK) {
     return;
   }
   // Filter initialization
@@ -187,7 +190,7 @@ void app_voice_stop(void)
  ******************************************************************************/
 void app_voice_process_action(void)
 {
-voice_process_data();
+  voice_process_data();
 }
 
 /***************************************************************************//**
@@ -238,9 +241,7 @@ static void voice_process_data(void)
     fil_filter(&filter, buffer, buffer, frames);
   }
   sml_recognition_run(buffer, MIC_SAMPLE_BUFFER_SIZE, voice_config.channels, 2);
-
 }
-
 
 static void mic_buffer_ready(const void *buffer, uint32_t n_frames)
 {
@@ -248,5 +249,3 @@ static void mic_buffer_ready(const void *buffer, uint32_t n_frames)
   frames = n_frames;
   event_process = true;
 }
-
-

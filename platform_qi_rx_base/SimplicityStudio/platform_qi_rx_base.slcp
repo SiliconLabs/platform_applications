@@ -1,0 +1,80 @@
+project_name: platform_qi_rx_base
+package: platform
+label: Platform - QI PRx communication protocol
+description: >
+  This project implements the QI Power Receiver protocol (PRx) as defined by the Wireless Power Consortium on any Silicon Labs EFx32 platform.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: sl_system
+  - id: emlib_usart
+  - id: board_control
+  - id: emlib_prs
+  - id: emlib_ldma
+  - id: device_init_dpll
+  - id: device_init_hfxo
+  - id: device_init_clocks
+  - id: device_init_nvic
+  - id: device_init_emu
+  - id: device_init_lfrco
+  - id: iostream_retarget_stdio
+  - id: iostream_usart
+    instance: [vcom]
+  - id: spidrv
+    instance: [exp]
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../test
+    file_list:
+      - path: dynamic_at_runtime/app_qidrv_prx.h
+  - path: ../src
+    file_list:
+      - path: app.h
+      - path: qi.h
+
+source:
+  - path: ../src/qi.c
+  - path: ../test/dynamic_at_runtime/app.c
+  - path: ../test/dynamic_at_runtime/app_qidrv_prx.c
+  - path: ../test/dynamic_at_runtime/main.c
+
+other_file:
+  - path: ../image/qi_base_gpio.png
+    directory: "image"
+  - path: ../image/qi_base_por_time_optimized.png
+    directory: "image"
+  - path: ../image/qi_base_por_time.png
+    directory: "image"
+  - path: ../image/qi_class0_prx_init.png
+    directory: "image"
+  - path: ../image/qi_msg_timing.png
+    directory: "image"
+  - path: ../image/qi_sig_msg.png
+    directory: "image"
+  - path: ../image/create_example_1.png
+    directory: "image"
+  - path: ../image/create_example_2.png
+    directory: "image"
+
+configuration:
+- name: SL_BOARD_ENABLE_VCOM
+  value: "1"
+- name: SL_SPIDRV_EXP_BITRATE
+  value: "4000"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

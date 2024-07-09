@@ -1,0 +1,44 @@
+project_name: platform_segmentLCD_tempsensor
+label: Platform - Segment LCD Tempsensor
+description: This project demonstrates how to use the Si70xx temperature sensor to measure and record temperature values and how to use the Segment LCD to display those values.
+category: Example|Platform
+quality: experimental
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+package: platform
+readme:
+- path: ../README.md
+define:
+- {name: DEBUG_EFM}
+component:
+  - id: device_init
+  - id: power_manager
+  - id: power_manager_deepsleep
+  - id: si70xx_driver
+  - id: segment_lcd_driver
+  - id: sl_system
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c 
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_RHT
+    value: "1"
+    condition:
+      - brd2506a
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true
+

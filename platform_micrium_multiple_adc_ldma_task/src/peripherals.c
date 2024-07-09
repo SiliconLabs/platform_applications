@@ -43,6 +43,8 @@
 #include "em_ldma.h"
 #include "em_gpio.h"
 #include "em_prs.h"
+#include "dmadrv.h"
+#include "os.h"
 
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
@@ -60,28 +62,80 @@
  ******************************************************************************/
 
 // Buffer for ADC single conversion
-uint32_t adcBuffer1[ADC_BUFFER_SIZE];
-uint32_t adcBuffer0[ADC_BUFFER_SIZE];
+static uint32_t adcBuffer1[ADC_BUFFER_SIZE];
+static uint32_t adcBuffer0[ADC_BUFFER_SIZE];
 
-const LDMA_TransferCfg_t ADC0Transfer =
+static LDMA_TransferCfg_t ADC0Transfer =
   (LDMA_TransferCfg_t)LDMA_TRANSFER_CFG_PERIPHERAL(
     ldmaPeripheralSignal_ADC0_SINGLE);
 
-LDMA_Descriptor_t ADC0_MemLoop =
+static LDMA_Descriptor_t ADC0_MemLoop =
   LDMA_DESCRIPTOR_LINKREL_P2M_WORD(&(ADC0->SINGLEDATA),
                                    &adcBuffer0[0],
                                    ADC_BUFFER_SIZE,
                                    0);
 
-const LDMA_TransferCfg_t ADC1Transfer =
+static LDMA_TransferCfg_t ADC1Transfer =
   (LDMA_TransferCfg_t)LDMA_TRANSFER_CFG_PERIPHERAL(
     ldmaPeripheralSignal_ADC1_SINGLE);
 
-LDMA_Descriptor_t ADC1_MemLoop =
+static LDMA_Descriptor_t ADC1_MemLoop =
   LDMA_DESCRIPTOR_LINKREL_P2M_WORD(&(ADC1->SINGLEDATA),
                                    &adcBuffer1[0],
                                    ADC_BUFFER_SIZE,
                                    0);
+
+static unsigned int DMA_ADC0_CH = 0;
+static unsigned int DMA_ADC1_CH = 1;
+
+extern OS_SEM sem_adc0;
+extern OS_SEM sem_adc1;
+
+/*******************************************************************************
+ **************************    LOCAL FUNCTIONS   *******************************
+ ******************************************************************************/
+
+/***************************************************************************//**
+ *  DMA channel 0 callback function.
+ ******************************************************************************/
+static bool dma_adc0_callback(unsigned int channel,
+                              unsigned int sequenceNo,
+                              void *userParam)
+{
+  (void)channel;
+  (void)sequenceNo;
+  (void)userParam;
+
+  RTOS_ERR err;
+
+  OSSemPost(&sem_adc0,
+            OS_OPT_POST_ALL,
+            &err);
+  EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+  return false;
+}
+
+/***************************************************************************//**
+ *  DMA channel 1 callback function.
+ ******************************************************************************/
+static bool dma_adc1_callback(unsigned int channel,
+                              unsigned int sequenceNo,
+                              void *userParam)
+{
+  (void)channel;
+  (void)sequenceNo;
+  (void)userParam;
+
+  RTOS_ERR err;
+
+  OSSemPost(&sem_adc1,
+            OS_OPT_POST_ALL,
+            &err);
+  EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+  return false;
+}
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -163,42 +217,64 @@ void adc_init(void)
 }
 
 /***************************************************************************//**
- * Initialize LDMA
+ * Initialize DMADRV
  *
  * The LDMA is configured to start reading data from the ADC0 and ADC1 FIFO,
  * one sample from each FIFO. The samples are then stored in their individual
  * buffers. Currently it is configured to store 4 such samples and then print
  * them before overwriting the individual buffers in memory.
  ******************************************************************************/
-void ldma_init(void)
+void dma_init(void)
 {
-  // Enable CMU clock
-  CMU_ClockEnable(cmuClock_LDMA, true);
+  Ecode_t ecode;
 
-  // Basic LDMA configuration
-  LDMA_Init_t ldmaInit = LDMA_INIT_DEFAULT;
-
-  LDMA_Init(&ldmaInit);
+  ecode = DMADRV_Init();
+  if ((ecode != ECODE_OK)
+      && (ecode != ECODE_EMDRV_DMADRV_ALREADY_INITIALIZED)) {
+    return;
+  }
 
   ADC0_MemLoop.xfer.decLoopCnt = true;
 
-  // Clear pending and enable interrupts for channel
-  NVIC_ClearPendingIRQ(LDMA_IRQn);
-  NVIC_EnableIRQ(LDMA_IRQn);
+  ecode = DMADRV_AllocateChannel(&DMA_ADC0_CH, NULL);
+  if (ecode != ECODE_EMDRV_DMADRV_OK) {
+    return;
+  }
+
+  ecode = DMADRV_AllocateChannel(&DMA_ADC1_CH, NULL);
+  if (ecode != ECODE_EMDRV_DMADRV_OK) {
+    return;
+  }
 
   // Initialize LDMA transfers
-  LDMA_StartTransfer(0, &ADC0Transfer, &ADC0_MemLoop);
-  LDMA_StartTransfer(1, &ADC1Transfer, &ADC1_MemLoop);
+  DMADRV_LdmaStartTransfer(DMA_ADC0_CH,
+                           &ADC0Transfer,
+                           &ADC0_MemLoop,
+                           dma_adc0_callback,
+                           NULL);
+  DMADRV_LdmaStartTransfer(DMA_ADC1_CH,
+                           &ADC1Transfer,
+                           &ADC1_MemLoop,
+                           dma_adc1_callback,
+                           NULL);
 }
 
 /***************************************************************************//**
- * Initialize LDMA transfers
+ * Initialize DMA transfers
  ******************************************************************************/
-void LDMA_Tx(void)
+void dma_tx(void)
 {
   // Initialize LDMA transfers
-  LDMA_StartTransfer(0, &ADC0Transfer, &ADC0_MemLoop);
-  LDMA_StartTransfer(1, &ADC1Transfer, &ADC1_MemLoop);
+  DMADRV_LdmaStartTransfer(DMA_ADC0_CH,
+                           &ADC0Transfer,
+                           &ADC0_MemLoop,
+                           dma_adc0_callback,
+                           NULL);
+  DMADRV_LdmaStartTransfer(DMA_ADC1_CH,
+                           &ADC1Transfer,
+                           &ADC1_MemLoop,
+                           dma_adc1_callback,
+                           NULL);
 }
 
 /***************************************************************************//**
@@ -220,11 +296,7 @@ void gpio_init(void)
   // Use GPIO PB0 as async PRS to trigger ADC in EM2
   CMU_ClockEnable(cmuClock_PRS, true);
 
-  if (8 > 7) {
-    PRS_SourceAsyncSignalSet(0, PRS_CH_CTRL_SOURCESEL_GPIOH, (uint32_t)(8 - 8));
-  } else {
-    PRS_SourceAsyncSignalSet(0, PRS_CH_CTRL_SOURCESEL_GPIOL, 8);
-  }
+  PRS_SourceAsyncSignalSet(0, PRS_CH_CTRL_SOURCESEL_GPIOH, 0);
 }
 
 /***************************************************************************//**

@@ -1,0 +1,82 @@
+project_name: platform_sensiml_imu_recognition
+package: platform
+label: Platform - SensiML IMU Recognition
+description: >
+  This example project uses the Knowledge Pack created by SensiML along with the IMU component drivers to take accelerometer and gyroscope data and classify them into Horizontal, Stationary and Vertical movements.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: "Capability"
+    value: ["Machine Learning"]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: printf
+  - id: iostream_usart
+    instance: [vcom]
+  - id: iostream_retarget_stdio
+  - id: simple_led
+    instance: [led0, led1]
+  - id: sleeptimer
+  - id: app_assert
+  - id: imu_driver
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: app_iostream_usart.h
+      - path: app_led.h
+      - path: app_sensor_imu.h
+#------------- knowledgepack package ----------------
+  - path: knowledgepack
+    file_list:
+    - path: sml_output.h
+    - path: sml_recognition_run.h
+  - path: knowledgepack/lib
+    file_list:
+    - path: kb_defines.h
+    - path: kb_typedefs.h
+    - path: kb.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/app_iostream_usart.c
+  - path: ../src/app_led.c
+  - path: ../src/app_sensor_imu.c
+  - path: knowledgepack/sml_recognition_run.c
+  - path: knowledgepack/sml_output.c
+
+other_file:
+  - path: ../image/classification_output.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_IMU
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: "1"
+
+library:
+  - path: knowledgepack/lib/libsensiml.a
+    condition:
+    - "toolchain_gcc"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

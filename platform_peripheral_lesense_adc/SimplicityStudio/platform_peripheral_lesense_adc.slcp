@@ -1,0 +1,42 @@
+project_name: platform_peripheral_lesense_adc
+package: platform
+label: Platform - Peripheral LESENSE ADC
+description: >
+  This project demonstrates using LESENSE to trigger ADC conversions and read the result from the LESENSE interrupt handler.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: emlib_adc
+  - id: emlib_lesense
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -4,7 +4,7 @@
  * @version 1.0.0
  *******************************************************************************
  * # License
- * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -44,7 +44,6 @@
 //                                   Includes
 // -----------------------------------------------------------------------------
 #include "sl_memlcd.h"
-#include "dmd.h"
 #include "glib.h"
 
 // -----------------------------------------------------------------------------

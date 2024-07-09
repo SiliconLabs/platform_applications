@@ -46,9 +46,41 @@
 #define NUM_SEG           8
 #define NUM_STATE         10
 
-extern uint32_t segments[NUM_DIGIT][NUM_NUMBER][NUM_SEG];
+uint32_t segments[NUM_DIGIT][NUM_NUMBER][NUM_SEG];
 uint32_t display[NUM_STATE][NUM_SEG];
 LDMA_Descriptor_t descriptors[3];
+extern sl_segment_lcd_mcu_display_t efm_display;
+extern uint16_t segment_numbers[];
+
+/***************************************************************************//**
+ * Intialize buffer.
+ ******************************************************************************/
+void sl_segment_lcd_ldma_init(void)
+{
+  uint16_t bitpattern;
+  int dig, num, seg, i, bit;
+
+  for (dig = 0; dig < NUM_DIGIT; dig++) {
+    for (num = 0; num < NUM_NUMBER; num++) {
+      for (seg = 0; seg < NUM_DIGIT; seg++) {
+        segments[dig][num][seg] = 0;
+      }
+    }
+  }
+
+  for (dig = 0; dig < NUM_DIGIT; dig++) {
+    for (num = 0; num < NUM_NUMBER; num++) {
+      bitpattern = segment_numbers[num];
+      for (i = 0; i < 7; i++) {
+        bit = efm_display.number[dig].bit[i];
+        seg = efm_display.number[dig].com[i];
+        if (bitpattern & (1 << i)) {
+          segments[dig][num][seg] |= (1 << bit);
+        }
+      }
+    }
+  }
+}
 
 /***************************************************************************//**
  * LDMA IRQ handler.
@@ -80,21 +112,21 @@ void disableUnusedLCDSeg(void)
 * segments on the pro kit board. These are disabled below in order to
 * minimize current consumption.
 *******************************************************************************/
-  LCD_SegmentEnable(SEG_S00, false);
-  LCD_SegmentEnable(SEG_S01, false);
-  LCD_SegmentEnable(SEG_S02, false);
-  LCD_SegmentEnable(SEG_S03, false);
-  LCD_SegmentEnable(SEG_S04, false);
-  LCD_SegmentEnable(SEG_S05, false);
-  LCD_SegmentEnable(SEG_S06, false);
-  LCD_SegmentEnable(SEG_S07, false);
-  LCD_SegmentEnable(SEG_S08, false);
-  LCD_SegmentEnable(SEG_S09, false);
-  LCD_SegmentEnable(SEG_S10, false);
-  LCD_SegmentEnable(SEG_S11, false);
-  LCD_SegmentEnable(SEG_S12, false);
-  LCD_SegmentEnable(SEG_S13, false);
-  LCD_SegmentEnable(SEG_S14, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S00, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S01, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S02, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S03, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S04, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S05, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S06, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S07, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S08, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S09, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S10, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S11, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S12, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S13, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S14, false);
 }
 
 /***************************************************************************//**
@@ -107,7 +139,7 @@ void app_init(void)
   CMU_ClockEnable(cmuClock_GPIO, true);
 
   // Initialize the LCD
-  SegmentLCD_Init(false);
+  sl_segment_lcd_init(false);
 
   // Example only used upper numeric segments; disable unused segments
   disableUnusedLCDSeg();
@@ -128,7 +160,7 @@ void app_init(void)
   LCD_SyncStart(true, lcdLoadAddrSegd7);
 
   // Fill the segments[][][] buffer
-  SegmentLCD_LdmaInit();
+  sl_segment_lcd_ldma_init();
 
   // Fill the display[][] buffer to output:
   // 00000 -> 11111 -> 22222 -> ... -> 99999

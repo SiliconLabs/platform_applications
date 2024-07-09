@@ -1,0 +1,44 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_parse_gbl_metadata_buffersize_steps
+label: Platform - Parse GBL Metadata in BufferSize Steps
+description: |
+  This example demonstrates how to use Application Parser Interface described in UG266. The GBL image in the storage slot is first verified and the metadata in the stored image is parsed in BufferSize steps using image parser function of the gecko bootloader interface API.
+category: Example|Platform
+package: Platform
+quality: experimental
+readme:
+- path: ../README.md
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+component:
+- id: sl_system
+- id: device_init
+- id: bootloader_interface
+- id: power_manager_deepsleep
+- id: iostream_usart
+  instance: [vcom]
+- id: iostream_retarget_stdio
+- id: iostream_stdlib_config
+other_file:
+- path: ../image/create_project.png
+  directory: "image"
+- path: ../image/log.png
+  directory: "image"
+configuration:
+  - name: SL_APPLICATION_SIGNATURE
+    value: "APPLICATION_SIGNATURE_ECDSA_P256"
+  - name: SL_APPLICATION_SIGNATURE_LOCATION
+    value: "0"
+  - name: SL_BOARD_ENABLE_VCOM
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_FLOW_CONTROL_TYPE
+    value: "0"
+ui_hints:
+  highlight:
+  - path: README.md 
+    focus: true

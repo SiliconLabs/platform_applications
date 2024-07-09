@@ -1,5 +1,13 @@
 # AN1220: DALI Communication #
 
+![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_common.json&label=Type&query=type&color=green)
+![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_common.json&label=Technology&query=technology&color=green)
+![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_common.json&label=License&query=license&color=green)
+![SDK badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_common.json&label=SDK&query=sdk&color=green)
+![Build badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_build_status.json)
+![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_common.json&label=Flash&query=flash&color=blue)
+![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_dali_common.json&label=RAM&query=ram&color=blue)
+
 ## Summary ##
 
 These projects are part of AN1220. DALI is an international standard lighting control system, which uses an asynchronous serial protocol with manchester encoding to send data between the main and secondary devices. These projects demonstrate how to configure Silicon Labs MCUs to send DALI frames between main and secondary devices.
@@ -8,7 +16,7 @@ Peripherals used: EUSART, USART, PRS, LDMA, GPIO, TIMER, SYSRTC
 
 ## Gecko SDK version ##
 
-v4.3.1
+v4.4.3
 
 ## Hardware Required ##
 
@@ -33,13 +41,17 @@ The table below defines the GPIO pins and expansion headers used for DALI pins f
 
 ## Setup ##
 
-To setup the main device, import one of the .sls files for the main radio board. Check the project's properties to ensure the DALI_SECONDARY symbol isn't defined, then build and flash the project to the radio board.
+### Create a project based on an example project
 
-To setup the secondary device, import one of the .sls files for the secondary radio board. Check the project's properties to ensure the DALI_SECONDARY symbol is defined, then build and flash the project to the radio board.
+1. From the Launcher Home, add your hardware to My Products, click on it, and click on the **EXAMPLE PROJECTS & DEMOS** tab. Find the example project with the filter "dali".
 
-Connect the main's DALI TX pin to the secondary's DALI RX pin, the main's DALI RX pin to the secondary's DALI TX pin, and the main's GND pin to the secondary's GND pin.
+2. Choose corresponding project for **Main** and **Secondary** device -> click Create and Finish and Project should be generated.
+    - **Platform - DALI Communication using bitbang SPI**: This is using SPI bit-banging for device serries 1 & serries 2 with no DALI hardware support.
+    - **Platform - DALI Communication using bitbang SPI with DMADRV**: This is using SPI bit-banging with DMADRV for device serries 1 & serries 2 with no DALI hardware support.
+    - **Platform - DALI Communication using EUSART**: This is using EUSART with DALI hardware support on device serries 2.
+![create_project](images/create_example.png)
 
-Open a terminal program (like Tera Term) for each radio board and set the baud rate to 115201-8-N-1.
+3. Build and flash this example to the board.
 
 ## How It Works ##
 
@@ -49,15 +61,13 @@ Devices with EUSART DALI support (like the EFR32xG24) can use the EUSART in asyn
 
 Devices without EUSART DALI support (like the EFR32xG12 and EFR32xG21) bit-bang the DALI frames. These projects use SPI to bit-bang DALI forward frames. The GPIO, TIMER, and PRS are used to receive backward frames.
 
-## .sls Projects Used ##
+## Testing ##
 
-BRD4161A_EFR32MG12P_dali.sls
-BRD4161A_EFR32MG12P_dali_dmadrv.sls
-BRD4181A_EFR32xG21_dali.sls
-BRD4181A_EFR32xG21_dali_dmadrv.sls
-BRD4186C_EFR32xG24_dali_dmadrv.sls
+For testing, you will need 2 Silabs boards. One acts as Main device, one acts as Secondary device.
 
-## How to Port to Another Part ##
+1. Connect the main's DALI TX pin to the secondary's DALI RX pin, the main's DALI RX pin to the secondary's DALI TX pin, and the main's GND pin to the secondary's GND pin. Refer [Connections Required](#connections-required) section to know how to connect these boards.
 
-Open the "Project Properties" and navigate to the "C/C++ Build -> Board/Part/SDK" item. Select the new board or part to target and "Apply" the changes. The dali_config.h file must be modified to add configuration to the new part number.
+2. Open a terminal program (like Simplicity Studio built-in console or Tera Term) for each radio board and set the baud rate to 115201-8-N-1.
 
+3. Use terminal to send character '1' to secondary device and then also sending character '1' to main device. If the DALI frame is success transmited, the result will be shown as the picture below.
+![result](images/result.png)

@@ -1,47 +1,49 @@
-# SensiML Data Capture Examples #
+# Platform - SensiML Data Capture #
+
 ![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_SensiML_DataCaptureLab_common.json&label=Type&query=type&color=green)
 ![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_SensiML_DataCaptureLab_common.json&label=Technology&query=technology&color=green)
 ![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_SensiML_DataCaptureLab_common.json&label=License&query=license&color=green)
 
 ## Summary ##
 
-The projects provided in this repository contain the hard-coded data collection firmware for IMU (3-axis accelerometer and 3-axis gyroscope) and audio (microphone) data acquisition using Silicon Lab's Thunderboard Sense 2 development kit, targeting SensiML's data collection tool called Data Capture Lab (DCL). Both project implementations utilize DCL's lightweight, simple, data streaming protocol to stream live data from the device under test to the data acquisition software.
+The projects provided in this repository contain the hard-coded data collection firmware for IMU (3-axis accelerometer and 3-axis gyroscope) and audio (microphone) data acquisition using Silicon Lab's Thunderboard Sense 2 development kit, targeting SensiML's data collection tool called SensiML Data Studio (SDS). Both project implementations utilize SDS's lightweight, simple, data streaming protocol to stream live data from the device under test to the data acquisition software.
 
 ## Hardware Required ##
 
-- One SLTB004A Thunderboard Sense 2 Development Kit
-<https://www.silabs.com/development-tools/thunderboard/thunderboard-sense-two-kit>
-- One micro USB cable
+- Thunderboard Sense 2 Development Kit - SLTB004A
 
-## Setup ##
+## Connections Required ##
 
-### Device firmware/kit configuration - Simplicity Studio ###
+- Connect the Kit to the PC through a micro USB cable.
 
-Import the included .sls file to Studio then build and flash the project to the SLTB004A development kit.
-In Simplicity Studio select "File->Import" and navigate to the directory with the .sls project file.
-The project is built with relative paths to the STUDIO_SDK_LOC variable which was defined as
+## Software Required ##
 
-C:\SiliconLabs\SimplicityStudio\v4\developer\sdks\gecko_sdk_suite\v3.1
+- [SensiML Data Studio](https://sensiml.com/download/)
 
-In Simplicity Studio, under the Debug Adapters window, right-click on the Thunderboard Sense 2 device and select "Launch console..." from the drop-down menu. In the Adapter Console window, select the "Admin" tab and type "serial vcom config speed 921600" into the terminal input. This will modify the VCOM baudrate to match the application settings. If making any changes to the USART baudrate, the baudrate change must also be modified in the VCOM debug adapter settings.
+## Examples ##
+
+| No | Example name | Link to example |
+|:--:|:-------------|:---------------:|
+| 1 | Platform - SensiML IMU Data Capture | [Click here](./SensiML_IMU/) |
+| 2 | Platform - SensiML IMU Data Capture with BLE | [Click here](./SensiML_IMU_BLE/) |
+| 3 | Platform - SensiML Microphone Data Capture | [Click here](./SensiML_Microphone/) |
 
 ### SensiML Setup ###
 
-In SensiML's Data Capture Lab (DCL), select Edit > Import Device Plugin... from the main menu. Select the provided \*.ssf in this repository. Next, create a new project, and in project explorer view, switch modes to "Capture".
+- Create a new project, and in the project explorer view, switch modes to "Capture Live Sensor Data..."
 
-Under the Hardware Setup window, click the "+" button to add a sensor. Select "(C) Thunderboard Sense 2 Simple Stream" from the drop-down menu. 
+- Under the Sensor Configuration window, click the "Next" button. Select "Thunderboard Sense 2" from the Select a Device Plugin window.
 
-For adding the IMU sensor, select "Motion" for the Capture Source drop-down, select the appropriate hard-coded sampling rate (102 is the default configuration in firmware), and enable both Accelerometer and Gyroscope sensor (checkboxes).
+  ![Select device plugin](image/select_device.png)
 
-![DCL - IMU Sensor Configuration](doc/imu_config.PNG)
+- For adding the IMU sensor, select "Motion" for the Sensor Properties window, select the appropriate hard-coded sampling rate (102 is the default configuration in firmware), and enable both the Accelerometer and Gyroscope sensor (checkboxes).
 
-For adding the audio sensor, select "Audio" for the Capture Source drop-down, select the appropriate hard-coded sampling rate (16000 is the default configuration in firmware), and enable the microphone sensor (checkbox).
+  ![IMU Sensor Configuration](image/imu_configuration.png)
 
-![DCL - IMU Sensor Configuration](doc/microphone_config.PNG)
+- For adding the audio sensor, select "Audio" for the Capture Source drop-down, select the appropriate hard-coded sampling rate (16000 is the default configuration in firmware), and enable the microphone sensor (checkbox).
 
-Use the "Find Devices" button to locate the appropriate serial port. Once configured, use the Connect/Disconnect button to begin streaming data.
+  ![IMU Sensor Configuration](image/microphone_configuration.png)
 
-![DCL - IMU Sensor Configuration](doc/imu_datastream.PNG)
+- Use the "Scan" button to locate the appropriate serial port. Once configured, use the Connect/Disconnect button to begin streaming data.
 
 For more detailed information regarding the SensiML DCL tool, please visit SensiML's Toolkit Documentation located here - <https://sensiml.com/documentation/index.php>
-

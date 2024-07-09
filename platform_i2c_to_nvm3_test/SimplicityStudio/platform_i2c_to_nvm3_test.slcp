@@ -1,0 +1,77 @@
+project_name: platform_i2c_to_nvm3_test
+package: platform
+label: Platform - I2C Read to NVM3 Test
+description: >
+  This project tests the total system latency when sampling a SI7210 Hall Effect sensor on the I2C bus and storing the information to flash using NVM3.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: bluetooth_stack
+  - id: gatt_configuration
+  - id: gatt_service_device_information
+  - id: bluetooth_feature_legacy_advertiser
+  - id: bluetooth_feature_connection
+  - id: bluetooth_feature_gatt
+  - id: bluetooth_feature_gatt_server
+  - id: bluetooth_feature_legacy_scanner
+  - id: bluetooth_feature_sm
+  - id: bluetooth_feature_system
+  - id: bt_post_build
+  - id: mpu
+  - id: rail_util_pti
+  - id: component_catalog
+  - id: iostream_usart
+    instance: [vcom]
+  - id: app_assert
+  - id: app_log
+  - id: simple_button
+    instance: [btn0]
+  - id: sensor_hall
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/terminal_output.png
+    directory: "image"
+  - path: ../image/timing_diagram.png
+    directory: "image"
+
+config_file:
+  - override:
+      component: gatt_configuration
+      file_id: gatt_configuration_file_id
+    path: "../config/btconf/gatt_configuration.btconf"
+    directory: "btconf"
+
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_HALL
+    value: "1"
+
+ui_hints:
+  highlight:
+    - path: config/btconf/gatt_configuration.btconf
+    - path: README.md
+      focus: true

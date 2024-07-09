@@ -1,0 +1,44 @@
+project_name: platform_uart_ldma_circular_buffer
+package: platform
+label: Platform - UART Circular Buffer with LDMA
+description: >
+  This project uses an EFM32GG11 to receive UART frames into a circular buffer using LDMA
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: sl_system
+  - id: emlib_ldma
+  - id: device_init
+  - id: emlib_usart
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app.h
+    
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/debug.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -1,4 +1,4 @@
-# xG21 DMA SPI Throughput Tester #
+# Platform - EFR32xG21 DMA SPI Throughput #
 ![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/ldma_common.json&label=Type&query=type&color=green)
 ![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/ldma_common.json&label=Technology&query=technology&color=green)
 ![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/ldma_common.json&label=License&query=license&color=green)
@@ -7,113 +7,98 @@
 ![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/ldma_common.json&label=Flash&query=flash&color=blue)
 ![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/ldma_common.json&label=RAM&query=ram&color=blue)
 
-## Summary ##
+## Overview ##
 
-This project calculates the bandwidth achievable when the LDMA is used to read data from a SPI flash memory (effectively,
-any device compatible with the now industry-standard command set first implemented on the Numonyx M25P40) with the USART
-operating in synchronous mode.
+This project calculates the bandwidth achievable when the  Linked Direct Memory Access (LDMA) is used to read data from an SPI flash memory with the USART operating in synchronous mode.
 
-Because this code benchmarks read performance, there is no need to connect an actual SPI flash device to the EFR32xG21.
-The timing of read operations is gated by the timing achievable with the USART and the GPIO pins that would otherwise
-interface to such a device. These pins are driven as they would be if connected to an actual IC and can be observed on
-an oscilloscope.
+Because this code benchmarks read performance, there is no need to connect an actual SPI flash device to the EFR32xG21. The timing of read operations is gated by the timing achievable with the USART and the GPIO pins that would otherwise interface to such a device. These pins are driven as they would be if connected to an actual IC and can be observed on an oscilloscope.
 
-Modules used: CMU, EMU, GPIO, LDMA, SYSTICK, USART0 (for VCOM), and USART2 (SPI flash).
+Modules used: CMU, EMU, LDMA, GPIO, Sleep Timer, USART0 (for VCOM), and USART2 (SPI flash).
 
-## Gecko SDK version ##
+## Gecko SDK Suite version ##
 
-v2.7.x
+- GSDK v4.4.3
 
 ## Hardware Required ##
 
-* Wireless Starter Kit (WSTK) Mainboard (SLWMB4001A, formerly BRD4001A)
-* EFR32xG21 2.4 GHz 20 dBm Radio Board (BRD4180A)
+- [EFR32xG21 Wireless Gecko Starter Kit (BRD4180A)](https://www.silabs.com/development-tools/wireless/efr32xg21-wireless-starter-kit?tab=overview)
+
+## Connections Required ##
+
+Connect the board via the connector cable to your PC to flash the example.
 
 ## Setup ##
 
-Clone the repository with this project from GitHub onto your local machine.
+To test this application, you can either create a project based on an example project or start with an "Empty C Project" project based on your hardware.
 
-From within the Simplicity Studio IDE, select Import -> MCU Project... from the Project menu. Click the Browse button
-and navigate to the local repository folder, then to the SimplicityStudio folder, select the .slsproj file for the
-board, click the Next button twice, and then click Finish.
+### Create a project based on an example project ###
 
-## How the Project Works ##
+1. Make sure that this repository is added to [Preferences > Simplicity Studio > External Repos](https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-about-the-launcher/welcome-and-device-tabs).
 
-The code offers a fair degree of configurability, so it is a simple matter to change the amount of data read or,
-in particular, the frequency of the USART module clock. The DPLL is used to generate the SYSCLK, which is the top-level
-clock from which the HCLK (bus clock) and PCLK (synchronous peripheral clock) are derived, and initialization
-structures are present in the code (all but one of which is commented out) to set the DPLL output to 40, 50, and
-80 MHz, which results in PCLK frequencies of 40, 50, and 40 MHz, respectively.
+2. From the Launcher Home, add your product name to My Products, click on it, and click on the **EXAMPLE PROJECTS & DEMOS** tab. Find the example project filtering by "ldma" and "throughput".
 
-After sending the SPI flash read command and the 24-bit address, 1 Mbyte of dummy data is clocked out the TX pin
-(which the SPI flash would ignore) while 1 Mbyte of data is clocked in on the RX pin in blocks of 1 Kbyte at a time.
-The SYSTICK timer is started and stopped immediately before and after the read sequence, and the difference between
-the start and end times is used to calculate bandwidth.
+3. Click the **Create** button on **Platform - EFR32xG21 LDMA SPI Throughput** example. Example project creation dialog pops up -> click Create and Finish and the project should be generated.
+![create_project](image/create_project.png)
 
-The code flow is as follows:
+4. Build and flash this example to the board.
 
-1.  Initialize the CMU.
+### Start with an empty example project ###
 
-This is where the DPLL is configured for the desired SYSCLK frequency. The HFXO is started first, as it is used as the
-reference clock for the DPLL.
+1. Create an "Empty C Project" for the "BRD4180A" board using Simplicity Studio v5. Use the default project settings.
 
-2.  The SYSTICK timer is configured for 1 ms ticks.
+2. Copy the `app.c` file in the `src` folder to the project root folder (overwriting the existing file).
 
-This code includes a set of SYSTICK utility functions in the Drivers/systick.* files that can be useful for other purposes,
+3. Install the software components:
 
-3.  stdio functions are retargeted to use USART0 for VCOM.
+    - Open the .slcp file in the project.
 
-4.  USART2 is initialized for operation in synchronous mode (initSPI2).
+    - Select the SOFTWARE COMPONENTS tab.
 
-The divider is set for the maximum possible clock frequency (PCLK / 2), and the USART is set to transfer and receive data
-MSB first as this is the standard for SPI devices and what any M25P40-compatible flash expects. The clock phase (CLKPHA)
-and clock polarity (CLKPOL) are both set to 0, which is often called SPI mode 0, which means that (a) the clock is inactive
-low and the master (b) drives data on the leading (rising) edge of the clock and (c) samples data on the falling edge of
-the clock.  
+    - Install the following components:
 
-Because the delays through the EFR32 GPIO multiplexing logic are relatively long, it is necessary to enable synchronous
-master sample delay (USART_CTRL_SMSDELAY), which results in input data being sampled on the subsequent clock edge. In the
-case of SPI mode 0 operation, as used here, input data is sampled not on the falling edge of the clock but on the next
-rising edge of the clock.  This is perfectly allowable and expected because any modern SPI flash device is going to support
-clock rates well in excess (100 MHz is not unusual) of the maximum 50 MHz read frequency supported by the original M25P40.
-The slave device will not change the data it drives on its transmit output until this edge is received, at which point the
-master will have already latched it.
+        - [Services] → [IO Stream] → [IO Stream: USART]: use default instance: vcom
+  
+        - [Application] → Utility] → [Log]
 
-The GPIO pins used by USART2 are configured, and the fastest possible slew rate is set so that the clock is a well-defined
-square. Note that the USART RX, TX, and CLK pins all use the same GPIO port for this reason, although, technically the slew
-rate setting applies only to CLK and TX, as these are outputs. Because the chip select (CS) is a manually controlled GPIO
-and is not timing-critical, any GPIO pin can be used.
+        - [Services] → [Timers] → [Sleep Timer]
 
-5.  The LDMA is initialized with one channel configured to transmit the outgoing data and another configured to receive the
-incoming data.
+        - [Services] → [Device Initialization] → [Peripherals] → [Digital Phase-Locked Loop (DPLL)]: use default configuration or configure other clock frequencies as following picture
+        ![setup_dpll](image/setup_dpll.png)
 
-Note that only BYTECOUNT bytes of data (1 Kbyte as defined) are transmitted/received at a time. While this is a synthetic
-benchmark, the 1 Kbyte block size is a reasonable amount because the data has to be stored somewhere and processed given
-the limited RAM available on the EFR32xG21.
+        - [Platform] → [Board] → [Board Control]: enable **Enable Virtual COM UART** as below:
+          ![board_control](image/board_control.png)    
 
-6. The SYSTICK interrupt is enable and the start time is synchronized (saved  as soon as the SYSTICK counter is incremented).
+4. Build and flash this example to the board.
 
-7. The read sequence is started by asserting the SPI flash chip select (driving a GPIO low), sending the READ command, and
-sending the 24-bit address.
+## How It Works ##
 
-8. The LDMA is started to transmit and receive 1024 bytes of data.
+This code provides a reasonable configuration. It is a simple matter to change the amount of data read or, in particular, the frequency of the USART module clock. The Digital Phase-Locked Loop (DPLL) is used to generate the system clock (SYSCLK). SYSCLK is the top-level clock from which the bus clock (HCLK) and the synchronous peripheral clock (PCLK) are derived. The initialization structures are present in the code (all but one of which is commented out) to set the DPLL output to 40, 50, and 40 MHz. The PCLK frequency is one of 40, 50, and 40 MHz respectively.
 
-This is performed repeatedly in a for-loop that executes the specified number of times. A state variable, rxDone, is set to
-false, and the device enters EM1. When the LDMA channel handling the receive data stream completes its transfer, the device
-exits EM1, and the rxDone flag is set to true.   
+After sending the SPI flash read command and the 24-bit address. Then 1 Mbyte of dummy data is clocked out of the TX pin, which the SPI flash would ignore. Meanwhile, 1 Mbyte of data is clocked in on the RX pin in blocks of 1 Kbyte at a time. The sleep timer is started and stopped immediately before and after the read sequence. The difference between the start and end times is used to calculate bandwidth.
 
-9. The SYSTICK count is captured and its interrupt is disabled.
+The application flow is described as follows:
 
-10. The data transfer rate is calculated and displayed along with the LDMA clock frequency.
+1. USART2 is initialized for operation in synchronous mode (SPI).
 
-## Porting to Another EFR32 Series 2 Device ##
+    - The divider is set for the maximum possible clock frequency (PCLK / 2). The USART is set to transfer and receive data MSB first. This is the standard for SPI devices and what any M25P40-compatible flash expects. The clock phase (CLKPHA) and clock polarity (CLKPOL) are both set to 0, which is often called SPI mode 0.
 
-Apart from any issues of pin availability on a given radio board, this code should run as-is on any radio board for EFR32xG21
-or any module that is based on EFR32xG21, such as BGM210L, BGM210P, MGM210L, and MGM210P.
+    - Because the delays through the EFR32 GPIO multiplexing logic are relatively long. Hence, it is necessary to enable synchronous master sample delay (USART_CTRL_SMSDELAY), which results in input data being sampled on the subsequent clock edge. In SPI mode 0, input data is sampled not on the falling edge of the clock but on the next rising edge of the clock. This is perfectly allowable and expected. Because any modern SPI flash device is going to support clock rates well in excess (100 MHz is not unusual) of the maximum 50 MHz. These frequencies are supported by the original M25P40.
+    The slave device will not change the transmitted data until this edge is received. At which point the master will have already latched it.
 
-The code can also run on EFR32xG22, although this has not been tested. However, all module clocks � GPIO, LDMA, and USART2
-(retargetio.enables the clock for whatever USART it is configured to use, which is USART0 in this case) � because xG22
-does not have the on-demand module clock enable functionality that is present on xG21. 
+2. The LDMA is initialized with one channel configured to transmit the outgoing data and another configured to receive the incoming data.
 
-To change the target board, navigate to Project -> Properties -> C/C++ Build -> Board/Part/SDK. Start typing in the Boards
-search box and locate the desired radio board, then click Apply to change the project settings, and go from there.
+    - Note that only 1024 bytes of data (1 Kbyte as defined) are transmitted and received at a time. While this is a synthetic benchmark, the 1 Kbyte block size is a reasonable amount. Because the data has to be stored somewhere and processed given the limited RAM available on the EFR32xG21 board.
+
+3. The start time is synchronized (saved as soon as the sleep timer counter is incremented). The sleep timer is started to increase the counter every millisecond.
+
+4. The read sequence is started by sending the READ command and the 24-bit flash address.
+
+5. The LDMA is started to transmit and receive 1024 bytes of data.
+
+    - This is performed repeatedly in a for-loop that executes the specified number of times. Two state variables(`rxDone` and `txDone`) are set to `false` and the device enters EM1. When the LDMA channel handling the transmit and receive data stream is complete, the device exits EM1. The flags are set to `true` in the respective callback function.  
+
+6. The sleep timer is stopped and the counter is captured.
+
+7. The data transfer rate is calculated and displayed along with the LDMA clock frequency. 
+   - You can launch Console, which is integrated into Simplicity Studio or you can use a third-party terminal tool like Tera Term to receive the data. Data is coming from the UART COM port. A screenshot of the console output is shown in the figure below.
+   ![console_log](image/console_log.png)

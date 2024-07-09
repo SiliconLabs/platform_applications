@@ -5,7 +5,7 @@
  * # License
  * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
-*
+ *
  * SPDX-License-Identifier: Zlib
  *
  * The licensor of this software is Silicon Laboratories Inc.
@@ -52,25 +52,27 @@
 #define IMU_SAMPLES_PER_PACKET              2
 #endif
 
-#define STR(s) #s
+#define STR(s)  #s
 #define XSTR(s) STR(s)
-static const char config_str[] = "{"
+static const char config_str[] =
+  "{"
   "\"sample_rate\":" XSTR(IMU_SAMPLE_RATE) ","
-  "\"samples_per_packet\":" XSTR(IMU_SAMPLES_PER_PACKET) ","
-  "\"column_location\":{"
-    "\"AccelerometerX\":0,"
-    "\"AccelerometerY\":1,"
-    "\"AccelerometerZ\":2,"
-    "\"GyroscopeX\":3,"
-    "\"GyroscopeY\":4,"
-    "\"GyroscopeZ\":5"
-  "}"
-"}";
+                                           "\"samples_per_packet\":" XSTR(
+    IMU_SAMPLES_PER_PACKET) ","
+                            "\"column_location\":{"
+                            "\"AccelerometerX\":0,"
+                            "\"AccelerometerY\":1,"
+                            "\"AccelerometerZ\":2,"
+                            "\"GyroscopeX\":3,"
+                            "\"GyroscopeY\":4,"
+                            "\"GyroscopeZ\":5"
+                            "}"
+                            "}";
 
 static uint8_t imu_connection = 0;
 static bool imu_state = false; /* disabled / enabled */
 static volatile bool imu_data_notification = false;
-static int16_t data[6*IMU_SAMPLES_PER_PACKET] = {0};
+static int16_t data[6 * IMU_SAMPLES_PER_PACKET] = { 0 };
 static int current_sample = 0;
 
 // -----------------------------------------------------------------------------
@@ -79,7 +81,8 @@ static int current_sample = 0;
 static void imu_update_state(void);
 static void imu_data_notify(void);
 static void imu_connection_closed_cb(sl_bt_evt_connection_closed_t *data);
-static void imu_char_config_changed_cb(sl_bt_evt_gatt_server_characteristic_status_t *data);
+static void imu_char_config_changed_cb(
+  sl_bt_evt_gatt_server_characteristic_status_t *data);
 
 // -----------------------------------------------------------------------------
 // Private function definitions
@@ -99,9 +102,10 @@ static void imu_data_notify(void)
     imu_connection,
     gattdb_sensiml_data,
     sizeof(data),
-    (uint8_t*)data);
+    (uint8_t *)data);
   if (sc != SL_STATUS_OK) {
-    app_log_error("[E: 0x%04x] Failed to send characteristic notification\n", (int)sc);
+    app_log_error("[E: 0x%04x] Failed to send characteristic notification\n",
+                  (int)sc);
   }
 }
 
@@ -112,9 +116,10 @@ static void imu_connection_closed_cb(sl_bt_evt_connection_closed_t *data)
   imu_update_state();
 }
 
-static void imu_char_config_changed_cb(sl_bt_evt_gatt_server_characteristic_status_t *data)
+static void imu_char_config_changed_cb(
+  sl_bt_evt_gatt_server_characteristic_status_t *data)
 {
-  bool enable = gatt_disable != data->client_config_flags;
+  bool enable = sl_bt_gatt_disable != data->client_config_flags;
   imu_connection = data->connection;
   // update notification status
   switch (data->characteristic) {
@@ -135,22 +140,23 @@ void gatt_service_sensiml_imu_on_event(sl_bt_msg_t *evt)
   switch (SL_BT_MSG_ID(evt->header)) {
     case sl_bt_evt_system_boot_id:
       // Setup config characteristic
-      sc = sl_bt_gatt_server_write_attribute_value(
-        gattdb_sensiml_config,
-        0,
-        sizeof(config_str),
-        (const uint8_t *)config_str
-      );
+      sc = sl_bt_gatt_server_write_attribute_value(gattdb_sensiml_config,
+                                                   0,
+                                                   sizeof(config_str),
+                                                   (const uint8_t *)config_str);
       app_assert_status(sc);
       break;
     case sl_bt_evt_connection_closed_id:
       imu_connection_closed_cb(&evt->data.evt_connection_closed);
       break;
     case sl_bt_evt_gatt_server_characteristic_status_id:
-      if ((gatt_server_client_config == (gatt_server_characteristic_status_flag_t)evt->data.evt_gatt_server_characteristic_status.status_flags)
-          && ((gattdb_sensiml_data == evt->data.evt_gatt_server_user_read_request.characteristic))) {
+      if ((evt->data.evt_gatt_server_characteristic_status.status_flags
+           == sl_bt_gatt_server_client_config)
+          && ((evt->data.evt_gatt_server_user_read_request.characteristic
+               == gattdb_sensiml_data))) {
         // client characteristic configuration changed by remote GATT client
-        imu_char_config_changed_cb(&evt->data.evt_gatt_server_characteristic_status);
+        imu_char_config_changed_cb(
+          &evt->data.evt_gatt_server_characteristic_status);
       }
       break;
   }
@@ -159,7 +165,8 @@ void gatt_service_sensiml_imu_on_event(sl_bt_msg_t *evt)
 void gatt_service_sensiml_imu_step(void)
 {
   if (imu_state) {
-    if (SL_STATUS_OK == gatt_service_sensiml_imu_get(&data[6 * current_sample])) {
+    if (SL_STATUS_OK
+        == gatt_service_sensiml_imu_get(&data[6 * current_sample])) {
       current_sample++;
       if (current_sample == IMU_SAMPLES_PER_PACKET) {
         current_sample = 0;

@@ -86,43 +86,43 @@ extern "C" {
 
 /// packing the structure if not defined before (for GCC)
 #ifndef __PACKED
-#define __PACKED __attribute__((packed))
+#define __PACKED                            __attribute__((packed))
 #endif
 
 /// this frame is used for downloading data to slave
 typedef struct __PACKED {
-  ///command byte
+  /// command byte
   uint8_t  command;
-  ///frame length incl. header
+  /// frame length incl. header
   uint8_t  length;
-  ///crc16 of the frame.
+  /// crc16 of the frame.
   uint16_t crc16;
-  ///sequence number for the current frame
+  /// sequence number for the current frame
   uint16_t frame_seq_nr;
-  ///the downloading content bytes
+  /// the downloading content bytes
   uint8_t  frame_data[];
 } i2c_download_frame_t;
 
 #define BOOT_DOWNLOAD_FRAME_HEADER_SIZE \
-  (sizeof(i2c_download_frame_t) )
+  (sizeof(i2c_download_frame_t))
 
 #define BOOT_MAX_DOWNLOAD_FRAME_SIZE \
   (BOOT_MAX_DOWNLOAD_FRAME_DATA_LENGTH + BOOT_DOWNLOAD_FRAME_HEADER_SIZE)
 
-///version info data
+/// version info data
 typedef struct __PACKED {
   uint16_t  major;
   uint16_t  minor;
   uint16_t  patch;
 } version_info_t;
 
-///version structure serialization
+/// version structure serialization
 typedef union {
   version_info_t boot_version;
   uint8_t bytes[sizeof(version_info_t)];
 } btl_version_info_t;
 
-///download frame structure serialization
+/// download frame structure serialization
 typedef union {
   i2c_download_frame_t frame;
   uint8_t bytes[BOOT_MAX_DOWNLOAD_FRAME_SIZE];

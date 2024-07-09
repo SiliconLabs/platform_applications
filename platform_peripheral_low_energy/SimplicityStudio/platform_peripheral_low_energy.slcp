@@ -1,0 +1,53 @@
+project_name: platform_peripheral_low_energy
+package: platform
+label: Platform - Using Autonomous Peripherals in Low Power EM2 Mode
+description: >
+  This project configures multiple peripherals to work together in low power EM2 mode.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+component:
+  - id: device_init
+  - id: sl_system
+  - id: emlib_adc
+  - id: emlib_prs
+  - id: emlib_ldma
+  - id: emlib_letimer
+  - id: glib
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: graph.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/graph.c
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/lcd.png
+    directory: "image"
+
+configuration:
+- name: SL_BOARD_ENABLE_DISPLAY
+  value: "1"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

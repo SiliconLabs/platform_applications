@@ -75,8 +75,8 @@ void app_iostream_usart_init(void)
 {
   /* Prevent buffering of output/input.*/
 #if !defined(__CROSSWORKS_ARM) && defined(__GNUC__)
-  setvbuf(stdout, NULL, _IONBF, 0);   /*Set unbuffered mode for stdout (newlib)*/
-  setvbuf(stdin, NULL, _IONBF, 0);   /*Set unbuffered mode for stdin (newlib)*/
+  setvbuf(stdout, NULL, _IONBF, 0); // Set unbuffered mode for stdout (newlib)
+  setvbuf(stdin, NULL, _IONBF, 0);  // Set unbuffered mode for stdin (newlib)
 #endif
 }
 
@@ -91,7 +91,7 @@ void app_iostream_usart_process_action(void)
   /* Retrieve characters */
   c = getchar();
   if (c > 0) {
-    if (c == '\r' || c == '\n') { // reset buffer
+    if ((c == '\r') || (c == '\n')) { // reset buffer
       buffer[index] = '\0';
       index = 0;
     } else {
@@ -107,7 +107,7 @@ void app_iostream_usart_process_action(void)
     buffer[index] = '\0';
     index = 0;
     if ((strcmp("connect", buffer) == 0) || (strcmp("cnnect", buffer) == 0)) {
-      //initialize IMU and start measurement
+      // initialize IMU and start measurement
       app_sensor_imu_init();
 
       app_sensor_imu_enable(true);

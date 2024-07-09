@@ -33,33 +33,37 @@
  * maintained and there may be no bug maintenance planned for these resources.
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
-#include <app_voice.h>
 #include <stdio.h>
 #include <string.h>
 #include "em_common.h"
 #include "sl_board_control.h"
-#include "sl_app_assert.h"
-#include "circular_buff.h"
-#include "filter.h"
+#include "app_assert.h"
+
 #include "sl_mic.h"
 #include "sl_sleeptimer.h"
 #include "sl_iostream.h"
 
+#include "circular_buff.h"
+#include "filter.h"
+#include "app_voice.h"
+#include "ssi_comms.h"
+
 // -----------------------------------------------------------------------------
 // Private macros
 
-#define VOICE_SAMPLE_RATE_DEFAULT sr_16k
-#define VOICE_CHANNELS_DEFAULT    1
-#define VOICE_FILTER_DEFAULT      true
-#define VOICE_ENCODE_DEFAULT      false
+#define VOICE_SAMPLE_RATE_DEFAULT      sr_16k
+#define VOICE_CHANNELS_DEFAULT         1
+#define VOICE_FILTER_DEFAULT           true
+#define VOICE_ENCODE_DEFAULT           false
 
-#define MIC_CHANNELS_MAX        2
-#define MIC_SAMPLE_SIZE         2
-#define MIC_SAMPLE_BUFFER_SIZE  112
-#define MIC_SEND_BUFFER_SIZE    (MIC_SAMPLE_BUFFER_SIZE * MIC_SAMPLE_SIZE)
-#define CIRCULAR_BUFFER_SIZE    (MIC_SAMPLE_BUFFER_SIZE * 10)
+#define MIC_CHANNELS_MAX               2
+#define MIC_SAMPLE_SIZE                2
+#define MIC_SAMPLE_BUFFER_SIZE         112
+#define MIC_SEND_BUFFER_SIZE           (MIC_SAMPLE_BUFFER_SIZE \
+                                        * MIC_SAMPLE_SIZE)
+#define CIRCULAR_BUFFER_SIZE           (MIC_SAMPLE_BUFFER_SIZE * 10)
 
-#define SR2FS(sr)               ((sr) * 1000)
+#define SR2FS(sr)                      ((sr) * 1000)
 
 /** Time (in ms) between periodic JSON template messages. */
 #define JSON_TEMPLATE_INTERVAL_MS      1000
@@ -125,7 +129,8 @@ static void mic_buffer_ready(const void *buffer, uint32_t n_frames);
 /***************************************************************************//**
  * JSON send configuration timeout callback.
  ******************************************************************************/
-static void send_config_callback(sl_sleeptimer_timer_handle_t *handle, void *data);
+static void send_config_callback(sl_sleeptimer_timer_handle_t *handle,
+                                 void *data);
 
 /***************************************************************************//**
  * Sends JSON configuration over iostream.
@@ -141,7 +146,12 @@ static void send_json_config(void);
 void app_config_mic(void)
 {
   /* Set up periodic JSON configuration timer. */
-  sl_sleeptimer_start_periodic_timer_ms(&send_config_timer, JSON_TEMPLATE_INTERVAL_MS, send_config_callback, NULL, 0, 0);
+  sl_sleeptimer_start_periodic_timer_ms(&send_config_timer,
+                                        JSON_TEMPLATE_INTERVAL_MS,
+                                        send_config_callback,
+                                        NULL,
+                                        0,
+                                        0);
 
   // Send initial JSON config message
   send_json_config();
@@ -168,9 +178,9 @@ void app_voice_init(void)
   voice_config.channels = VOICE_CHANNELS_DEFAULT;
   voice_config.filter_enabled = VOICE_FILTER_DEFAULT;
   err = cb_init(&circular_buffer, CIRCULAR_BUFFER_SIZE, sizeof(uint8_t));
-  sl_app_assert(err == cb_err_ok,
-                "[E: 0x%04x] Circular buffer init failed\n",
-                (int)err);
+  app_assert(err == cb_err_ok,
+             "[E: 0x%04x] Circular buffer init failed\n",
+             (int)err);
 }
 
 /***************************************************************************//**
@@ -185,17 +195,19 @@ void app_voice_start(void)
   }
   // Power up microphone
   sc = sl_board_enable_sensor(SL_BOARD_SENSOR_MICROPHONE);
-  if ( sc != SL_STATUS_OK ) {
+  if (sc != SL_STATUS_OK) {
     return;
   }
   // Microphone initialization
   sc = sl_mic_init(SR2FS(voice_config.sampleRate), voice_config.channels);
-  if ( sc != SL_STATUS_OK ) {
+  if (sc != SL_STATUS_OK) {
     return;
   }
   // Start microphone sampling
-  sc = sl_mic_start_streaming(mic_buffer, MIC_SAMPLE_BUFFER_SIZE / voice_config.channels, mic_buffer_ready);
-  if ( sc != SL_STATUS_OK ) {
+  sc = sl_mic_start_streaming(mic_buffer,
+                              MIC_SAMPLE_BUFFER_SIZE / voice_config.channels,
+                              mic_buffer_ready);
+  if (sc != SL_STATUS_OK) {
     return;
   }
   // Filter initialization
@@ -296,9 +308,9 @@ static void voice_process_data(void)
 
   err = cb_push_buff(&circular_buffer, buffer, sample_count * MIC_SAMPLE_SIZE);
 
-  sl_app_assert(err == cb_err_ok,
-                "[E: 0x%04x] Circular buffer push failed\n",
-                (int)err);
+  app_assert(err == cb_err_ok,
+             "[E: 0x%04x] Circular buffer push failed\n",
+             (int)err);
 
   event_send = true;
 }
@@ -310,13 +322,12 @@ static void voice_send_data(void)
 
   cb_error = cb_pop_buff(&circular_buffer, buffer, MIC_SEND_BUFFER_SIZE);
 
-  if ( cb_error == cb_err_ok ) {
+  if (cb_error == cb_err_ok) {
     voice_transmit(buffer, MIC_SEND_BUFFER_SIZE);
     event_send = true;
   }
 }
 
-#include "ssi_comms.h"
 static void voice_transmit(uint8_t *buffer, uint32_t size)
 {
   // Send data using SSI v2 on default Channel
@@ -330,7 +341,8 @@ static void mic_buffer_ready(const void *buffer, uint32_t n_frames)
   event_process = true;
 }
 
-static void send_config_callback(sl_sleeptimer_timer_handle_t *handle, void *data)
+static void send_config_callback(sl_sleeptimer_timer_handle_t *handle,
+                                 void *data)
 {
   (void)handle;
   (void)data;
@@ -341,16 +353,20 @@ static void send_json_config()
 {
 #if (SSI_JSON_CONFIG_VERSION == 1)
   printf("{\"sample_rate\":%d,"
-      "\"column_location\":{"
-      "\"Microphone\":0},"
-      "\"samples_per_packet\":%d}\n", SR2FS(VOICE_SAMPLE_RATE_DEFAULT), MIC_SAMPLE_BUFFER_SIZE);
+         "\"column_location\":{"
+         "\"Microphone\":0},"
+         "\"samples_per_packet\":%d}\n",
+         SR2FS(VOICE_SAMPLE_RATE_DEFAULT),
+         MIC_SAMPLE_BUFFER_SIZE);
 #elif (SSI_JSON_CONFIG_VERSION == 2)
   printf("{\"version\":%d, \"sample_rate\":%d,"
-      "\"column_location\":{"
-      "\"Microphone\":0},"
-      "\"samples_per_packet\":%d}\n", SSI_JSON_CONFIG_VERSION, SR2FS(VOICE_SAMPLE_RATE_DEFAULT), MIC_SAMPLE_BUFFER_SIZE);
+         "\"column_location\":{"
+         "\"Microphone\":0},"
+         "\"samples_per_packet\":%d}\n",
+         SSI_JSON_CONFIG_VERSION,
+         SR2FS(VOICE_SAMPLE_RATE_DEFAULT),
+         MIC_SAMPLE_BUFFER_SIZE);
 #else
 #error "Unknown SSI_JSON_CONFIG_VERSION"
 #endif
 }
-

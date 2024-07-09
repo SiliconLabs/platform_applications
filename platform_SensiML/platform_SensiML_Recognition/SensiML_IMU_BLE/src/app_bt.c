@@ -36,20 +36,14 @@
 
 #include "app_log.h"
 #include "app_assert.h"
-#include "sl_simple_timer.h"  
 #include "gatt_db.h"
 #include "sl_bluetooth.h"
 #include "app_bt.h"
 
-// Connection handle.
-static uint8_t app_connection = 0;
-
-// Bluetooth connection
-bool bluetooth_connected;
+static bool notifications_enabled = false;
 
 // The advertising set handle allocated from Bluetooth stack.
 static uint8_t advertising_set_handle = 0xff;
-
 
 /**************************************************************************//**
  * Bluetooth stack event handler.
@@ -110,6 +104,11 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
       sc = sl_bt_advertiser_create_set(&advertising_set_handle);
       app_assert_status(sc);
 
+      // Generate data for advertising
+      sc = sl_bt_legacy_advertiser_generate_data(advertising_set_handle,
+                                                 sl_bt_advertiser_general_discoverable);
+      app_assert_status(sc);
+
       // Set advertising interval to 100ms.
       sc = sl_bt_advertiser_set_timing(
         advertising_set_handle, // advertising set handle
@@ -119,10 +118,8 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
         0);  // max. num. adv. events
       app_assert_status(sc);
       // Start general advertising and enable connections.
-      sc = sl_bt_advertiser_start(
-        advertising_set_handle,
-        advertiser_general_discoverable,
-        advertiser_connectable_scannable);
+      sc = sl_bt_legacy_advertiser_start(advertising_set_handle,
+                                         sl_bt_advertiser_connectable_scannable);
       app_assert_status(sc);
       app_log_info("Started advertising\n");
       break;
@@ -130,8 +127,6 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // This event indicates that a new connection was opened.
     case sl_bt_evt_connection_opened_id:
       app_log_info("Connection opened\n");
-      bluetooth_connected = true;
-      app_connection = evt->data.evt_gatt_server_characteristic_status.connection;
 
 #ifdef SL_CATALOG_BLUETOOTH_FEATURE_POWER_CONTROL_PRESENT
       // Set remote connection power reporting - needed for Power Control
@@ -147,15 +142,26 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // This event indicates that a connection was closed.
     case sl_bt_evt_connection_closed_id:
       app_log_info("Connection closed\n");
-      bluetooth_connected = false;
+      notifications_enabled = false;
 
       // Restart advertising after client has disconnected.
-      sc = sl_bt_advertiser_start(
-        advertising_set_handle,
-        advertiser_general_discoverable,
-        advertiser_connectable_scannable);
+      sc = sl_bt_legacy_advertiser_start(advertising_set_handle,
+                                         sl_bt_advertiser_connectable_scannable);
       app_assert_status(sc);
       app_log_info("Started advertising\n");
+      break;
+
+    case sl_bt_evt_gatt_server_characteristic_status_id:
+      /* Sensiml event characteristics notify */
+      if (evt->data.evt_gatt_server_characteristic_status.characteristic
+          == gattdb_SENSIML_EVENT_CHARACTERISTIC) {
+        // Notification or Indication status changed for Sensiml event
+        if (evt->data.evt_gatt_server_characteristic_status.status_flags
+            == sl_bt_gatt_server_client_config) {
+          notifications_enabled =
+            evt->data.evt_gatt_server_characteristic_status.client_config_flags;
+        }
+      }
       break;
 
     ///////////////////////////////////////////////////////////////////////////
@@ -169,35 +175,30 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
   }
 }
 
-
-void output_bluetooth(uint16_t model,uint16_t classification)
+void output_bluetooth(uint16_t model, uint16_t classification)
 {
-  if (!bluetooth_connected)
-  {
-    return;
-  }
-  // Create output buffer on little endian format
+  sl_status_t sc;
   uint8_t buf[4];
+
+  // Create output buffer on little endian format
   buf[0] = (uint8_t)(model & 0x00FF);
   buf[1] = (uint8_t)((model & 0xFF00) >> 8);
   buf[2] = (uint8_t)(classification & 0x00FF);
   buf[3] = (uint8_t)((classification & 0xFF00) >> 8);
 
   // Send Bluetooth notification to all connected peers
-  sl_status_t sc;
-  sc = sl_bt_gatt_server_notify_all(gattdb_SENSIML_EVENT_CHARACTERISTIC,
-                                    sizeof(buf),
-                                    buf);
-  if (sc) {
-    app_log_error("Bluetooth notification, failed to send classification\n");
+  if (notifications_enabled) {
+    sc = sl_bt_gatt_server_notify_all(gattdb_SENSIML_EVENT_CHARACTERISTIC,
+                                      sizeof(buf),
+                                      buf);
+    app_assert_status(sc);
   }
 
   // Update read variable in gatt database
-  sc = sl_bt_gatt_server_write_attribute_value( gattdb_SENSIML_EVENT_CHARACTERISTIC,
-                                                0,
-                                                sizeof(buf),
-                                                buf);
-  if (sc) {
-    app_log_error("Bluetooth gatt server, failed to write classification\n");
-  }
+  sc = sl_bt_gatt_server_write_attribute_value(
+    gattdb_SENSIML_EVENT_CHARACTERISTIC,
+    0,
+    sizeof(buf),
+    buf);
+  app_assert_status(sc);
 }

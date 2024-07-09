@@ -1,0 +1,55 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_iadc_high_speed_pg28
+label: Platform - IADC High-speed Mode
+description: |
+  This project shows how to use the IADC in high-speed mode on the EFM32PG28 Pro Kit (BRD2506A) board.
+
+category: Example|Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+- path: ../src/iadc_single.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+  - path: iadc_single.h
+
+component:
+- id: device_init
+- id: emlib_iadc
+- id: emlib_ldma
+- id: sl_system
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/board.png
+    directory: "image"
+  - path: ../image/output_pulse.png
+    directory: "image"
+  - path: ../image/buffer_debugger.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true
+

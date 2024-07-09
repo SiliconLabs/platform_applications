@@ -1,65 +1,78 @@
-# Segment LCD with Animation and Blink Functionality
+# Platform - PG28 LCD Animation Blink #
 
-## Summary
+![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_common.json&label=Type&query=type&color=green)
+![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_common.json&label=Technology&query=technology&color=green)
+![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_common.json&label=License&query=license&color=green)
+![SDK badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_common.json&label=SDK&query=sdk&color=green)
+![Build badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_build_status.json)
+![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_common.json&label=Flash&query=flash&color=blue)
+![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_lcd_animation_blink_pg28_common.json&label=RAM&query=ram&color=blue)
+## Overview ##
 
-This project shows how to use the PG28 LCD peripheral on the BRD2506A board to perform
-auto animation and blink without CPU intervention, and displaying a pattern
-on the segment LCD (more information on "How it works" below).
+This project shows how to use the PG28 LCD peripheral on the BRD2506A board to perform auto animation and blink without CPU intervention.
 
-## Gecko SDK version
+This project displays a pattern on the segment LCD. The LCD peripheral can execute various animations without involving the LCD data registers as well as the CPU. It allows specialized patterns to run on the LCD panel while the microcontroller remains in Low Energy Mode.
 
-v4.3.0
+More information on [How it works](#how-it-works) below.
 
-## Hardware Required
+## Gecko SDK version ##
+
+GSDK v4.4.3
+
+## Hardware Required ##
 
 * Board:  Silicon Labs EFM32PG28 Pro Kit Board (BRD2506A)
   * Device: EFM32PG28B310F1024IM68
 
-## Connections Required
+## Connections Required ##
 
 Connect the board via a micro-USB cable to your PC to flash the example.
 
-## Setup
+## Setup ##
 
-1. Clone the repository with this project from GitHub onto your local machine.
+To test this application, you can either create a project based on an example project or start with an empty example project.
 
-2. From within the Simplicity Studio IDE, select Import -> MCU Project... from the Project menu.
+### Create a project based on an example project ###
 
-3. Click the Browse button and navigate to the local repository folder, then to the SimplicityStudio folder.
+1. Make sure that this repository is added to [Preferences > Simplicity Studio > External Repos](https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-about-the-launcher/welcome-and-device-tabs).
 
-4. Click the Next button twice and then click Finish.
+2. From the Launcher Home, add your board to My Products, click on it, and click on the **EXAMPLE PROJECTS & DEMOS** tab. Find the example project filtering by **'lcd animation'**.
 
-## How It Works
+3. Click the **Create** button on the **Platform - PG28 LCD Animation Blink** example. Example project creation dialog pops up -> click **Finish** and Project should be generated.
 
-The LCD peripheral has the capability of performing various animations without involving the LCD data
-registers or CPU. It allows specialized patterns running on the LCD panel while the 
-microcontoller remains in Low Energy Mode. A max of 8 segments can be used for animation feature
-and they can either be segment 0-7 controlled by COM0 or segment 8-15 controlled by COM0. The animation
-is implemented as two programmable 8-bit registers that are shifted either left or right every other
-Animation state for a total of 16 states. The LCD_AREGA register is shifted every odd state and the
-LCD_AREGB register is shifted every even state. The two registers can either be OR'ed or AND'ed to achieve
-the desired animation pattern. The animation state machine is described in section 26.3.13.3 of the reference manual.
+    ![Create_example](image/create_example.png)
 
-This example uses segment 0-7 that are controlled by COM0 to demonstrate the animation feature.
+4. Build and flash this example to the board.
 
-The LCD peripheral also has the capability to blink at a frequency given by CLKevent every 2Hz. The segments will be
-alternating between on and off when the LCD is blinking. Refer to section 26.3.13.1 of the reference manual
-for more infomration regarding the blinking feature.
+### Start with an empty example project ###
 
-For this example, the LCD segments controlled by the animation feature are: DP2, 1E, 1D, 2E, 2D, 3E, 3D, and 4E. Refer to the BRD2506A schematic for additional information.
+1. Create an **Empty C Project** project for your hardware using Simplicity Studio 5.
 
-![pg28_lcd_mapping](https://github.com/SiliconLabs/platform_applications_staging/assets/48032592/581e8757-85e5-476e-81d1-b9eebf93e55e)
+2. Replace the `app.c` file in the project root folder with the `app.c` file in the src folder.
 
-To test:
+3. Open the .slcp file. Select the SOFTWARE COMPONENTS tab and install the software components:
 
-1. Build and flash the hex image onto the board. Reset board and observe the segment LCD displaying animation at a 2Hz rate.
-2. Change BLINK_ENABLE define on line 30 of app.c file to 1.
-3. Rebuild and flash the hex image onto the board. Reset board and observe the segment LCD displaying animation and blinking at a 2Hz rate. This example runs as it is and requires no user intervention.
+    - [Platform] → [Peripheral] → [LCD]
+    - [Services] → [Power Manager] → [Power Manger]
 
-## .sls Projects Used
+4. Build and flash the project to your device.
 
-* platform_lcd_animation_blink_pg28.sls
+## How It Works ##
 
-## How to Port to Another Part
+The EFR32PG28 Pro Kit supports the segment LCD segment peripheral.
 
-Right click on the project and select "Properties" and navigate to "C/C++ Build" then "Board/Part/SDK". Select the new board or part to target and apply the changes. There may be some dependencies that need to be resolved when changing the target architecture. This example can only run out of the box on BRD2506A device.
+A maximum of 8 segments can be used for the animation feature. They can either be segments 0-7 controlled by COM0 or segments 8-15 controlled by COM0. The animation is implemented as two programmable 8-bit registers that are shifted either left or right in every other animation state for a total of 16 states. The LCD_AREGA register is shifted in every odd state. The LCD_AREGB register is shifted in every even state. The two registers can either be OR'ed or AND'ed to achieve the desired animation pattern. The animation state machine is described in section 26.3.13.3 of the reference manual.
+
+This example uses segments 0-7 that are controlled by COM0 to demonstrate the animation feature.
+
+The LCD peripheral can also blink at a frequency given by CLKevent every 2Hz. The segments will be alternating between on and off when the LCD is blinking. Refer to section 26.3.13.1 of the reference manual for more information regarding the blinking feature.
+
+For this example, the LCD segments controlled by the animation feature are DP2, 1E, 1D, 2E, 2D, 3E, 3D, and 4E. Refer to the BRD2506A schematic for additional information.
+
+![pg28_lcd_mapping](image/pg28_lcd_segment_mapping.png)
+
+## Testing ##
+
+1. Build and flash the hex image onto the board. Reset the board and observe the segment LCD displaying animation at a 2Hz rate.
+2. Change BLINK_ENABLE define on line 30 of `app.c` file to 1.
+3. Rebuild and flash the hex image onto the board. Reset the board and observe the segment LCD displaying animation and blinking at a 2Hz rate. This example runs as it is and requires no user intervention.

@@ -1,0 +1,71 @@
+project_name: platform_sensiml_microphone_data_capture
+package: platform
+label: Platform - SensiML Microphone Data Capture
+description: >
+  This project uses the Thunderboard Sense 2 (EFR32MG12) and onboard I2S microphone sensor to take audio measurements and send data via serial UART for consumption by the SensiML Data Studio application.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: iostream_usart
+    instance: [vcom]
+  - id: iostream_retarget_stdio
+  - id: simple_led
+    instance: [led0, led1]
+  - id: sleeptimer
+  - id: app_assert
+  - id: mic_i2s_driver
+  - id: printf
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: app_iostream_usart.h
+      - path: app_led.h
+      - path: app_voice.h
+      - path: circular_buff.h
+      - path: filter.h
+      - path: ssi_comms.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/app_iostream_usart.c
+  - path: ../src/app_led.c
+  - path: ../src/app_voice.c
+  - path: ../src/circular_buff.c
+  - path: ../src/filter.c
+  - path: ../src/ssi_comms.c
+
+configuration:
+  - name: SL_IOSTREAM_USART_VCOM_BAUDRATE
+    value: "921600"
+  - name: SL_BOARD_ENABLE_SENSOR_MICROPHONE
+    value: "1"
+
+other_file:
+  - path: ../image/app_flowchart.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/microphone_data_capture.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

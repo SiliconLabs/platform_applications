@@ -1,0 +1,87 @@
+project_name: platform_sensiml_microphone_recognition
+package: platform
+label: Platform - SensiML Microphone Recognition
+description: >
+  This project uses the Thunderboard Sense 2 (EFR32MG12) and the onboard I2S microphone sensor to take audio measurements and classify them into Silence, Finger Snaps and General Talking.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+  - name: "Capability"
+    value: ["Machine Learning"]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: iostream_usart
+    instance: [vcom]
+  - id: iostream_retarget_stdio
+  - id: simple_led
+    instance: [led0, led1]
+  - id: sleeptimer
+  - id: app_assert
+  - id: mic_i2s_driver
+  - id: printf
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: app_iostream_usart.h
+      - path: app_led.h
+      - path: app_voice.h
+      - path: circular_buff.h
+      - path: filter.h
+#------------- knowledgepack package ----------------
+  - path: knowledgepack
+    file_list:
+    - path: sml_output.h
+    - path: sml_recognition_run.h
+  - path: knowledgepack/lib
+    file_list:
+    - path: kb_defines.h
+    - path: kb_typedefs.h
+    - path: kb.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/app_iostream_usart.c
+  - path: ../src/app_led.c
+  - path: ../src/app_voice.c
+  - path: ../src/circular_buff.c
+  - path: ../src/filter.c
+  - path: knowledgepack/sml_recognition_run.c
+  - path: knowledgepack/sml_output.c
+
+
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_MICROPHONE
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: "1"
+
+other_file:
+  - path: ../image/classification_output.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+
+library:
+  - path: knowledgepack/lib/libsensiml.a
+    condition:
+    - "toolchain_gcc"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

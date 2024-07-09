@@ -28,9 +28,10 @@
 
 #include <stdbool.h>
 
-#define PAD_THRS 1500
-#define PAD_LEVEL_0 { 0, 0, 0, 0, 0, 0 }
-#define PAD_LEVEL_THRS { PAD_THRS, PAD_THRS, PAD_THRS, PAD_THRS, PAD_THRS, PAD_THRS }
+#define PAD_THRS              1500
+#define PAD_LEVEL_0           { 0, 0, 0, 0, 0, 0 }
+#define PAD_LEVEL_THRS        { PAD_THRS, PAD_THRS, PAD_THRS, PAD_THRS, \
+                                PAD_THRS, PAD_THRS }
 #define APP_CSEN_NOISE_MARGIN 500
 
 typedef struct {

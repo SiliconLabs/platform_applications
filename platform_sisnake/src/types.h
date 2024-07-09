@@ -34,9 +34,9 @@
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
 
-#define MAP_SIZE_X 21
-#define MAP_SIZE_Y 16
-#define MAX_STRING_LENGTH (SL_MEMLCD_DISPLAY_WIDTH / 8)
+#define MAP_SIZE_X             21
+#define MAP_SIZE_Y             16
+#define MAX_STRING_LENGTH      (SL_MEMLCD_DISPLAY_WIDTH / 8)
 #define MAX_MENU_ELEMENT_COUNT 7
 
 /*******************************************************************************
@@ -58,7 +58,6 @@ enum event_t{BTN0,
              TOUCH_SLIDER_RIGHT_CANCEL,
              TURN,
              UNDETERMINED};
-
 
 enum relative_direction_t{R_FORWARD,
                           R_LEFT,

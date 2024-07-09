@@ -44,4 +44,4 @@ void app_process_action(void);
 }
 #endif
 
-#endif  // APP_H
+#endif // APP_H

@@ -118,7 +118,7 @@ cb_err_code_t cb_init(circular_buffer_t *cb, size_t capacity, size_t item_size)
  ******************************************************************************/
 cb_err_code_t push(circular_buffer_t *cb, void *item)
 {
-  if ( is_full(cb) ) {
+  if (is_full(cb)) {
     return cb_err_full;
   }
 
@@ -147,7 +147,7 @@ cb_err_code_t push(circular_buffer_t *cb, void *item)
  ******************************************************************************/
 cb_err_code_t pop(circular_buffer_t *cb, void *item)
 {
-  if ( is_empty(cb) ) {
+  if (is_empty(cb)) {
     return cb_err_empty;
   }
   memcpy(item, cb->tail, cb->item_size);
@@ -194,13 +194,13 @@ void cb_free(circular_buffer_t *cb)
 cb_err_code_t cb_push_buff(circular_buffer_t *cb, void *inBuff, size_t len)
 {
   cb_err_code_t err = cb_err_ok;
-  if ( len > (cb->capacity - cb->count) ) {
+  if (len > (cb->capacity - cb->count)) {
     return cb_err_too_much_data;
   }
 
   for (uint16_t i = 0; i < len; i++) {
     err = push(cb, ((char *)inBuff + cb->item_size * i));
-    if ( err != cb_err_ok ) {
+    if (err != cb_err_ok) {
       return err;
     }
   }
@@ -227,13 +227,13 @@ cb_err_code_t cb_push_buff(circular_buffer_t *cb, void *inBuff, size_t len)
 cb_err_code_t cb_pop_buff(circular_buffer_t *cb, void *outBuff, size_t len)
 {
   cb_err_code_t err = cb_err_ok;
-  if ( len > cb->count) {
+  if (len > cb->count) {
     return cb_err_insuff_data;
   }
 
   for (uint16_t i = 0; i < len; i++) {
     err = pop(cb, ((char *)outBuff + cb->item_size * i));
-    if ( err != cb_err_ok) {
+    if (err != cb_err_ok) {
       return err;
     }
   }

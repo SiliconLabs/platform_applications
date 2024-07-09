@@ -1,0 +1,58 @@
+project_name: platform_squash_freertos_glib
+label: Platform - Squash FreeRTOS Glib
+description: This project demonstrates FreeRTOS tasks using interrupts. The demo uses the integrated LCD, buttons and implements a simple squash game.
+category: Example|Platform
+quality: experimental
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+package: platform
+
+readme:
+- path: ../README.md
+
+define:
+- {name: DEBUG_EFM}
+component:
+  - id: sl_system
+  - id: device_init
+  - id: dmd_memlcd
+  - id: glib
+  - id: freertos_heap_4
+  - id: gpiointerrupt
+  - instance: [led0]
+    id: simple_led
+
+include:
+  - path: ../include
+    file_list:
+      - path: app.h
+source:
+  - path: ../src/main.c
+    directory: src
+  - path: ../src/app.c
+    directory: src
+
+config_file:
+  - path: ../config/brd4162a/squash_config.h
+    file_id: squash_config_id
+    condition: [brd4162a]
+
+configuration:
+  - name: SL_BOARD_ENABLE_DISPLAY
+    value: "1"
+    condition:
+      - brd4162a
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -32,7 +32,7 @@
 
 #include "types.h"
 
-#define RIGHT_BUTTON_LEFT_LIMIT 100
+#define RIGHT_BUTTON_LEFT_LIMIT  100
 #define RIGHT_BUTTON_RIGHT_LIMIT 190
 
 extern enum event_t irq_type;
@@ -48,10 +48,11 @@ static CSEN_Event_t current_event = CSEN_EVENT_DEFAULT;
 
 static const uint8_t pad_channels[4] = { 3, 2, 0, 1 };
 static const CSEN_SingleSel_TypeDef slider_input_channels[] = {
-                                                csenSingleSelAPORT1XCH22,
-                                                csenSingleSelAPORT1YCH31,
-                                                csenSingleSelAPORT1XCH20,
-                                                csenSingleSelAPORT1YCH7 };
+  csenSingleSelAPORT1XCH22,
+  csenSingleSelAPORT1YCH31,
+  csenSingleSelAPORT1XCH20,
+  csenSingleSelAPORT1YCH7
+};
 
 /*******************************************************************************
  **************************   LOCAL FUNCTIONS   ********************************
@@ -79,14 +80,14 @@ void setup_CSEN(void)
   uint8_t i;
 
   /* Use LFXO as LF clock source since we are already using it
-     for the RTCC */
+   *    for the RTCC */
   CMU_ClockSelectSet(cmuClock_LFB, cmuSelect_LFXO);
 
   CMU_ClockEnable(cmuClock_CSEN_HF, true);
   CMU_ClockEnable(cmuClock_CSEN_LF, true);
 
   /* Setup timer to do 16 CSEN scans per second
-     The input to the CSEN_LF clock is by default LFB/16 */
+   *    The input to the CSEN_LF clock is by default LFB/16 */
   csen_init.pcPrescale = csenPCPrescaleDiv16;
   csen_init.pcReload = 7;
 
@@ -99,6 +100,7 @@ void setup_CSEN(void)
   csen_measure_mode_init.sampleMode = csenSampleModeSingle;
   csen_measure_mode_init.trigSel = csenTrigSelStart;
   csen_measure_mode_init.sarRes = csenSARRes16;
+
   /* Normal reference current when measuring single pads */
   csen_measure_mode_init.gainSel = csenGainSel8X;
 
@@ -108,17 +110,17 @@ void setup_CSEN(void)
     CSEN_InitMode(CSEN, &csen_measure_mode_init);
     CSEN_Enable(CSEN);
     CSEN_Start(CSEN);
-    while (CSEN_IsBusy(CSEN) || !(CSEN_IntGet(CSEN) && CSEN_IF_CONV)) ;
+    while (CSEN_IsBusy(CSEN) || !(CSEN_IntGet(CSEN) && CSEN_IF_CONV)) {}
     CSEN_IntClear(CSEN, CSEN_IF_CONV);
     // Subtract a margin from the reading to account for read noise
     pad_mins[i] = CSEN_DataGet(CSEN) - APP_CSEN_NOISE_MARGIN;
   }
 
   // Setup measurement mode to timer-triggered scan
-  csen_measure_mode_init.inputMask0 = (1U << 31) |
-                                   (1U << 22) |
-                                   (1U << 20) |
-                                   (1U << 7);
+  csen_measure_mode_init.inputMask0 = (1U << 31)
+                                      | (1U << 22)
+                                      | (1U << 20)
+                                      | (1U << 7);
   csen_measure_mode_init.sampleMode = csenSampleModeScan;
   csen_measure_mode_init.trigSel = csenTrigSelTimer;
 
@@ -181,8 +183,8 @@ void csen_check_scanned_data(void)
   for (i = 0; i < 4; i++) {
     // Order scan results and check if any pad has exceeded the threshold
     // defining a touch event
-    pad_level[i + 1] = ((pad_capacitance[i] - pad_mins[i]) << 16) /
-                       (65535 - pad_mins[i]);
+    pad_level[i + 1] = ((pad_capacitance[i] - pad_mins[i]) << 16)
+                       / (65535 - pad_mins[i]);
     if (pad_level[i + 1] > tmp_max_val) {
       tmp_max_val = pad_level[i + 1];
       max_pad = i;
@@ -218,25 +220,26 @@ void csen_check_scanned_data(void)
 }
 
 /***************************************************************************//**
-  * Get touch slider state.
+ * Get touch slider state.
  ******************************************************************************/
 enum event_t get_touch_slider_state(void)
 {
   static bool ongoing_touch_event = false;
 
   CSEN_Event_t touch_slider_event = csen_get_event();
-  if (touch_slider_event.eventActive &&
-      touch_slider_event.sliderPos > RIGHT_BUTTON_LEFT_LIMIT) {
+  if (touch_slider_event.eventActive
+      && (touch_slider_event.sliderPos > RIGHT_BUTTON_LEFT_LIMIT)) {
     ongoing_touch_event = true;
     return TOUCH_SLIDER_RIGHT_PUSH;
   }
-  if (!touch_slider_event.eventActive && ongoing_touch_event == true) {
+  if (!touch_slider_event.eventActive && (ongoing_touch_event == true)) {
     ongoing_touch_event = false;
-    if (touch_slider_event.sliderPrevPos > RIGHT_BUTTON_LEFT_LIMIT &&
-         touch_slider_event.sliderPrevPos < RIGHT_BUTTON_RIGHT_LIMIT)
+    if ((touch_slider_event.sliderPrevPos > RIGHT_BUTTON_LEFT_LIMIT)
+        && (touch_slider_event.sliderPrevPos < RIGHT_BUTTON_RIGHT_LIMIT)) {
       return TOUCH_SLIDER_RIGHT_RELEASE;
-    else
+    } else {
       return TOUCH_SLIDER_RIGHT_CANCEL;
+    }
   }
 
   return UNDETERMINED;
@@ -257,14 +260,14 @@ void CSEN_IRQHandler(void)
 
   current_channel++;
 
-
   /* If a scan is completed, do some more checking of the data since we have
-     time to spare before the next scan is scheduled to start */
+   *    time to spare before the next scan is scheduled to start */
   if (current_channel > 3) {
     current_channel = 0;
     csen_check_scanned_data();
   }
   // to prevent overriding btn push, or tick
-  if (irq_type == UNDETERMINED)
+  if (irq_type == UNDETERMINED) {
     irq_type = get_touch_slider_state();
+  }
 }

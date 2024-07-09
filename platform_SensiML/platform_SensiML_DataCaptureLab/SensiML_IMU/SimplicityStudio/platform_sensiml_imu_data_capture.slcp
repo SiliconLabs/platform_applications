@@ -1,0 +1,69 @@
+project_name: platform_sensiml_imu_data_capture
+package: platform
+label: Platform - SensiML IMU Data Capture
+description: >
+  This project uses the Thunderboard Sense 2 (EFR32MG12) and onboard IMU to measure accelerometer and gyroscope data. After that, the measurement data are transmitted via serial UART for consumption by the SensiML Data Studio application.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: iostream_retarget_stdio
+  - id: iostream_usart
+    instance: [vcom]
+  - id: simple_led
+    instance: [led0, led1]
+  - id: sleeptimer
+  - id: app_assert
+  - id: imu_driver
+  - id: printf
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: app_iostream_usart.h
+      - path: app_led.h
+      - path: app_sensor_imu.h
+      - path: ssi_comms.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/app_iostream_usart.c
+  - path: ../src/app_led.c
+  - path: ../src/app_sensor_imu.c
+  - path: ../src/ssi_comms.c
+
+other_file:
+  - path: ../image/app_flowchart.png
+    directory: "image"
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/sensiml_data_capture_logs.png
+    directory: "image"
+
+configuration:
+  - name: SL_BOARD_ENABLE_SENSOR_IMU
+    value: "1"
+  - name: SL_IOSTREAM_USART_VCOM_BAUDRATE
+    value: "921600"
+  - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
+    value: "1"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

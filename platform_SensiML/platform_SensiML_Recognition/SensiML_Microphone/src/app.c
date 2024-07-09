@@ -61,5 +61,3 @@ void app_process_action(void)
   app_voice_process_action();
   app_led_process_action();
 }
-
-
