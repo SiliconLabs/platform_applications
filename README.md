@@ -13,7 +13,7 @@
 
 # Silicon Labs Platform Applications #
 
-[![Version Badge](https://img.shields.io/badge/-v2.0.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
+[![Version Badge](https://img.shields.io/badge/-v2.1.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
 [![GSDK Badge](https://img.shields.io/badge/GSDK-v4.4.3-green)](https://github.com/SiliconLabs/gecko_sdk/releases)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
 
@@ -77,7 +77,7 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 | 50 | Platform - EFR32xG21 LDMA SPI Throughput | [Click Here](./platform_spi_flash_bandwidth/ldma) |
 | 51 | Platform - EFR32xG21 Polled SPI Throughput | [Click Here](./platform_spi_flash_bandwidth/polled) |
 | 52 | Platform - Flash blank checking using the GPCRC | [Click Here](./platform_gpcrc_blank_check) |
-
+| 53 | Platform - Timer cascading |[Click Here](./platform_timer_cascade) |
 
 ## Requirements ##
 

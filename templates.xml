@@ -776,4 +776,19 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_timer_cascade" label="Platform - Timer cascading" description="This project cascades two timers (TIMER0 and TIMER1) to be able to utilize a virtual timer peripheral, that has a bigger precision due to the extended bit size. The cascading is both done via PRS and the default linked conenction interface.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_timer_cascade.SimplicityStudio.platform_timer_cascade.slcp"/>
+    <properties key="projectFilePaths" value="platform_timer_cascade/SimplicityStudio/platform_timer_cascade.slcp"/>
+    <properties key="readmeFiles" value="platform_timer_cascade/README.md"/>
+    <properties key="boardCompatibility" value="brd4181c brd4182a brd4210a brd4186c brd4270b brd4194a brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*[bm]gm21.* .*efr32[bm]g21.* .*efr32[bm]g22.* .*efr32[fz]g23.* .*[fz]gm23.* .*efr32[bm]g24.* .*[bm]gm24.* .*efr32[fz]g25.* .*efr32[bm]g27.* .*efr32[bmzx]g28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>
