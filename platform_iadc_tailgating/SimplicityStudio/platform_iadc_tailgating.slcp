@@ -1,0 +1,76 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_iadc_tailgating
+label: platform_iadc_tailgating
+
+description: |
+  This example project shows the IADC tailgating conversation mode.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+readme:
+  - path: ../README.md
+
+source:
+  - path: ../src/app.c
+  - path: ../src/main.c
+
+include:
+  - path: ../inc
+    file_list:
+      - path: brd2504a/app.h
+        condition: [brd2504a]
+      - path: brd4181b/app.h
+        condition: [brd4181b]
+      - path: brd4182a/app.h
+        condition: [brd4182a]
+      - path: brd4210a/app.h
+        condition: [brd4210a]
+      - path: brd4186c/app.h
+        condition: [brd4186c]
+      - path: brd4270b/app.h
+        condition: [brd4270b]
+      - path: brd4194a/app.h
+        condition: [brd4194a]
+      - path: brd4400c/app.h
+        condition: [brd4400c]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: emlib_iadc
+  - id: emlib_prs
+  - id: iostream_retarget_stdio
+  - id: iostream_stdlib_config
+  - id: iostream_recommended_stream
+  - id: simple_button
+    instance: [btn0]
+
+define:
+  - name: DEBUG_EFM
+
+configuration:
+- {name: SL_BOARD_ENABLE_VCOM, value: '1'}
+
+toolchain_settings:
+- {value: -u _printf_float, option: gcc_linker_option}
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/how_to_work.png
+    directory: "image"

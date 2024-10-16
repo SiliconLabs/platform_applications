@@ -13,8 +13,8 @@
 
 # Silicon Labs Platform Applications #
 
-[![Version Badge](https://img.shields.io/badge/-v2.1.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
-[![GSDK Badge](https://img.shields.io/badge/GSDK-v4.4.3-green)](https://github.com/SiliconLabs/gecko_sdk/releases)
+[![Version Badge](https://img.shields.io/badge/-v2.2.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
+[![GSDK Badge](https://img.shields.io/badge/GSDK-v4.4.4-green)](https://github.com/SiliconLabs/gecko_sdk/releases)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
 
 This repo contains example projects that demonstrate various applicaitons using the peripherals of Silicon Labs EFM32 and EFR32 parts.
@@ -78,6 +78,8 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 | 51 | Platform - EFR32xG21 Polled SPI Throughput | [Click Here](./platform_spi_flash_bandwidth/polled) |
 | 52 | Platform - Flash blank checking using the GPCRC | [Click Here](./platform_gpcrc_blank_check) |
 | 53 | Platform - Timer cascading |[Click Here](./platform_timer_cascade) |
+| 54 | Platform - Sine null points detector |[Click Here](./platform_sine_null_points_detector) |
+| 55 | Platform - IADC Tailgating |[Click Here](./platform_iadc_tailgating) |
 
 ## Requirements ##
 

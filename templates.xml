@@ -791,4 +791,34 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_sine_null_points_detector" label="Platform - Sine null points detector" description="This example project shows how to detect the zero points of a sine wave and send a PWM pulse in this case.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_sine_null_points_detector.SimplicityStudio.platform_sine_null_points_detector.slcp"/>
+    <properties key="projectFilePaths" value="platform_sine_null_points_detector/SimplicityStudio/platform_sine_null_points_detector.slcp"/>
+    <properties key="readmeFiles" value="platform_sine_null_points_detector/README.md"/>
+    <properties key="boardCompatibility" value="brd4186c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[bm]g24.* .*[bm]gm24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+   <descriptors name="platform_iadc_tailgating" label="Platform - IADC Tailgating" description="This example project shows the IADC tailgating conversation mode.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_tailgating.SimplicityStudio.platform_iadc_tailgating.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_tailgating/SimplicityStudio/platform_iadc_tailgating.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_tailgating/README.md"/>
+    <properties key="boardCompatibility" value="brd2504a brd4181b brd4182a brd4210a brd4186c brd4270b brd4194a brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*[bm]gm21.* .*efr32[bm]g21.* .*efr32[bm]g22.* .*efr32[fz]g23.* .*efm32pg23.* .*[fz]gm23.* .*efr32[bm]g24.* .*[bm]gm24.* .*efr32[fz]g25.* .*efr32[bm]g27.* .*efr32[bmzx]g28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>

@@ -1,0 +1,65 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_sine_null_points_detector
+label: platform_sine_null_points_detector
+
+description: |
+  This example project shows how to detect the zero points of a sine wave and send a PWM pulse in this case.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+- path: ../src/sine_null_detector.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+  - path: sine_null_detector.h
+  - path: brd4186c/sine_null_detector_config.h
+    condition: [brd4186c]
+
+component:
+- id: app_log
+- id: sl_system
+- id: clock_manager
+- id: device_init
+- id: emlib_acmp
+- id: emlib_letimer
+- id: emlib_prs
+- id: emlib_cmu
+- id: emlib_emu
+- id: iostream_recommended_stream
+- id: power_manager
+- id: simple_button
+  instance: [btn0, btn1]
+
+define:
+- name: DEBUG_EFM
+
+configuration:
+- {name: SL_BOARD_ENABLE_VCOM, value: '1'}
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+  - path: README.md
+    focus: true
+
