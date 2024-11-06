@@ -821,4 +821,19 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_iadc_scan_multiple_external_inputs" label="Platform - IADC scan multiple external inputs" description="This project represents how to measure multiple external inputs with interrupt in scan mode using the IADC. The example uses a sleeptimer to schedule the measurement and the logs. The inputs are considered as single-ended.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_scan_multiple_external_input.SimplicityStudio.platform_iadc_scan_multiple_external_input.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_scan_multiple_external_input/SimplicityStudio/platform_iadc_scan_multiple_external_input.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_scan_multiple_external_input/README.md"/>
+    <properties key="boardCompatibility" value="brd4181b brd4182a brd4210a brd4186c brd4270b brd4194a brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*[bm]gm21.* .*efr32[bm]g21.* .*efr32[bm]g22.* .*efr32[fz]g23.* .*efm32pg23.* .*[fz]gm23.* .*efr32[bm]g24.* .*[bm]gm24.* .*efr32[fz]g25.* .*efr32[bm]g27.* .*efr32[bmzx]g28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>
