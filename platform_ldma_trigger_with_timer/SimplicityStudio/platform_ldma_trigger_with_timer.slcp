@@ -1,0 +1,93 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_timer_cascading
+label: platform_timer_cascading
+
+description: |
+  This project cascades two 32-bit timers to be able to utilize a virtual 64-bit timer peripheral. The cascading is both done via PRS and the default cascade interface.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+readme:
+  - path: ../README.md
+
+source:
+  - path: ../src/app.c
+  - path: ../src/main.c
+
+include:
+  - path: ../inc
+    file_list:
+      - path: brd4210a/app.h
+        condition: [brd4210a]
+      - path: brd4186c/app.h
+        condition: [brd4186c]
+      - path: brd4270b/app.h
+        condition: [brd4270b]
+      - path: brd4400c/app.h
+        condition: [brd4400c]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: emlib_timer
+  - id: emlib_prs
+  - id: emlib_vdac
+  - id: emlib_ldma
+  - id: emlib_gpio_simple_init
+    instance: [timer]
+
+config_file:
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4186c/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4186c]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4210a/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4210a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4270b/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4270b]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4400c/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4400c]
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM_PORT
+    value: gpioPortB
+  - name: SL_BOARD_ENABLE_VCOM_PIN
+    value: 1
+
+define:
+  - name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/generated.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true
