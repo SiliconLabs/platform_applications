@@ -1,0 +1,46 @@
+project_name: platform_multi_channel_pwm
+package: platform
+label: Platform - Multi channel PWM
+description: |
+  This example project demonstrates the timer/letimer peripherals configuration in a way, that multiple (possibly all) 
+  channels are used and generating a PWM signal on certain GPIO pins.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: emlib_timer
+  - id: udelay
+  
+readme:
+- path: ../README.md
+
+include:
+- path: ../src
+  file_list:
+    - path: app.h
+
+source:
+- path: ../src/main.c
+- path: ../src/app.c
+
+other_file:
+  - path: ../image/create_example.png
+    directory: "image"
+  - path: ../image/result.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: readme.md
+      focus: true
+

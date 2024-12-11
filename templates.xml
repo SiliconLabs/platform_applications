@@ -851,4 +851,19 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_multi_channel_pwm" label="Platform - Multi channel PWM" description="The example demonstrate the timer/letimer peripherals configuration in a way, that multiple channels are used and generate a PWM signal on certain GPIO pins.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_multi_channel_pwm.SimplicityStudio.platform_multi_channel_pwm.slcp"/>
+    <properties key="projectFilePaths" value="platform_multi_channel_pwm/SimplicityStudio/platform_multi_channel_pwm.slcp"/>
+    <properties key="readmeFiles" value="platform_multi_channel_pwm/README.md"/>
+    <properties key="boardCompatibility" value="brd4180b brd4182a brd4210a brd4186c brd4270a brd4110a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.* .*efr32mg22.* .*efr32zg23.* .*efr32mg24.* .*efr32fg25.* .*efr32bg27.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>

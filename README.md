@@ -13,7 +13,7 @@
 
 # Silicon Labs Platform Applications #
 
-[![Version Badge](https://img.shields.io/badge/-v2.4.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
+[![Version Badge](https://img.shields.io/badge/-v2.5.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
 [![GSDK Badge](https://img.shields.io/badge/GSDK-v4.4.4-green)](https://github.com/SiliconLabs/gecko_sdk/releases)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
 
@@ -82,6 +82,7 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 | 55 | Platform - IADC Tailgating |[Click Here](./platform_iadc_tailgating) |
 | 56 | Platform - IADC scan multiple external inputs |[Click Here](./platform_iadc_scan_multiple_external_input) |
 | 57 | Platform - LDMA trigger with TIMER |[Click Here](./platform_ldma_trigger_with_timer) |
+| 58 | Platform - Multi channel PWM |[Click Here](./platform_multi_channel_pwm)
 
 ## Requirements ##
 
