@@ -1,0 +1,71 @@
+project_name: platform_bldc_mg24
+package: platform
+label: Platform - BLDC Motor Controller
+description: >
+  This example shows how to drive a BLDC motor.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Advanced]
+
+component:
+  - id: EFR32MG24B210F1536IM48
+  - id: brd4001a
+  - id: brd4186c
+  - id: clock_manager
+  - id: device_init
+  - id: emlib_acmp
+  - id: emlib_iadc
+  - id: emlib_prs
+  - id: emlib_timer
+  - id: sl_system
+
+readme:
+- path: ../README.md
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+      - path: acmp.h
+      - path: adc.h
+      - path: button.h
+      - path: config.h
+      - path: config_mg24.h
+      - path: debug.h
+      - path: kit.h
+      - path: logging.h
+      - path: motor.h
+      - path: pid.h
+      - path: pwm.h
+      - path: sensorless_motor.h
+      - path: startup.h
+      - path: timers.h
+      - path: uart.h
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+  - path: ../src/acmp.c
+  - path: ../src/adc.c
+  - path: ../src/button.c
+  - path: ../src/debug.c
+  - path: ../src/kit.c
+  - path: ../src/logging.c
+  - path: ../src/motor.c
+  - path: ../src/pid.c
+  - path: ../src/pwm.c
+  - path: ../src/sensorless_motor.c
+  - path: ../src/timers.c
+  - path: ../src/usart.c
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

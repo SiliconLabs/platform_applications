@@ -836,6 +836,21 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_bldc_mg24" label="Platform - BLDC Motor Controller" description="This example shows how to drive a BLDC motor.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_bldc_motor_controller.SimplicityStudio.platform_bldc_mg24.slcp"/>
+    <properties key="projectFilePaths" value="platform_bldc_motor_controller/SimplicityStudio/platform_bldc_mg24.slcp"/>
+    <properties key="readmeFiles" value="platform_bldc_motor_controller/README.md"/>
+    <properties key="boardCompatibility" value="brd4186c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
   <descriptors name="platform_ldma_trigger_with_timer" label="Platform - LDMA trigger with TIMER" description="This project demonstrates the usage of both the LDMA and VDAC peripheral to generate a fixed frequency sine wave using TIMER0 as a trigger source. For storing the values of the sine wave, the LDMA peripheral is used, which can either be triggered via PRS or directly by the TIMER0_CC0.">
     <properties key="namespace" value="template.uc"/>
     <properties key="keywords" value="universal\ configurator"/>
