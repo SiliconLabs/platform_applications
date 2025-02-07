@@ -1,0 +1,78 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_keyscan
+label: platform_keyscan
+
+description: |
+  This example demonstate the usage of the Keyscan driver.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+
+component:
+- id: sl_system
+- id: device_init
+- id: keyscan_driver
+- id: power_manager
+- id: glib
+- id: ls013b7dh03
+- id: memlcd_usart
+
+
+config_file:
+  - override: 
+      component: keyscan_driver
+      file_id: keyscan_driver_config
+    path: ../config/brd4186c/keyscan_driver_config.h
+    condition: [brd4186c]
+  - override: 
+      component: keyscan_driver
+      file_id: keyscan_driver_config
+    path: ../config/brd4210a/keyscan_driver_config.h
+    condition: [brd4210a]
+  - override: 
+      component: keyscan_driver
+      file_id: keyscan_driver_config
+    path: ../config/brd4400c/keyscan_driver_config.h
+    condition: [brd4400c]
+
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/keyboard_connection.png
+    directory: "image"
+  - path: ../image/keyscan_config.png
+    directory: "image"
+  - path: ../image/create_app.png
+    directory: "image"
+  - path: ../image/working.gif
+    directory: "image"
+  - path: ../image/multiscan_config.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+  - path: README.md
+    focus: true
+

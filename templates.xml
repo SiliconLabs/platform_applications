@@ -881,4 +881,19 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_keyscan" label="Platform - KeyScan" description="This example demonstrates the usage of the Keyscan driver.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_keyscan.SimplicityStudio.platform_keyscan.slcp"/>
+    <properties key="projectFilePaths" value="platform_keyscan/SimplicityStudio/platform_keyscan.slcp"/>
+    <properties key="readmeFiles" value="platform_keyscan/README.md"/>
+    <properties key="boardCompatibility" value="brd4210a brd4186c brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[fz]g23.* .*efm32pg23.* .*[fz]gm23.* .*efr32[bm]g24.* .*[bm]gm24.* .*efr32[bmzx]g28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>
