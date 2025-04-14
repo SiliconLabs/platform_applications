@@ -51,8 +51,8 @@
     <properties key="solutionReferenceId" value="platform_segmentLCD_lowpower.SimplicityStudio.platform_segmentLCD_lowpower.slcp"/>
     <properties key="projectFilePaths" value="platform_segmentLCD_lowpower/SimplicityStudio/platform_segmentLCD_lowpower.slcp"/>
     <properties key="readmeFiles" value="platform_segmentLCD_lowpower/README.md"/>
-    <properties key="boardCompatibility" value="brd2600a brd2506a com.silabs.board.none"/>
-    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg28.*"/>
+    <properties key="boardCompatibility" value="brd2600a brd2505a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg26.* .*efm32pg28.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>
@@ -66,8 +66,8 @@
     <properties key="solutionReferenceId" value="platform_segmentLCD_tempsensor.SimplicityStudio.platform_segmentLCD_tempsensor.slcp"/>
     <properties key="projectFilePaths" value="platform_segmentLCD_tempsensor/SimplicityStudio/platform_segmentLCD_tempsensor.slcp"/>
     <properties key="readmeFiles" value="platform_segmentLCD_tempsensor/README.md"/>
-    <properties key="boardCompatibility" value="brd2600a brd2504a brd2506a com.silabs.board.none"/>
-    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg23.* .*efm32pg28.*"/>
+    <properties key="boardCompatibility" value="brd2600a brd2504a brd2505a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg23.* .*efm32pg26.* .*efm32pg28.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>
@@ -240,14 +240,14 @@
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
   </descriptors>
-  <descriptors name="platform_segmentlcd_ldma" label="Platform - Segment LCD with LDMA" description="This project shows how to use the LCD peripheral with the LDMA on the EFR32FG23 Dev Kit (BRD2600A) board and the EFM32PG28 Pro Kit (BRD2506A) board. The example updates the segment LCD in EM2 using the segment LCD driver.">
+  <descriptors name="platform_segmentlcd_ldma" label="Platform - Segment LCD with LDMA" description="This project shows how to use the LCD peripheral with the LDMA on the EFR32FG23 Dev Kit (BRD2600A) board and the EFM32PG26 and EFM32PG28 Pro Kits (BRD2505A and BRD2506A). The example updates the segment LCD in EM2 using the segment LCD driver.">
     <properties key="namespace" value="template.uc"/>
     <properties key="keywords" value="universal\ configurator"/>
     <properties key="solutionReferenceId" value="platform_segmentLCD_ldma.SimplicityStudio.platform_segmentLCD_ldma.slcp"/>
     <properties key="projectFilePaths" value="platform_segmentLCD_ldma/SimplicityStudio/platform_segmentLCD_ldma.slcp"/>
     <properties key="readmeFiles" value="platform_segmentLCD_ldma/README.md"/>
-    <properties key="boardCompatibility" value="brd2600a brd2506a com.silabs.board.none"/>
-    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg28.*"/>
+    <properties key="boardCompatibility" value="brd2600a brd2505a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg26.* .*efm32pg28.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>
@@ -276,8 +276,8 @@
     <properties key="solutionReferenceId" value="platform_segmentLCD_timer.SimplicityStudio.platform_segmentLCD_timer.slcp"/>
     <properties key="projectFilePaths" value="platform_segmentLCD_timer/SimplicityStudio/platform_segmentLCD_timer.slcp"/>
     <properties key="readmeFiles" value="platform_segmentLCD_timer/README.md"/>
-    <properties key="boardCompatibility" value="brd2600a brd2504a brd2506a com.silabs.board.none"/>
-    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg23.* .*efm32pg28.*"/>
+    <properties key="boardCompatibility" value="brd2600a brd2504a brd2505a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg23.* .*efm32pg26.* .*efm32pg28.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>
@@ -321,7 +321,7 @@
     <properties key="projectFilePaths" value="platform_segmentLCD_lcsense/SimplicityStudio/platform_segmentLCD_lcsense.slcp"/>
     <properties key="readmeFiles" value="platform_segmentLCD_lcsense/README.md"/>
     <properties key="boardCompatibility" value="brd2600a brd2506a com.silabs.board.none"/>
-    <properties key="partCompatibility" value=".*efm32pg28.* .*efr32fg23.*"/>
+    <properties key="partCompatibility" value=".*efr32fg23.* .*efm32pg28.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>
@@ -379,6 +379,21 @@
     <properties key="readmeFiles" value="platform_lcd_animation_blink_pg28/README.md"/>
     <properties key="boardCompatibility" value="brd2506a com.silabs.board.none"/>
     <properties key="partCompatibility" value=".*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_lcd_animation_blink_pg26" label="Platform - PG26 LCD Animation Blink" description="This project shows how to use LCD peripheral on BRD2505A board to perform auto animation and blink without CPU intervention.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_lcd_animation_blink_pg26.SimplicityStudio.platform_lcd_animation_blink_pg26.slcp"/>
+    <properties key="projectFilePaths" value="platform_lcd_animation_blink_pg26/SimplicityStudio/platform_lcd_animation_blink_pg26.slcp"/>
+    <properties key="readmeFiles" value="platform_lcd_animation_blink_pg26/README.md"/>
+    <properties key="boardCompatibility" value="brd2505a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg26.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>

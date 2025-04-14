@@ -33,9 +33,10 @@ source:
 - path: ../src/main.c
 - path: ../src/app_fg23.c
   condition: [brd2600a]
-- path: ../src/app_pg28.c
+- path: ../src/app.c
+  condition: [brd2505a]
+- path: ../src/app.c
   condition: [brd2506a]
-
 
 other_file:
   - path: ../image/create_project.png

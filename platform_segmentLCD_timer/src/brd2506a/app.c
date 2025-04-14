@@ -41,11 +41,8 @@
 #include "em_emu.h"
 #include "em_letimer.h"
 #include "sl_segmentlcd.h"
-
-#define BTN0_GPIO_PORT  gpioPortB
-#define BTN0_GPIO_PIN   1
-#define BTN1_GPIO_PORT  gpioPortB
-#define BTN1_GPIO_PIN   6
+#include "sl_simple_button_instances.h"
+#include "sl_simple_button_btn1_config.h"
 
 uint32_t counter = 0;          // general time counter
 uint32_t compare_mode = 0;     // enter compare mode set up
@@ -54,6 +51,61 @@ uint32_t compare_start = 0;    // start compare mode
 uint32_t compare_match = 0;    // Flag triggered if counter = compare value
 uint32_t letimer_enable = 0;   // LETIMER enable flag
 volatile uint32_t hold_timer;  // Timer to counter hold time elapsed on PB1
+
+/*******************************************************************************
+ *******************************   DEFINES   ***********************************
+ ******************************************************************************/
+
+#ifndef BUTTON_INSTANCE_0
+#define BUTTON_INSTANCE_0   sl_button_btn0
+#endif
+
+#ifndef BUTTON_INSTANCE_1
+#define BUTTON_INSTANCE_1   sl_button_btn1
+#endif
+
+/***************************************************************************//**
+ * Callback on button change.
+ ******************************************************************************/
+void sl_button_on_change(const sl_button_t *handle)
+{
+  if (sl_button_get_state(handle) == SL_SIMPLE_BUTTON_PRESSED) {
+    if (&BUTTON_INSTANCE_0 == handle) {
+      // If in compare mode, then each press of PB0 will increment
+      // compare_value by 1;
+      if (compare_mode) {
+        compare_value++;
+      }
+      // If a compare_match happened, that is counter == compare_value
+      // then reset compare_match variable and counter variable
+      else if (compare_match) {
+        compare_match = 0;
+        counter = 0;
+      }
+      // For all other cases, PB0 is used to start/stop the LETIMER
+      else {
+        letimer_enable = (letimer_enable + 1) % 2;
+        LETIMER_Enable(LETIMER0, letimer_enable);
+      }
+    } else if (&BUTTON_INSTANCE_1 == handle) {
+      LETIMER_Enable(LETIMER0, true);  // Need LETIMER running to detect compare
+                                       // mode
+      // If in compare mode set up
+      if (compare_mode) {
+        compare_start = 1;  // start compare mode
+        compare_mode = 0;   // reset compare_mode variable
+        letimer_enable = 0; // reset LETIMER flag
+        LETIMER_Enable(LETIMER0, false);  // If in compare mode, disable LETIMER
+      }
+      // For all other cases, PB1 will act as a timer reset
+      else {
+        compare_match = 0;
+        letimer_enable = 0;
+      }
+      counter = 0;
+    }
+  }
+}
 
 /***************************************************************************//**
  * LETIEMR Interrupt Handler
@@ -79,104 +131,12 @@ void LETIMER0_IRQHandler(void)
 }
 
 /***************************************************************************//**
- * GPIO Odd Interrupt Handler
- ******************************************************************************/
-void GPIO_ODD_IRQHandler(void)
-{
-  // Clear all interrupt flags
-  uint32_t flags = GPIO_IntGet();
-  GPIO_IntClear(flags);
-
-  // Interrupt triggered by PB0 (PB1) falling edge
-  if (flags & ((1 << BTN0_GPIO_PIN) << _GPIO_IF_EXTIF0_SHIFT)) {
-    // If in compare mode, then each press of PB0 will increment
-    // compare_value by 1;
-    if (compare_mode) {
-      compare_value++;
-    }
-    // If a compare_match happened, that is counter == compare_value
-    // then reset compare_match variable and counter variable
-    else if (compare_match) {
-      compare_match = 0;
-      counter = 0;
-    }
-    // For all other cases, PB0 is used to start/stop the LETIMER
-    else {
-      letimer_enable = (letimer_enable + 1) % 2;
-      LETIMER_Enable(LETIMER0, letimer_enable);
-    }
-  }
-}
-
-/***************************************************************************//**
- * GPIO Even Interrupt Handler
- ******************************************************************************/
-void GPIO_EVEN_IRQHandler(void)
-{
-  // Clear all interrupt flags
-  uint32_t flags = GPIO_IntGet();
-  GPIO_IntClear(flags);
-
-  // Interrupt triggered by PB1 (PB4) falling edge
-  if (flags & ((1 << BTN1_GPIO_PIN) << _GPIO_IF_EXTIF0_SHIFT)) {
-    LETIMER_Enable(LETIMER0, true);  // Need LETIMER running to detect compare
-                                     // mode
-    // If in compare mode set up
-    if (compare_mode) {
-      compare_start = 1;  // start compare mode
-      compare_mode = 0;   // reset compare_mode variable
-      letimer_enable = 0; // reset LETIMER flag
-      LETIMER_Enable(LETIMER0, false);  // If in compare mode, disable LETIMER
-    }
-    // For all other cases, PB1 will act as a timer reset
-    else {
-      compare_match = 0;
-      letimer_enable = 0;
-    }
-    counter = 0;
-  }
-}
-
-/***************************************************************************//**
- * Initialize CMU
- ******************************************************************************/
-void initCMU(void)
-{
-  CMU_ClockEnable(cmuClock_LETIMER0, true);
-  CMU_ClockEnable(cmuClock_GPIO, true);
-}
-
-/***************************************************************************//**
- * Initialize GPIO
- ******************************************************************************/
-void initGPIO(void)
-{
-  // Configure PB1 (Push Button 0) as input with filter enabled
-  // Enable PB1 interrupt on falling edge
-  GPIO_PinModeSet(BTN0_GPIO_PORT, BTN0_GPIO_PIN, gpioModeInputPullFilter, 1);
-  GPIO_ExtIntConfig(BTN0_GPIO_PORT, BTN0_GPIO_PIN, BTN0_GPIO_PIN, false, true,
-                    true);
-
-  // Configure PB6 (Push Button 1) as input with filter enabled
-  // Enable PB6 interrupt on falling edge
-  GPIO_PinModeSet(BTN1_GPIO_PORT, BTN1_GPIO_PIN, gpioModeInputPullFilter, 1);
-  GPIO_ExtIntConfig(BTN1_GPIO_PORT, BTN1_GPIO_PIN, BTN1_GPIO_PIN, false, true,
-                    true);
-
-  // Enable GPIO odd IRQHandler
-  NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
-  NVIC_EnableIRQ(GPIO_ODD_IRQn);
-
-  // Enable GPIO even IRQHandler
-  NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
-  NVIC_EnableIRQ(GPIO_EVEN_IRQn);
-}
-
-/***************************************************************************//**
  * Initialize LETIMER.
  ******************************************************************************/
 void initLetimer(void)
 {
+  CMU_ClockEnable(cmuClock_LETIMER0, true);
+
   // LETIMER initialization
   // Top value = LF Clock frequency, compare match frequency = 1 HZ
   LETIMER_Init_TypeDef initLetimer = LETIMER_INIT_DEFAULT;
@@ -192,15 +152,15 @@ void initLetimer(void)
 }
 
 /***************************************************************************//**
-* Disable Unused LCD Segments
-*******************************************************************************/
+ * Disable Unused LCD Segments
+ ******************************************************************************/
 void disableUnusedLCDSeg(void)
 {
 /***************************************************************************//**
-* The LCD driver enables all segments, even those that are not mapped to
-* segments on the pro kit board. These are disabled below in order to
-* minimize current consumption.
-*******************************************************************************/
+ * The LCD driver enables all segments, even those that are not mapped to
+ * segments on the pro kit board. These are disabled below in order to
+ * minimize current consumption.
+ ******************************************************************************/
   LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S00, false);
   LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S01, false);
   LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S02, false);
@@ -222,12 +182,6 @@ void disableUnusedLCDSeg(void)
  ******************************************************************************/
 void app_init(void)
 {
-  // Initialize peripheral clocks
-  initCMU();
-
-  // GPIO configuration
-  initGPIO();
-
   // LETIMER configuration
   initLetimer();
 
@@ -272,10 +226,12 @@ void app_process_action(void)
     }
   }
   // check if compare mode set up should be entered
-  else if (GPIO_PinInGet(BTN1_GPIO_PORT, BTN1_GPIO_PIN) == 0) {
+  else if (GPIO_PinInGet(SL_SIMPLE_BUTTON_BTN1_PORT,
+                         SL_SIMPLE_BUTTON_BTN1_PIN) == 0) {
     sl_segment_lcd_number(0);
     hold_timer = 0;
-    while (GPIO_PinInGet(BTN1_GPIO_PORT, BTN1_GPIO_PIN) == 0) {}
+    while (GPIO_PinInGet(SL_SIMPLE_BUTTON_BTN1_PORT,
+                         SL_SIMPLE_BUTTON_BTN1_PIN) == 0) {}
     if (hold_timer > 1) {
       counter_compare();
     }

@@ -3,7 +3,7 @@
  * @brief Top level application functions
  *******************************************************************************
  * # License
- * <b>Copyright 2022 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -33,6 +33,7 @@
  * maintained and there may be no bug maintenance planned for these resources.
  * Silicon Labs may update projects from time to time.
  ******************************************************************************/
+
 #include "app.h"
 #include "em_chip.h"
 #include "em_cmu.h"
@@ -155,21 +156,25 @@ void initLetimer(void)
  ******************************************************************************/
 void disableUnusedLCDSeg(void)
 {
-/***************************************************************************//**
- * The LCD driver enables all segments, even those that are not mapped to
- * segments on the pro kit board. These are disabled below in order to
- * minimize current consumption.
- ******************************************************************************/
-  LCD_SegmentEnable(9, false);
-  LCD_SegmentEnable(11, false);
-  LCD_SegmentEnable(12, false);
-  LCD_SegmentEnable(13, false);
-  LCD_SegmentEnable(14, false);
-  LCD_SegmentEnable(15, false);
-  LCD_SegmentEnable(16, false);
-  LCD_SegmentEnable(17, false);
-  LCD_SegmentEnable(18, false);
-  LCD_SegmentEnable(19, false);
+  /*************************************************************************//**
+   * The LCD driver enables all segments, even those that are not mapped to
+   * segments on the pro kit board. These are disabled below in order to
+   * minimize current consumption.
+   ****************************************************************************/
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S00, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S01, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S02, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S03, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S04, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S05, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S06, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S07, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S08, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S09, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S10, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S11, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S12, false);
+  LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S13, false);
 }
 
 /***************************************************************************//**
@@ -185,6 +190,7 @@ void app_init(void)
   sl_segment_lcd_init(false);
   LCD->BIASCTRL_SET = LCD_BIASCTRL_VDDXSEL_AVDD;
   disableUnusedLCDSeg();
+
   sl_segment_lcd_number(0);
 }
 
@@ -197,7 +203,7 @@ void counter_compare(void)
   compare_value = 0; // reset compare_value
   counter = 0;       // reset timer counter value
   sl_segment_lcd_number(0);                    // reset display value
-  sl_segment_lcd_symbol(SL_LCD_SYMBOL_P5, true);  // display compare symbol
+  sl_segment_lcd_symbol(SL_LCD_SYMBOL_DEGC, true);  // display compare symbol
 }
 
 /***************************************************************************//**
@@ -209,7 +215,7 @@ void app_process_action(void)
   if (compare_mode) {
     // Display compare value and compare symbol
     sl_segment_lcd_number(compare_value);
-    sl_segment_lcd_symbol(SL_LCD_SYMBOL_P5, true);
+    sl_segment_lcd_symbol(SL_LCD_SYMBOL_DEGC, true);
   }
   // compare mode started
   else if (compare_start) {

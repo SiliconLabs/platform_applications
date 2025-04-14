@@ -19,6 +19,8 @@ component:
   - id: sl_system
   - id: device_init
   - id: segment_lcd_driver
+  - instance: [btn0, btn1]
+    id: simple_button
 
 readme:
 - path: ../README.md
@@ -31,6 +33,8 @@ include:
 source:
 - path: ../src/brd2504a/app.c
   condition: [brd2504a]
+- path: ../src/brd2505a/app.c
+  condition: [brd2505a]
 - path: ../src/brd2506a/app.c
   condition: [brd2506a]
 - path: ../src/brd2600a/app.c

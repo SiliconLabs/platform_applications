@@ -1,25 +1,27 @@
 # Platform - Segment LCD with LDMA #
 
-![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_common.json&label=Type&query=type&color=green)
-![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_common.json&label=Technology&query=technology&color=green)
-![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_common.json&label=License&query=license&color=green)
-![SDK badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_common.json&label=SDK&query=sdk&color=green)
-![Build badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_build_status.json)
-![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_common.json&label=Flash&query=flash&color=blue)
-![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_ldma_common.json&label=RAM&query=ram&color=blue)
+![Type badge](https://img.shields.io/badge/Type-Virtual%20Application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2024.12.2-green)
+![Build badge](https://img.shields.io/badge/Build-passing-green)
+![Flash badge](https://img.shields.io/badge/Flash-8.43%20KB-blue)
+![RAM badge](https://img.shields.io/badge/RAM-5.4%20KB-blue)
 ## Overview ##
 
-This project shows how to use the LCD peripheral with the LDMA on the EFR32FG23 Dev Kit (BRD2600A) board and the EFM32PG28 Pro Kit (BRD2506A) board. The example updates the segment LCD in EM2 using the segment LCD driver.
+This project shows how to use the LCD peripheral with the LDMA on the EFR32FG23 Dev Kit (BRD2600A) board and the EFM32PG26 and EFM32PG28 Pro Kits (BRD2505A and BRD2506A, respectively). The example updates the segment LCD in EM2 using the segment LCD driver.
 
-## Gecko SDK Suite version ##
+## SDK version ##
 
-- GSDK v4.4.3
+- SiSDK v2024.12.2
 
 ## Hardware Required ##
 
-- [Silicon Labs EFR32FG23 Dev Kit Board - BRD2600A ](https://www.silabs.com/development-tools/wireless/proprietary/efr32fg23-868-915-mhz-14-dbm-dev-kit?tab=overview)
+* [Silicon Labs EFR32FG23 Dev Kit Board - BRD2600A ](https://www.silabs.com/development-tools/wireless/proprietary/efr32fg23-868-915-mhz-14-dbm-dev-kit?tab=overview)
 
-- [Silicon Labs EFM32PG28 Pro Kit Board - BRD2506A](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg28-pro-kit?tab=overview)
+* [Silicon Labs EFM32PG26 Pro Kit Board - BRD2506A](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg26-pro-kit?tab=overview)
+
+* [Silicon Labs EFM32PG28 Pro Kit Board - BRD2506A](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg28-pro-kit?tab=overview)
 
 **NOTE:**
 
@@ -28,6 +30,7 @@ Tested boards for working with this example:
 | Board ID | Description  |
 | ---------------------- | ------ |
 | BRD2600A | [Silicon Labs EFR32FG23 Dev Kit ](https://www.silabs.com/development-tools/wireless/proprietary/efr32fg23-868-915-mhz-14-dbm-dev-kit?tab=overview)    |
+| BRD2505A | [Silicon Labs EFM32PG26 Pro Kit Board](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg26-pro-kit?tab=overview)    |
 | BRD2506A | [Silicon Labs EFM32PG28 Pro Kit Board](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg28-pro-kit?tab=overview)  |
 
 ## Hardware Connection ##
@@ -51,9 +54,9 @@ To test this application, you can either create a project based on an example pr
 
 ### Start with an empty example project ###
 
-1. Create an "Empty C Project" for the "EFR32FG23 Dev Kit board" or "EFM32PG28 Pro Kit board" using Simplicity Studio v5. Use the default project settings.
+1. Create an **Empty C Project** project for your hardware using Simplicity Studio 5.
 
-2. Copy the file `src/app_fg23.c` (for EFR32FG23 Dev Kit board) or `src/app_pg28.c` (for EFM32PG28 Pro Kit board) into the project folder (replace the existing `app.c` file).
+2. Copy the file `src/app_fg23.c` (for EFR32FG23 Dev Kit board) or `src/app.c` (for EFM32PG26 Pro Kit board or EFM32PG28 Pro Kit board) into the project folder (replace the existing `app.c` file).
 
 3. Install the software components:
 

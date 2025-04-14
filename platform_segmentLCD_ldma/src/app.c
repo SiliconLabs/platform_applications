@@ -103,15 +103,15 @@ void LDMA_IRQHandler(void)
 }
 
 /***************************************************************************//**
-* Disable Unused LCD Segments
-*******************************************************************************/
+ * Disable Unused LCD Segments
+ ******************************************************************************/
 void disableUnusedLCDSeg(void)
 {
 /***************************************************************************//**
-* The LCD driver enables all segments, even those that are not mapped to
-* segments on the pro kit board. These are disabled below in order to
-* minimize current consumption.
-*******************************************************************************/
+ * The LCD driver enables all segments, even those that are not mapped to
+ * segments on the pro kit board. These are disabled below in order to
+ * minimize current consumption.
+ ******************************************************************************/
   LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S00, false);
   LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S01, false);
   LCD_SegmentEnable(SL_SEGMENT_LCD_SEG_S02, false);

@@ -19,7 +19,14 @@ component:
   - id: device_init
   - id: power_manager
   - id: power_manager_deepsleep
-  - id: si70xx_driver
+  - condition: [brd2504a]
+    id: si70xx_driver
+  - condition: [brd2506a]
+    id: si70xx_driver
+  - condition: [brd2600a]
+    id: si70xx_driver
+  - condition: [brd2505a]
+    id: sht4x_driver
   - id: segment_lcd_driver
   - id: sl_system
 include:
@@ -29,14 +36,25 @@ include:
 source:
   - path: ../src/main.c
   - path: ../src/app.c 
+    condition: [brd2504a]
+  - path: ../src/app.c
+    condition: [brd2506a]
+  - path: ../src/app.c
+    condition: [brd2600a]
+  - path: ../src/app_pg26.c
+    condition: [brd2505a]  
 other_file:
   - path: ../image/create_example.png
     directory: "image"
 configuration:
   - name: SL_BOARD_ENABLE_SENSOR_RHT
-    value: "1"
+    value: '1'
     condition:
-      - brd2506a
+      - brd2505a
+  - name: SL_BOARD_ENABLE_SENSOR_RHT
+    value: '1'
+    condition:
+      - brd2506a	  
 ui_hints:
   highlight:
     - path: README.md

@@ -1,25 +1,28 @@
 # Platform - SegmentLCD Low Power #
 
-![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_common.json&label=Type&query=type&color=green)
-![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_common.json&label=Technology&query=technology&color=green)
-![License badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_common.json&label=License&query=license&color=green)
-![SDK badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_common.json&label=SDK&query=sdk&color=green)
-![Build badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_build_status.json)
-![Flash badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_common.json&label=Flash&query=flash&color=blue)
-![RAM badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_segmentLCD_lowpower_common.json&label=RAM&query=ram&color=blue)
+![Type badge](https://img.shields.io/badge/Type-Virtual%20Application-green)
+![Technology badge](https://img.shields.io/badge/Technology-Platform-green)
+![License badge](https://img.shields.io/badge/License-Zlib-green)
+![SDK badge](https://img.shields.io/badge/SDK-v2024.12.2-green)
+![Build badge](https://img.shields.io/badge/Build-passing-green)
+![Flash badge](https://img.shields.io/badge/Flash-16.38%20KB-blue)
+![RAM badge](https://img.shields.io/badge/RAM-4.58%20KB-blue)
 
 ## Overview ##
 
-This project demonstrates the LCD peripheral on FG23 (BRD2600A) and PG28 (BRD2506A). The LCD peripheral is configured for low power consumption with all segments enabled.
+This project demonstrates the LCD peripheral on FG23 (BRD2600A), PG26 (BRD2505A), and PG28 (BRD2506A). The LCD peripheral is configured for low power consumption with all segments enabled.
 
-## Gecko SDK version ##
+## SDK version ##
 
-GSDK v4.4.3
+- SiSDK v2024.12.2
 
 ## Hardware Required ##
 
-* [Silicon Labs EFR32FG23 Dev Kit Board (BRD2600A)](https://www.silabs.com/development-tools/wireless/proprietary/efr32fg23-868-915-mhz-14-dbm-dev-kit?tab=overview)
-* Or [Silicon Labs EFM32PG28 Pro Kit Board (BRD2506A)](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg28-pro-kit?tab=overview)
+* [Silicon Labs EFR32FG23 Dev Kit Board - BRD2600A ](https://www.silabs.com/development-tools/wireless/proprietary/efr32fg23-868-915-mhz-14-dbm-dev-kit?tab=overview)
+
+* [Silicon Labs EFM32PG26 Pro Kit Board - BRD2505A](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg26-pro-kit?tab=overview)
+
+* [Silicon Labs EFM32PG28 Pro Kit Board - BRD2506A](https://www.silabs.com/development-tools/mcu/32-bit/efm32pg28-pro-kit?tab=overview)
 
 ## Connections Required ##
 
@@ -65,6 +68,8 @@ To test this application, you can either create a project based on an example pr
 This example enables all LCD segments with no animation or interrupts. The LCD settings have been selected for low power consumption. The contrast and frame rate are readable indoors or outdoors and the display does not flicker.
 
 The typical current consumption for the **FG23 BRD2600A** board in this configuration is 3.8 uA.
+
+The typical current consumption for the **PG26 BRD2506A** in this configuration is 5.5 uA.
 
 The typical current consumption for the **PG28 BRD2506A** in this configuration is 6.5 uA.
 
