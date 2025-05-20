@@ -911,4 +911,34 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_peripheral_hfrco_cal_polled" label="Platform - Polled HFRCO Calibration" description="This project demonstrates polled calibration of the HFRCO in open loop mode (DPLL disabled) against the LFXO.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_peripheral_hfrco_cal_polled.SimplicityStudio.platform_peripheral_hfrco_cal.slcp"/>
+    <properties key="projectFilePaths" value="platform_peripheral_hfrco_cal_polled/SimplicityStudio/platform_peripheral_hfrco_cal.slcp"/>
+    <properties key="readmeFiles" value="platform_peripheral_hfrco_cal_polled/readme.md"/>
+    <properties key="boardCompatibility" value="brd2503a brd2504a brd2505a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg22.* .*efm32pg23.* .*efm32pg26.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_peripheral_hfrco_cal_interrupt" label="Platform - Interrupt-Driven HFRCO Calibration" description="This project demonstrates interrupt-driven calibration of the HFRCO in open loop mode (DPLL disabled) against the LFXO.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_peripheral_hfrco_cal_interrupt.SimplicityStudio.platform_peripheral_hfrco_cal.slcp"/>
+    <properties key="projectFilePaths" value="platform_peripheral_hfrco_cal_interrupt/SimplicityStudio/platform_peripheral_hfrco_cal.slcp"/>
+    <properties key="readmeFiles" value="platform_peripheral_hfrco_cal_interrupt/readme.md"/>
+    <properties key="boardCompatibility" value="brd2503a brd2504a brd2505a brd2506a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efm32pg22.* .*efm32pg23.* .*efm32pg26.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>

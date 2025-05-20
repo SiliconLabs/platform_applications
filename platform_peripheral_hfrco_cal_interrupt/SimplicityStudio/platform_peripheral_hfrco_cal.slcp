@@ -1,0 +1,63 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: hfrco_cal_interrupt
+label: hfrco_cal_interrupt
+description: This project demonstrates interrupt-driven calibration of the HFRCO in open loop mode (DPLL disabled) against the LFXO.
+category: Example|Platform
+package: Platform
+quality: experimental
+
+readme:
+- path: ../readme.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+
+include:
+- path: "../src"
+  file_list:
+  - path: app.h
+
+other_file:
+- path: ../image/create_project.png
+  directory: "image"
+- path: ../image/create_empty.png
+  directory: "image"
+- path: ../image/default_hf_clock_source.png
+  directory: "image"
+- path: ../image/default_lf_clock_source.png
+  directory: "image"
+- path: ../image/hfrco_cal_tuning.png
+  directory: "image"
+- path: ../image/hfrco_dpll_settings.png
+  directory: "image"
+- path: ../image/hfrco_registers.png
+  directory: "image"
+- path: ../image/sysclk_source.png
+  directory: "image"
+
+sdk: {id: simplicity_sdk, version: 2024.12.2}
+toolchain_settings: []
+
+component:
+- id: clock_manager
+- id: device_init
+- id: power_manager
+- id: sl_system
+
+configuration:
+  - name: SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE_HFXO"
+  - name: SL_CLOCK_MANAGER_DEFAULT_LF_CLOCK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_LF_CLOCK_SOURCE_LFXO"
+  - name: SL_CLOCK_MANAGER_SYSCLK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE_HFXO"
+  - name: SL_CLOCK_MANAGER_HFRCO_BAND    
+    value: "cmuHFRCODPLLFreq_19M0Hz"
+
+define:
+- {name: DEBUG_EFM}
+
+ui_hints:
+  highlight:
+  - {path: readme.md, focus: true}
