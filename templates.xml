@@ -941,4 +941,34 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+  <descriptors name="platform_dali_eusart_dmadrv_main" label="Platform - DALI Communication using EUSART (Main device)" description="This project is part of AN1220. Which uses Series 1 and Series 2 devices to implement the Digital Addressable Lighting Interface (DALI) protocol. DALI uses a wired bus structure to create a communication path between a control device (main) and a control gear (secondary).">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_dali.dali_eusart.SimplicityStudio.platform_dali_eusart_dmadrv_main.slcp"/>
+    <properties key="projectFilePaths" value="platform_dali/dali_eusart/SimplicityStudio/platform_dali_eusart_dmadrv_main.slcp"/>
+    <properties key="readmeFiles" value="platform_dali/README.md"/>
+    <properties key="boardCompatibility" value="brd4186c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
+  <descriptors name="platform_em4_duration" label="Platform - Report Time Spent in EM4" description="This project shows how to use the BURTC to track how much time elapses between when the device goes into and wakes from EM4.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_em4_duration.SimplicityStudio.platform_em4_duration.slcp"/>
+    <properties key="projectFilePaths" value="platform_em4_duration/SimplicityStudio/platform_em4_duration.slcp"/>
+    <properties key="readmeFiles" value="platform_em4_duration/readme.md"/>
+    <properties key="boardCompatibility" value="brd4186c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg24.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+  </descriptors>
 </model:MDescriptors>

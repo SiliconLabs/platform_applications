@@ -1,0 +1,60 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: em4_duration
+label: em4_duration
+description: This project shows how to use the BURTC to track how much time elapses between when the device goes into and wakes from EM4.
+category: Example|Platform
+package: Platform
+quality: experimental
+
+readme:
+- path: ../readme.md
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+
+include:
+- path: "../src"
+  file_list:
+  - path: app.h
+
+other_file:
+- path: ../image/select_board.png
+  directory: "image"
+- path: ../image/create_project.png
+  directory: "image"
+- path: ../image/create_empty.png
+  directory: "image"
+- path: ../image/em4grpaclk_source.png
+  directory: "image"
+
+sdk: {id: simplicity_sdk, version: 2024.12.2}
+toolchain_settings: []
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: clock_manager
+  - id: board_control
+  - id: dmd_memlcd
+  - id: glib
+  - id: simple_button
+    instance: [btn0]
+  - id: emlib_rmu
+
+configuration:
+  - name: SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE_HFXO"
+  - name: SL_CLOCK_MANAGER_DEFAULT_LF_CLOCK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_LF_CLOCK_SOURCE_LFXO"
+  - name: SL_CLOCK_MANAGER_SYSCLK_SOURCE
+    value: "SL_CLOCK_MANAGER_DEFAULT_HF_CLOCK_SOURCE_HFXO"
+  - name: SL_CLOCK_MANAGER_HFRCO_BAND
+    value: "cmuHFRCODPLLFreq_19M0Hz"
+
+define:
+- {name: DEBUG_EFM}
+
+ui_hints:
+  highlight:
+  - {path: readme.md, focus: true}
