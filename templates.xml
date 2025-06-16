@@ -911,6 +911,16 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+<<<<<<< feature/platform_iadc_loopback
+<descriptors name="platform_iadc_loopback" label="Platform - IADC loopback with VDAC" description="This project demonstrates the usage of IADC and VDAC at the same time.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_loopback.SimplicityStudio.platform_iadc_loopback.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_loopback/SimplicityStudio/platform_iadc_loopback.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_loopback/README.md"/>
+    <properties key="boardCompatibility" value="brd4210a brd4186c brd4270b brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[fz]g23.* .*efm32pg23.* .*[fz]gm23.* .*efr32[bm]g24.* .*[bm]gm24.* .*efr32[fz]g25.* .*efr32[bmzx]g28.*"/>
+=======
   <descriptors name="platform_peripheral_hfrco_cal_polled" label="Platform - Polled HFRCO Calibration" description="This project demonstrates polled calibration of the HFRCO in open loop mode (DPLL disabled) against the LFXO.">
     <properties key="namespace" value="template.uc"/>
     <properties key="keywords" value="universal\ configurator"/>
@@ -919,6 +929,7 @@
     <properties key="readmeFiles" value="platform_peripheral_hfrco_cal_polled/readme.md"/>
     <properties key="boardCompatibility" value="brd2503a brd2504a brd2505a brd2506a com.silabs.board.none"/>
     <properties key="partCompatibility" value=".*efm32pg22.* .*efm32pg23.* .*efm32pg26.* .*efm32pg28.*"/>
+>>>>>>> release/candidate
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>
@@ -926,6 +937,9 @@
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
   </descriptors>
+<<<<<<< feature/platform_iadc_loopback
+</model:MDescriptors>
+=======
   <descriptors name="platform_peripheral_hfrco_cal_interrupt" label="Platform - Interrupt-Driven HFRCO Calibration" description="This project demonstrates interrupt-driven calibration of the HFRCO in open loop mode (DPLL disabled) against the LFXO.">
     <properties key="namespace" value="template.uc"/>
     <properties key="keywords" value="universal\ configurator"/>
@@ -971,4 +985,50 @@
     <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
     <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
   </descriptors>
+  <descriptors name="platform_prs_wfe" label="Platform - Wake M33 using PRS" description="This example project shows how to use a PRS trigger to create an event waking the Cortex-M33 from sleep.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_prs_wfe.SimplicityStudio.platform_prs_wfe.slcp"/>
+    <properties key="projectFilePaths" value="platform_prs_wfe/SimplicityStudio/platform_prs_wfe.slcp"/>
+    <properties key="readmeFiles" value="platform_prs_wfe/README.md"/>
+    <properties key="boardCompatibility" value="brd4187c brd.* com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32[\w]g2[\d].*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_iadc_synch_prs" label="Platform - IADC Synchronous Triggers with PRS" description="This example demonstrates the usage of synchronous PRS channels to time IADC conversions via a TIMER peripheral.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_iadc_synch_prs.SimplicityStudio.platform_iadc_synch_prs.slcp"/>
+    <properties key="projectFilePaths" value="platform_iadc_synch_prs/SimplicityStudio/platform_iadc_synch_prs.slcp"/>
+    <properties key="readmeFiles" value="platform_iadc_synch_prs/README.md"/>
+    <properties key="boardCompatibility" value="brd4180b brd4182a brd4210a brd4186c brd4270b brd4194a brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg21.* .*efr32mg22.* .*efr32zg23.* .*efr32mg24.* .*efr32fg25.* .*efr32[bm]g27.* .*efr32[bmzx]g28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_emu_temp_linearization" label="Platform - EMU Temperature Linearization" description="This example demonstrates the usage of given polinomials to linearize the EMU temperature sensor's readings.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_emu_temp_linearization.SimplicityStudio.platform_emu_temp_linearization.slcp"/>
+    <properties key="projectFilePaths" value="platform_emu_temp_linearization/SimplicityStudio/platform_emu_temp_linearization.slcp"/>
+    <properties key="readmeFiles" value="platform_emu_temp_linearization/README.md"/>
+    <properties key="boardCompatibility" value="brd4182a brd4210a brd4186c brd4270b brd4194a brd4400c com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*efr32mg22.* .*efr32zg23.* .*efr32mg24.* .*efr32fg25.* .*efr32[bm]g27.* .*efr32[bmzx]g28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
 </model:MDescriptors>
+>>>>>>> release/candidate

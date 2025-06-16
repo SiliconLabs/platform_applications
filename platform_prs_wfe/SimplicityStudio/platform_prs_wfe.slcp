@@ -1,0 +1,47 @@
+project_name: platform_prs_wfe
+package: platform
+label: Platform - Wake M33 using PRS
+description: >
+  This example project shows how to use a PRS trigger to create an event waking the Cortex-M33 from sleep.
+category: Example|Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Advanced]
+
+component:
+- id: device_init
+- id: sl_system
+- id: clock_manager
+- id: emlib_prs
+- id: emlib_timer
+- instance: [led0]
+  id: simple_led
+- instance: [btn0]
+  id: simple_button
+
+readme:
+- path: ../README.md
+
+include:
+- path: ../inc
+  file_list:
+  - path: app.h
+
+source:
+- path: ../src/app.c
+- path: ../src/main.c
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

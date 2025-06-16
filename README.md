@@ -13,7 +13,7 @@
 
 # Silicon Labs Platform Applications #
 
-[![Version Badge](https://img.shields.io/badge/-v2.6.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
+[![Version Badge](https://img.shields.io/badge/-v2.7.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
 [![GSDK Badge](https://img.shields.io/badge/GSDK-v4.4.4-green)](https://github.com/SiliconLabs/gecko_sdk/releases)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
 
@@ -85,6 +85,13 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 | 58 | Platform - Multi channel PWM |[Click Here](./platform_multi_channel_pwm)
 | 59 | Platform - BLDC Motor Controller |[Click Here](./platform_bldc_motor_controller)
 | 60 | Platform - KeyScan |[Click Here](./platform_keyscan)
+| 61 | Platform - PG26 LCD Animation Blink |[Click Here](./platform_lcd_animation_blink_pg26)
+| 62 | Platform - IADC loopback with VDAC |[Click Here](./platform_iadc_loopback)
+| 63 | Platform - Polled HFRCO Calibration |[Click Here](./platform_peripheral_hfrco_cal_polled)
+| 64 | Platform - Report Time Spent in EM4 |[Click Here](./platform_em4_duration)
+| 65 | Platform - Wake M33 using PRS |[Click Here](./platform_prs_wfe)
+| 66 | Platform - IADC Synchronous Triggers with PRS |[Click Here](./platform_iadc_synch_prs)
+| 67 | Platform - EMU Temperature Linearization  |[Click Here](./platform_emu_temp_linearization)
 
 
 ## Requirements ##

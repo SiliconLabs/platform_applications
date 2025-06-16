@@ -1,0 +1,73 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_timer_cascading
+label: platform_timer_cascading
+
+description: |
+  This project cascades two 32-bit timers to be able to utilize a virtual 64-bit timer peripheral. The cascading is both done via PRS and the default cascade interface.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+readme:
+  - path: ../README.md
+
+source:
+  - path: ../src/brd4182a/app.c
+    condition: [brd4182a]
+  - path: ../src/brd4210a/app.c
+    condition: [brd4210a]
+  - path: ../src/brd4186c/app.c
+    condition: [brd4186c]
+  - path: ../src/brd4270b/app.c
+    condition: [brd4270b]
+  - path: ../src/brd4194a/app.c
+    condition: [brd4194a]
+  - path: ../src/brd4400c/app.c
+    condition: [brd4400c]
+  - path: ../src/main.c
+
+include:
+  - path: ../inc
+    file_list:
+      - path: app.h
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: clock_manager
+  - id: iostream_retarget_stdio
+  - id: iostream_stdlib_config
+  - id: iostream_recommended_stream
+  - id: app_log
+  - id: sleeptimer
+  - id: printf
+
+configuration:
+  - { name: SL_BOARD_ENABLE_VCOM, value: "1" }
+
+toolchain_settings:
+  - { value: -u _printf_float, option: gcc_linker_option }
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
+  - path: ../image/log.png
+    directory: "image"
+  - path: ../image/coeff.png
+    directory: "image"
+  - path: ../image/equation.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true

@@ -1,0 +1,95 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_iadc_loopback
+label: platform_iadc_loopback
+
+description: |
+  This project demonstrates, how to use an IADC and a VDAC together.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+  - path: ../src/app.c
+  - path: ../src/main.c
+
+include:
+  - path: ../inc
+    file_list:
+      - path: brd4210a/app.h
+        condition: [brd4210a]
+      - path: brd4186c/app.h
+        condition: [brd4186c]
+      - path: brd4270b/app.h
+        condition: [brd4270b]
+      - path: brd4400c/app.h
+        condition: [brd4400c]
+
+component:
+- id: sl_system
+- id: device_init
+- id: emlib_timer
+- id: emlib_vdac
+- id: emlib_iadc
+- id: emlib_gpio_simple_init 
+  instance: [timer]
+- {id: app_log}
+
+config_file:
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4186c/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4186c]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4210a/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4210a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4270b/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4270b]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4400c/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4400c]
+
+toolchain_settings:
+- {value: -u _printf_float, option: gcc_linker_option}
+
+configuration:
+  - name: SL_BOARD_ENABLE_VCOM
+    value: 1
+
+ui_hints:
+  highlight:
+  - path: ../README.md 
+    focus: true
+
+other_file:
+  - path: ../image/VDAC_0_Logic_Analyzer.png
+    directory: "image"
+  - path: ../image/Project_Generation.png
+    directory: "image"
+  - path: ../image/Print_Float.png
+    directory: "image"
+  - path: ../image/Loopback_From_Terminal.png
+    directory: "image"

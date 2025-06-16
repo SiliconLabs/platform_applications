@@ -1,0 +1,114 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: platform_iadc_synch_prs
+label: platform_iadc_synch_prs
+
+description: |
+  This project demonstrates the usage of synchronous PRS channels to time IADC conversions via a TIMER peripheral.
+
+category: Example|Platform
+package: Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+readme:
+  - path: ../README.md
+
+source:
+  - path: ../src/app.c
+  - path: ../src/main.c
+
+include:
+  - path: ../inc
+    file_list:
+      - path: brd4180b/app.h
+        condition: [brd4180b]
+      - path: brd4182a/app.h
+        condition: [brd4182a]
+      - path: brd4210a/app.h
+        condition: [brd4210a]
+      - path: brd4186c/app.h
+        condition: [brd4186c]
+      - path: brd4270b/app.h
+        condition: [brd4270b]
+      - path: brd4194a/app.h
+        condition: [brd4194a]
+      - path: brd4400c/app.h
+        condition: [brd4400c]
+
+component:
+  - id: sl_system
+  - id: device_init
+  - id: emlib_iadc
+  - id: clock_manager
+  - id: emlib_timer
+  - id: emlib_prs
+  - id: dmadrv
+  - id: emlib_ldma
+  - id: emlib_gpio_simple_init
+    instance: [timer]
+
+config_file:
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4186c/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4186c]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4180b/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4180b]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4210a/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4210a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4182a/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4182a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4270b/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4270b]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4194a/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4194a]
+  - override:
+      component: emlib_gpio_simple_init
+      file_id: emlib_gpio_simple_init_config_file_id
+      instance: timer
+    path: ../config/brd4400c/sl_emlib_gpio_init_timer_config.h
+    condition: [brd4400c]
+
+define:
+  - name: DEBUG_EFM
+
+configuration:
+  - { name: SL_BOARD_ENABLE_VCOM, value: "1" }
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true
+
+other_file:
+  - path: ../image/create_project.png
+    directory: "image"
