@@ -29,7 +29,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ steps.app-token.outputs.token }}" \
             https://api.github.com/repos/SiliconLabsSoftware/aep_ci_tools/actions/workflows/platform_applications.yml/dispatches \
-            -d '{"ref":"main","inputs":{"repo_name":"${{ env.repo }}" ,"src_branch":"${{ github.event.pull_request.head.ref }}" ,"dest_branch":"${{ github.event.pull_request.base.ref }}" ,"pr_id":"${{ github.event.pull_request.number }}" ,"commit_sha":"${{ github.event.pull_request.head.sha }}"}}')
+            -d '{"ref":"hop_dev","inputs":{"repo_name":"${{ env.repo }}" ,"src_branch":"${{ github.event.pull_request.head.ref }}" ,"dest_branch":"${{ github.event.pull_request.base.ref }}" ,"pr_id":"${{ github.event.pull_request.number }}" ,"commit_sha":"${{ github.event.pull_request.head.sha }}"}}')
 
           echo "Triggered workflow: $response"
           if echo "$response" | grep -q '"message": "Not Found"'; then
