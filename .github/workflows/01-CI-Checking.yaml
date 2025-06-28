@@ -7,7 +7,7 @@ on:
 jobs:
   ci-check:
     runs-on: ubuntu-latest
-    if: github.repository_visibility != 'public' && !contains(github.event.pull_request.body, 'SKIP_CI')
+    # if: github.repository_visibility != 'public' && !contains(github.event.pull_request.body, 'SKIP_CI')
     steps:
       - name: Create GitHub App Token
         id: app-token
