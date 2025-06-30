@@ -37,7 +37,14 @@ jobs:
           repository: SiliconLabsSoftware/aep_ci_cd
           ref: 'pull_request_process'
           token: ${{ steps.aep-app-token.outputs.token }}
-  
+          
+      - name: Check out tool branch
+        uses: actions/checkout@v4
+        with:
+          repository: SiliconLabsSoftware/aep_ci_tools
+          ref: 'main'
+          token: ${{ steps.aep-app-token.outputs.token }}
+          
       - name: Trigger Check-Time Workflow
         id: trigger
         run: |
