@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.repository_visibility != 'public' && !contains(github.event.pull_request.body, 'SKIP_CI')
     steps:
-      - name: Create GitHub App Token
+      - name: Create Sonar Token
         id: aep-app-token
         uses: actions/create-github-app-token@v1
         with:
