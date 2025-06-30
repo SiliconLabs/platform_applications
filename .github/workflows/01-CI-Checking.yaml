@@ -13,8 +13,8 @@ jobs:
         id: aep-app-token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ vars.AEP_CI_BOT_APP_APP_ID }}
-          private-key: ${{ secrets.AEP_CI_BOT_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
       - name: Create GitHub App Token
