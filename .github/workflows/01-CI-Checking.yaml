@@ -31,6 +31,13 @@ jobs:
           export REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)
           echo "repo=$REPO_NAME" >> $GITHUB_ENV
 
+      - name: Check out scripts branch
+        uses: actions/checkout@v4
+        with:
+          repository: SiliconLabsSoftware/aep_ci_cd
+          ref: 'pull_request_process'
+          token: ${{ steps.aep-app-token.outputs.token }}
+  
       - name: Trigger Check-Time Workflow
         id: trigger
         run: |
