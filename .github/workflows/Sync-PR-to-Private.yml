@@ -18,58 +18,60 @@ jobs:
           app-id: ${{ secrets.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-  
+ 
       - name: Checkout PR source branch from fork
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           token: ${{ steps.aep-app-token.outputs.token }}
+          fetch-depth: 0  # cần để tạo patch
  
       - name: Set up Git
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "actions@github.com"
  
-      - name: Clone private repo and sync content
-        env:
-          GH_TOKEN: ${{ steps.aep-app-token.outputs.token }}
-          PR_BRANCH: sync/pr-${{ github.event.pull_request.number }}
+      - name: Generate patch from PR commits
         run: |
-            git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git
-            cd platform_applications_staging
-         
-            # Xoá branch nếu tồn tại, bỏ qua lỗi nếu không có
-            git push origin --delete $PR_BRANCH || echo "Branch $PR_BRANCH không tồn tại, bỏ qua xoá"
-         
-            git checkout -b $PR_BRANCH
-         
-            # Đồng bộ file, tránh phá vỡ repo
-            rsync -a --delete --exclude='.git' --exclude='.github/workflows' ../ ./ || true
-         
-            git config user.name "GitHub Action"
-            git config user.email "actions@github.com"
-            git add .
-            git commit -m "Sync from PR #${{ github.event.pull_request.number }}" || echo "Nothing to commit"
-            git push origin $PR_BRANCH
+          git fetch origin cicd
+          mkdir patches
+          git format-patch origin/cicd..HEAD -o patches || echo "No commits to patch"
  
-      - name: Create or update PR in private repo
+      - name: Clone private repo
         env:
           GH_TOKEN: ${{ steps.aep-app-token.outputs.token }}
-          PR_BRANCH: sync/pr-${{ github.event.pull_request.number }}
         run: |
-          # Check if PR already exists
-          gh pr list --repo SiliconLabsSoftware/platform_applications_staging --head $PR_BRANCH --json number --jq '.[0].number' > pr_number.txt || true
-          PR_NUM=$(cat pr_number.txt)
+          git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git
+          cd platform_applications_staging
+          git checkout -b sync/pr-${{ github.event.pull_request.number }}
+ 
+      - name: Apply patch to private repo
+        run: |
+          cd platform_applications_staging
+ 
+          if [ -z "$(ls ../patches)" ]; then
+            echo "❌ No new commits to sync. Skipping push and PR."
+            exit 0
+          fi
+ 
+          git am ../patches/*.patch || (echo "❌ Failed to apply patches"; git am --abort; exit 1)
+          git push origin sync/pr-${{ github.event.pull_request.number }}
+ 
+      - name: Create PR in private repo
+        env:
+          GH_TOKEN: ${{ steps.aep-app-token.outputs.token }}
+        run: |
+          PR_BRANCH=sync/pr-${{ github.event.pull_request.number }}
+          PR_NUM=$(gh pr list --repo SiliconLabsSoftware/platform_applications_staging --head $PR_BRANCH --json number --jq '.[0].number' || echo "")
  
           if [ "$PR_NUM" = "null" ] || [ -z "$PR_NUM" ]; then
-            echo "Creating new PR in private repo"
             gh pr create \
               --repo SiliconLabsSoftware/platform_applications_staging \
               --head $PR_BRANCH \
-              --base master \
-              --title "[Sync] PR #${{ github.event.pull_request.number }} from examples_public" \
-              --body "Sync from https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+              --base cicd \
+              --title "[Sync] PR #${{ github.event.pull_request.number }} from public" \
+              --body "Synced from https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           else
-            echo "PR already exists: #$PR_NUM – nothing more to do (force-pushed branch)"
+            echo "PR already exists: #$PR_NUM – nothing to do"
           fi
