@@ -67,7 +67,7 @@ jobs:
             gh pr create \
               --repo SiliconLabsSoftware/platform_applications_staging \
               --head $PR_BRANCH \
-              --base main \
+              --base master \
               --title "[Sync] PR #${{ github.event.pull_request.number }} from examples_public" \
               --body "Sync from https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           else
