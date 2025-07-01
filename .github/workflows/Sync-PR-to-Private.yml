@@ -25,38 +25,36 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           token: ${{ steps.aep-app-token.outputs.token }}
-          fetch-depth: 0  # cần để tạo patch
+          fetch-depth: 0
  
       - name: Set up Git
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "actions@github.com"
  
-      - name: Generate patch from PR commits
-        run: |
-          git fetch origin cicd
-          mkdir patches
-          git format-patch origin/cicd..HEAD -o patches || echo "No commits to patch"
- 
-      - name: Clone private repo
+      - name: Generate and apply patch
         env:
           GH_TOKEN: ${{ steps.aep-app-token.outputs.token }}
+          PR_BRANCH: sync/pr-${{ github.event.pull_request.number }}
         run: |
-          git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git
-          cd platform_applications_staging
-          git checkout -b sync/pr-${{ github.event.pull_request.number }}
+          git fetch origin cicd
+          COUNT=$(git rev-list --count origin/cicd..HEAD)
+          echo "Commits to sync: $COUNT"
  
-      - name: Apply patch to private repo
-        run: |
-          cd platform_applications_staging
- 
-          if [ -z "$(ls ../patches)" ]; then
-            echo "❌ No new commits to sync. Skipping push and PR."
+          if [ "$COUNT" -eq 0 ]; then
+            echo "❌ No new commits to sync. Skipping."
             exit 0
           fi
  
-          git am ../patches/*.patch || (echo "❌ Failed to apply patches"; git am --abort; exit 1)
-          git push origin sync/pr-${{ github.event.pull_request.number }}
+          mkdir patches
+          git format-patch origin/cicd..HEAD -o patches
+ 
+          git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git private_repo
+          cd private_repo
+          git checkout -b $PR_BRANCH || git checkout $PR_BRANCH
+ 
+          git am ../patches/*.patch || (echo "❌ Patch apply failed"; git am --abort; exit 1)
+          git push origin $PR_BRANCH
  
       - name: Create PR in private repo
         env:
@@ -64,7 +62,6 @@ jobs:
         run: |
           PR_BRANCH=sync/pr-${{ github.event.pull_request.number }}
           PR_NUM=$(gh pr list --repo SiliconLabsSoftware/platform_applications_staging --head $PR_BRANCH --json number --jq '.[0].number' || echo "")
- 
           if [ "$PR_NUM" = "null" ] || [ -z "$PR_NUM" ]; then
             gh pr create \
               --repo SiliconLabsSoftware/platform_applications_staging \
