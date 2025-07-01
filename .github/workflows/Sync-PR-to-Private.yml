@@ -66,6 +66,9 @@ jobs:
         if: steps.diffcheck.outputs.commits != '0'
         run: |
           cd private_repo
+          # Xoá nhánh nếu đang tồn tại để tránh lỗi non-fast-forward
+          git push origin --delete sync/pr-${{ github.event.pull_request.number }} || echo "No existing branch"
+          git checkout -B sync/pr-${{ github.event.pull_request.number }}
           git am ../patches/*.patch || (echo "❌ Failed to apply patch"; git am --abort; exit 1)
           git push origin HEAD
  
