@@ -21,8 +21,8 @@ jobs:
       - name: Checkout PR head (from fork)
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
  
@@ -31,26 +31,27 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "actions@github.com"
  
-      - name: Add and fetch base branch from repo gốc
+      - name: Extract base and head commit SHAs from PR
+        id: sha
         run: |
-          git remote add upstream https://github.com/${{ github.repository }}.git
-          git fetch upstream ${{ github.event.pull_request.base.ref }} --depth=1
+          echo "base_sha=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+          echo "head_sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
  
-      - name: Check commit diff count
+      - name: Count number of commits in PR
         id: diffcheck
         run: |
-          COMMITS=$(git rev-list --count upstream/${{ github.event.pull_request.base.ref }}..HEAD)
+          COMMITS=$(git rev-list --count ${{ steps.sha.outputs.base_sha }}..${{ steps.sha.outputs.head_sha }})
           echo "commits=$COMMITS" >> $GITHUB_OUTPUT
  
-      - name: Exit early if no commits to sync
+      - name: Exit if no new commits to sync
         if: steps.diffcheck.outputs.commits == '0'
-        run: echo "✅ No new commits. Exiting."
+        run: echo "✅ No new commits. Nothing to sync."
  
-      - name: Generate patch from forked PR
+      - name: Create patch from PR commits
         if: steps.diffcheck.outputs.commits != '0'
         run: |
           mkdir patches
-          git format-patch upstream/${{ github.event.pull_request.base.ref }}..HEAD -o patches
+          git format-patch ${{ steps.sha.outputs.base_sha }}..${{ steps.sha.outputs.head_sha }} -o patches
  
       - name: Clone private repo
         if: steps.diffcheck.outputs.commits != '0'
@@ -65,7 +66,7 @@ jobs:
         if: steps.diffcheck.outputs.commits != '0'
         run: |
           cd private_repo
-          git am ../patches/*.patch || (echo "❌ Patch apply failed"; git am --abort; exit 1)
+          git am ../patches/*.patch || (echo "❌ Failed to apply patch"; git am --abort; exit 1)
           git push origin HEAD
  
       - name: Create or update PR in private repo
