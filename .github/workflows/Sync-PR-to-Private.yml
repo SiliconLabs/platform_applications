@@ -1,0 +1,74 @@
+name: Sync Forked PR to Private Repo
+ 
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+    branches: [cicd]
+ 
+jobs:
+  sync-pr:
+    if: github.event.pull_request.head.repo.fork == true
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Generate token
+        id: aep-app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+  
+      - name: Checkout PR source branch from fork
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          token: ${{ steps.aep-app-token.outputs.token }}
+ 
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "actions@github.com"
+ 
+      - name: Install GitHub CLI
+        uses: cli/cli-action@v2
+ 
+      - name: Clone private repo and sync content
+        env:
+          GH_TOKEN: ${{ steps.aep-app-token.outputs.token }}
+          PR_BRANCH: sync/pr-${{ github.event.pull_request.number }}
+        run: |
+          # Clone private repo with access token
+          git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git
+          cd examples_private
+ 
+          # Bên trong examples_private
+          git push origin --delete $PR_BRANCH || true
+          git checkout -b $PR_BRANCH
+          # Copy + commit như trước
+          git push origin $PR_BRANCH
+ 
+          # Copy content from public PR
+          rsync -a --delete ../ .  # rsync instead of cp to clean up
+ 
+      - name: Create or update PR in private repo
+        env:
+          GH_TOKEN: ${{ steps.aep-app-token.outputs.token }}
+          PR_BRANCH: sync/pr-${{ github.event.pull_request.number }}
+        run: |
+          # Check if PR already exists
+          gh pr list --repo SiliconLabsSoftware/platform_applications_staging --head $PR_BRANCH --json number --jq '.[0].number' > pr_number.txt || true
+          PR_NUM=$(cat pr_number.txt)
+ 
+          if [ "$PR_NUM" = "null" ] || [ -z "$PR_NUM" ]; then
+            echo "Creating new PR in private repo"
+            gh pr create \
+              --repo SiliconLabsSoftware/platform_applications_staging \
+              --head $PR_BRANCH \
+              --base main \
+              --title "[Sync] PR #${{ github.event.pull_request.number }} from examples_public" \
+              --body "Sync from https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          else
+            echo "PR already exists: #$PR_NUM – nothing more to do (force-pushed branch)"
+          fi
