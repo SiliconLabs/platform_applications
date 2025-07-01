@@ -38,7 +38,7 @@ jobs:
         run: |
           # Clone private repo with access token
           git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git
-          cd examples_private
+          cd platform_applications_staging
  
           # Bên trong examples_private
           git push origin --delete $PR_BRANCH || true
