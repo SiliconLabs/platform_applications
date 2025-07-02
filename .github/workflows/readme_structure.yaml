@@ -1,11 +1,8 @@
-name: 02-Check-Readme-Structure
+name: Check-Readme-Structure
 
 on:
   pull_request_target:
     types: [opened, synchronize, edited]
-
-# permissions:
-#   contents: read
 
   workflow_dispatch:
     inputs:
@@ -14,9 +11,11 @@ on:
         type: string
         default: 'master'
 
+env:
+  SKIP_TEST: false
+
 jobs:
-  ci-check:
-    name: Check README Structure
+  readme_structure:
     runs-on: ubuntu-latest
     steps:
     - name: Trigger
@@ -48,44 +47,58 @@ jobs:
       with:
         token: ${{ steps.app-token.outputs.token }}
         path: 'projects'
-    - name: Fetch head and base refs
+    - name: Checkout head ref
       # This is necessary to check the changes in the PR branch
       run: |
         cd projects
         git fetch origin ${{ github.base_ref }}:base_ref
         git fetch origin pull/${{ github.event.pull_request.number }}/head:pr_ref
+        git checkout ${{ github.event.pull_request.head.sha }}
     - name: Check the change
       run: |
         cd projects
-        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} --diff-filter=ACMR --name-only | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
-        grep -v "README.md\\|.github\\|LICENSE\\|templates.xml\\|deprecated" git_log.txt > changed_projects_folder.txt
-        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} --diff-filter=ACMR --name-only > git_diff.txt
+        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} \
+        --diff-filter=ACMR --name-only | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
+        if [ -s git_log.txt ]; then
+          grep -v "CLA.md\\|CODE_OF_CONDUCT.md\\|README.md\\|.github\\|LICENSE\\|templates.xml\\|deprecated" git_log.txt > changed_projects_folder.txt
+        fi
+        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} \
+        --diff-filter=ACMR --name-only > git_diff.txt
         xargs -I{} -a git_diff.txt find {} -type f -name "*.[ch]" > source_list.txt
         xargs -I{} -a git_diff.txt find {} -type f -name "*.slcp" > solution_list.txt
         if ! [ -s source_list.txt -o -s solution_list.txt ]; then
-          echo "No changes to check."
+          echo =============================================
+          echo "No changes to check...................Skipped"
+          echo =============================================
+          echo "SKIP_TEST=true" >> $GITHUB_ENV
           exit 0
         fi
-        # For debug
-        echo ====================
+        echo ===============Changed files:================
         cat git_diff.txt
-        echo ====================
+        echo ================Changed folders:=============
         cat changed_projects_folder.txt
+        echo ===========================================
     - name: Run test
+      if: ${{ env.SKIP_TEST == 'false' }}
       run : |
         cd projects
-        bash ${{ github.workspace }}/aep_ci_tools/scripts/check_readme_file_v2.sh git_diff.txt > readme_file_report.html
+        bash ${{ github.workspace }}/aep_ci_tools/scripts/check_readme_file_v2.sh changed_projects_folder.txt > readme_file_report.html
     - name: Upload Result
+      if: ${{ env.SKIP_TEST == 'false' }}
       uses: actions/upload-artifact@v4
       with:
         name: readme_file_report
         path: projects/readme_file_report.html
         retention-days: 90
     - name: Check log file to set status of the job
+      if: ${{ env.SKIP_TEST == 'false' }}
       run: |
         cd projects
-        if grep -qe "Fail" readme_file_report.html; then
+        if grep -qe "FAILURE" readme_file_report.html; then
+          echo =======================================
           echo "Result: Failure"
+          echo "Check report at the step: Upload Result"
+          echo =======================================
           exit 1
         else
           echo "Result: Success"
