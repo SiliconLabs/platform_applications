@@ -1,0 +1,94 @@
+name: Sync PR
+ 
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+ 
+jobs:
+  sync_pr:
+    # if: github.event.pull_request.head.repo.fork == true
+    if: github.repository_visibility == 'public'
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+ 
+      - name: Checkout PR head (from fork)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+ 
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "actions@github.com"
+ 
+      - name: Extract base and head commit SHAs from PR
+        id: sha
+        run: |
+          echo "base_sha=${{ github.event.pull_request.base.sha }}" >> $GITHUB_OUTPUT
+          echo "head_sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+ 
+      - name: Count number of commits in PR
+        id: diffcheck
+        run: |
+          COMMITS=$(git rev-list --count ${{ steps.sha.outputs.base_sha }}..${{ steps.sha.outputs.head_sha }})
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+ 
+      - name: Exit if no new commits to sync
+        if: steps.diffcheck.outputs.commits == '0'
+        run: echo "✅ No new commits. Nothing to sync."
+ 
+      - name: Create patch from PR commits
+        if: steps.diffcheck.outputs.commits != '0'
+        run: |
+          mkdir patches
+          git format-patch ${{ steps.sha.outputs.base_sha }}..${{ steps.sha.outputs.head_sha }} -o patches
+ 
+      - name: Clone private repo
+        if: steps.diffcheck.outputs.commits != '0'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git clone https://x-access-token:${GH_TOKEN}@github.com/SiliconLabsSoftware/platform_applications_staging.git private_repo
+          cd private_repo
+          git checkout -b sync/pr-${{ github.event.pull_request.number }} || git checkout sync/pr-${{ github.event.pull_request.number }}
+ 
+      - name: Apply patch to private repo
+        if: steps.diffcheck.outputs.commits != '0'
+        run: |
+          cd private_repo
+          # Xoá nhánh nếu đang tồn tại để tránh lỗi non-fast-forward
+          git push origin --delete sync/pr-${{ github.event.pull_request.number }} || echo "No existing branch"
+          git checkout -B sync/pr-${{ github.event.pull_request.number }}
+          git am ../patches/*.patch || (echo "❌ Failed to apply patch"; git am --abort; exit 1)
+          git push origin HEAD
+ 
+      - name: Create or update PR in private repo
+        if: steps.diffcheck.outputs.commits != '0'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          PR_BRANCH=sync/pr-${{ github.event.pull_request.number }}
+          PR_NUM=$(gh pr list --repo SiliconLabsSoftware/platform_applications_staging \
+            --head $PR_BRANCH --json number --jq '.[0].number' || echo "")
+ 
+          if [ "$PR_NUM" = "null" ] || [ -z "$PR_NUM" ]; then
+            gh pr create \
+              --repo SiliconLabsSoftware/platform_applications_staging \
+              --head $PR_BRANCH \
+              --base master \
+              --title "[Sync] PR #${{ github.event.pull_request.number }} from public" \
+              --body "Synced from https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          else
+            echo "PR already exists: #$PR_NUM – nothing to do"
+          fi
