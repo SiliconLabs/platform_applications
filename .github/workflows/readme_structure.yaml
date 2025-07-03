@@ -1,0 +1,104 @@
+name: Check-Readme-Structure
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, edited]
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to test'
+        type: string
+        default: 'master'
+
+env:
+  SKIP_TEST: false
+
+jobs:
+  readme_structure:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+    - name: Check Branch Input
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ -z "${{ github.event.inputs.branch }}" ]; then
+            echo "Branch input is required for manual trigger."
+            exit 1
+          fi
+        fi
+    - name: Create GitHub App Token
+      id: app-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ vars.GH_APP_ID }}
+        private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+        owner: ${{ github.repository_owner }}
+    - name: Checkout tools repository
+      uses: actions/checkout@v4
+      with:
+        repository: SiliconLabsSoftware/aep_ci_tools
+        ref: 'hop_dev'
+        token: ${{ steps.app-token.outputs.token }}
+        path: 'aep_ci_tools'
+    - name: Checkout base repository code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ steps.app-token.outputs.token }}
+        path: 'projects'
+    - name: Checkout head ref
+      # This is necessary to check the changes in the PR branch
+      run: |
+        cd projects
+        git fetch origin ${{ github.base_ref }}:base_ref
+        git fetch origin pull/${{ github.event.pull_request.number }}/head:pr_ref
+        git checkout ${{ github.event.pull_request.head.sha }}
+    - name: Check the changes
+      run: |
+        cd projects
+        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} \
+        --diff-filter=ACMR --name-only > git_diff.txt
+        echo ===============Changed files:================
+        cat git_diff.txt
+        echo =============================================
+        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} \
+        --diff-filter=ACMR --name-only | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
+        if [ -s git_log.txt ]; then
+          grep -v "deprecated" git_log.txt > changed_projects_folder.txt
+        fi
+        if [ ! -f changed_projects_folder.txt ] || [ ! -s changed_projects_folder.txt ]; then
+          echo =============================================
+          echo "No project changes detected...........Skipped"
+          echo =============================================
+          echo "SKIP_TEST=true" >> $GITHUB_ENV
+          exit 0
+        fi
+        echo ================Changed projects:=============
+        cat changed_projects_folder.txt
+        echo ==============================================
+    - name: Run test
+      if: ${{ env.SKIP_TEST == 'false' }}
+      run : |
+        cd projects
+        bash ${{ github.workspace }}/aep_ci_tools/scripts/check_readme_file_v2.sh changed_projects_folder.txt > readme_file_report.html
+    - name: Upload Result
+      if: ${{ env.SKIP_TEST == 'false' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: readme_file_report
+        path: projects/readme_file_report.html
+        retention-days: 90
+    - name: Check log file to set status of the job
+      if: ${{ env.SKIP_TEST == 'false' }}
+      run: |
+        cd projects
+        if grep -qe "FAILURE" readme_file_report.html; then
+          echo =======================================
+          echo "Result: Failure"
+          echo "Check report at the step: Upload Result"
+          echo =======================================
+          exit 1
+        else
+          echo "Result: Success"
+        fi

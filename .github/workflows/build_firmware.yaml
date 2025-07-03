@@ -1,0 +1,125 @@
+name: Check-Build-Firmware
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, edited]
+
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to test'
+        type: string
+        default: 'master'
+
+env:
+  SL_SLC_PATH: ${{ github.workspace }}/tools/slc_cli/slc
+  CI_REPO_DIR: ${{ github.workspace }}/application_examples_ci
+  SL_STUDIO_BUILD_PATH: ${{ github.workspace }}/tools/SimplicityStudio_v5
+  STUDIO_ADAPTER_PACK_PATH: ${{ github.workspace }}/tools/SimplicityStudio_v5/developer/adapter_packs
+  POST_BUILD_EXE: ${{ github.workspace }}/tools/SimplicityStudio_v5/developer/adapter_packs/commander/commander
+  WORKSPACE: ${{ github.workspace }}
+  SKIP_TEST: false
+
+jobs:
+  build_firmware:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+    - name: Check Branch Input
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ -z "${{ github.event.inputs.branch }}" ]; then
+            echo "Branch input is required for manual trigger."
+            exit 1
+          fi
+        fi
+    - name: Get repository name
+      run: |
+        REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)
+        echo "repo=$REPO_NAME" >> $GITHUB_ENV
+    - name: Create GitHub App Token
+      id: app-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ vars.GH_APP_ID }}
+        private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+        owner: ${{ github.repository_owner }}
+    - name: Checkout tools repository
+      uses: actions/checkout@v4
+      with:
+        repository: SiliconLabsSoftware/aep_ci_tools
+        ref: 'hop_dev'
+        token: ${{ steps.app-token.outputs.token }}
+        path: 'aep_ci_tools'
+    - name: Checkout base repository code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ steps.app-token.outputs.token }}
+        path: 'projects'
+    - name: Checkout head ref
+      # This is necessary to check the changes in the PR branch
+      run: |
+        cd projects
+        git fetch origin ${{ github.base_ref }}:base_ref
+        git fetch origin pull/${{ github.event.pull_request.number }}/head:pr_ref
+        git checkout ${{ github.event.pull_request.head.sha }}
+    - name: Check the changes
+      run: |
+        cd projects
+        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} \
+        --diff-filter=ACMR --name-only > git_diff.txt
+        echo ===============Changed files:================
+        cat git_diff.txt
+        echo =============================================
+        git diff ${{ github.event.pull_request.base.sha  }} ${{ github.event.pull_request.head.sha }} \
+        --diff-filter=ACMR --name-only | grep '/' | cut -d'/' -f1 | sort | uniq > git_log.txt
+        if [ -s git_log.txt ]; then
+          grep -v "deprecated" git_log.txt > changed_projects_folder.txt
+        fi
+        if [ ! -f changed_projects_folder.txt ] || [ ! -s changed_projects_folder.txt ]; then
+          echo =============================================
+          echo "No project changes detected...........Skipped"
+          echo =============================================
+          echo "SKIP_TEST=true" >> $GITHUB_ENV
+          exit 0
+        fi
+        echo ================Changed projects:=============
+        cat changed_projects_folder.txt
+        echo ==============================================
+    - name: Setup Java
+      if: ${{ env.SKIP_TEST == 'false' }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'oracle'
+        java-version: '21'
+    - name: Install Dependencies
+      if: ${{ env.SKIP_TEST == 'false' }}
+      run: bash ${{ github.workspace }}/aep_ci_tools/scripts/install_tools.sh
+    - name: Run build the projects
+      if: ${{ env.SKIP_TEST == 'false' }}
+      run : |
+        mkdir changed_projects
+        while read line; do cp -r ./projects/$line --parents ./changed_projects; \
+        done < ${{ github.workspace}}/projects/changed_projects_folder.txt
+        python3 -u ${{ github.workspace}}/aep_ci_tools/scripts/checkproject.py --junit \
+        --html --release --slcpgcc ${{ github.workspace}}/changed_projects
+    - name: Upload Result
+      if: ${{ env.SKIP_TEST == 'false' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: build_test_project
+        path: build_test_project.html
+        retention-days: 90
+    - name: Check log file to set status of the job
+      if: ${{ env.SKIP_TEST == 'false' }}
+      run: |
+        if grep -qe "Fail" build_test_project.html; then
+          echo =======================================
+          echo "Result: Failure"
+          echo "Check report at the step: Upload Result"
+          echo =======================================
+          exit 1
+        else
+          echo "Result: Success"
+        fi
