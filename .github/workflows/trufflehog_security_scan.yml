@@ -1,4 +1,4 @@
-name: 02-TruffleHog-Security-Scan
+name: TruffleHog-Security-Scan
 on:
   pull_request:
     branches:
@@ -6,7 +6,7 @@ on:
       - master
       - "release/**"
 jobs:
-  trufflehog_scan:
+  trufflehog_security_scan:
     runs-on: ubuntu-24.04
     steps:
     - name: Checkout code
