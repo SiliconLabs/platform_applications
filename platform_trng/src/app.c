@@ -98,7 +98,7 @@ void trng_reset(void);
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/
-void app_init(void)
+void app_init()
 {
   printf("bare-metal TRNG example using ADC as entropy source\r\n\r\n");
 
