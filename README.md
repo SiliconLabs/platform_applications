@@ -13,7 +13,7 @@
 
 # Silicon Labs Platform Applications #
 
-[![Version Badge](https://img.shields.io/badge/-v2.7.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
+[![Version Badge](https://img.shields.io/badge/-v2.8.0-green)](https://github.com/SiliconLabs/bluetooth_applications/releases)
 [![GSDK Badge](https://img.shields.io/badge/GSDK-v4.4.4-green)](https://github.com/SiliconLabs/gecko_sdk/releases)
 ![License badge](https://img.shields.io/badge/License-Zlib-green)
 
@@ -92,7 +92,7 @@ This repository provides both SLCP projects (as External Repositories) and SLS p
 | 65 | Platform - Wake M33 using PRS |[Click Here](./platform_prs_wfe)
 | 66 | Platform - IADC Synchronous Triggers with PRS |[Click Here](./platform_iadc_synch_prs)
 | 67 | Platform - EMU Temperature Linearization  |[Click Here](./platform_emu_temp_linearization)
-
+| 68 | Platform - I2C Fast Plus Mode  |[Click Here](./platform_i2c_fast_plus_mode)
 
 ## Requirements ##
 
