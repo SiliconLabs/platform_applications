@@ -1,4 +1,5 @@
 # Platform - Wake M33 using PRS #
+test
 
 ![Type badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_prs_wfe_common.json&label=Type&query=type&color=green)
 ![Technology badge](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/SiliconLabs/application_examples_ci/master/platform_applications/platform_prs_wfe_common.json&label=Technology&query=technology&color=green)
