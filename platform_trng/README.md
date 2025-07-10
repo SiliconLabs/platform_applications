@@ -17,7 +17,7 @@ This project uses the True Random Number Generator (TRNG) peripheral of the EFM3
 - TRNG
 - USART
 
-> It is highly recommended to use the [software libraries](https://docs.silabs.com/mbed-tls/latest/group-rng-module) provided by Silicon Labs to access the TRNG module. This example should serve as a reference for users that choose to write their own low-level drivers.
+> It is highly recommended to use the [software libraries](https://docs.silabs.com/mbed-tls/latest/group-rng-module) provided by Silicon Labs to access the TRNG module. This example should serve as a reference for users that choose to write their own low-level drivers....
 
 ## Gecko SDK version ##
 

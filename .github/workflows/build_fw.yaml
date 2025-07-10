@@ -1,0 +1,94 @@
+name: Check-Build-Firmware
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, edited]
+
+env:
+  SL_SLC_PATH: ${{ github.workspace }}/tools/slc_cli/slc
+  CI_REPO_DIR: ${{ github.workspace }}/application_examples_ci
+  SL_STUDIO_BUILD_PATH: ${{ github.workspace }}/tools/SimplicityStudio_v5
+  STUDIO_ADAPTER_PACK_PATH: ${{ github.workspace }}/tools/SimplicityStudio_v5/developer/adapter_packs
+  POST_BUILD_EXE: ${{ github.workspace }}/tools/SimplicityStudio_v5/developer/adapter_packs/commander/commander
+  WORKSPACE: ${{ github.workspace }}
+
+jobs:
+  build_firmware:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Get repository name
+      run: |
+        REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)
+        echo "repo=$REPO_NAME" >> $GITHUB_ENV
+    - name: Create GitHub App Token
+      id: app-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ vars.GH_APP_ID }}
+        private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+        owner: ${{ github.repository_owner }}
+    - name: Checkout code repository
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository  }}
+        token: ${{ steps.app-token.outputs.token }}
+        path: 'projects'
+    - name: Checkout tools repository
+      uses: actions/checkout@v4
+      with:
+        repository: SiliconLabsSoftware/aep_ci_tools
+        ref: 'hop_dev'
+        token: ${{ steps.app-token.outputs.token }}
+        path: 'aep_ci_tools'
+    - name: Check the changes
+      id: pr_check
+      run: |
+        cd projects
+        bash ${{ github.workspace }}/aep_ci_tools/scripts/check_pr_changes.sh \
+        ${{ github.base_ref }} ${{ github.event.pull_request.number }} \
+        ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha  }}
+        echo "...........Changes files:..........."
+        cat git_diff.txt
+        if [ ! -s changed_projects_folder.txt ]; then
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+          echo "No project changes detected...........Skipped"
+          exit 0
+        fi
+        echo "has_changes=true" >> $GITHUB_OUTPUT
+        echo "...........Changed projects:..........."
+        cat changed_projects_folder.txt
+    - name: Setup Java
+      if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'oracle'
+        java-version: '21'
+    - name: Install Dependencies
+      if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
+      run: bash ${{ github.workspace }}/aep_ci_tools/scripts/install_tools.sh
+    - name: Run build the projects
+      if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
+      run : |
+        mkdir changed_projects
+        while read line; do cp -r ./projects/$line --parents ./changed_projects; \
+        done < ${{ github.workspace}}/projects/changed_projects_folder.txt
+        python3 -u ${{ github.workspace}}/aep_ci_tools/scripts/checkproject.py --junit \
+        --html --release --slcpgcc ${{ github.workspace}}/changed_projects
+    - name: Upload Result
+      id: html_report
+      if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: build_test_project
+        path: build_test_project.html
+        retention-days: 90
+    - name: Check log file to set status of the job
+      if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
+      run: |
+        echo "Check report here: ${{ steps.html_report.outputs.artifact-url }}"
+        if grep -qe "Fail" build_test_project.html; then
+          echo "Result: Failure"
+          exit 1
+        else
+          echo "Result: Success"
+        fi
