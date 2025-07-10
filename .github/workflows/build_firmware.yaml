@@ -47,15 +47,15 @@ jobs:
         bash ${{ github.workspace }}/aep_ci_tools/scripts/check_pr_changes.sh \
         ${{ github.base_ref }} ${{ github.event.pull_request.number }} \
         ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha  }}
-        echo ==Changes files:==
+        echo "...........Changes files:..........."
         cat git_diff.txt
         if [ ! -s changed_projects_folder.txt ]; then
           echo "has_changes=false" >> $GITHUB_OUTPUT
-          echo "===> No project changes detected...........Skipped"
+          echo "No project changes detected...........Skipped"
           exit 0
         fi
         echo "has_changes=true" >> $GITHUB_OUTPUT
-        echo ==Changed projects:==
+        echo "...........Changed projects:..........."
         cat changed_projects_folder.txt
     - name: Setup Java
       if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
@@ -75,6 +75,7 @@ jobs:
         python3 -u ${{ github.workspace}}/aep_ci_tools/scripts/checkproject.py --junit \
         --html --release --slcpgcc ${{ github.workspace}}/changed_projects
     - name: Upload Result
+      id: html_report
       if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
       uses: actions/upload-artifact@v4
       with:
@@ -84,11 +85,9 @@ jobs:
     - name: Check log file to set status of the job
       if: ${{ steps.pr_check.outputs.has_changes == 'true' }}
       run: |
+        echo "Check report here: ${{ steps.html_report.outputs.artifact-url }}"
         if grep -qe "Fail" build_test_project.html; then
-          echo =======================================
           echo "Result: Failure"
-          echo "Check report at the step: Upload Result"
-          echo =======================================
           exit 1
         else
           echo "Result: Success"
