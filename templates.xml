@@ -21,7 +21,7 @@
     <properties key="solutionReferenceId" value="platform_trng.SimplicityStudio.platform_trng.slcp"/>
     <properties key="projectFilePaths" value="platform_trng/SimplicityStudio/platform_trng.slcp"/>
     <properties key="readmeFiles" value="platform_trng/README.md"/>
-    <properties key="boardCompatibility" value="brd2204a brd2204c com.silabs.board.none"/>
+    <properties key="boardCompatibility" value="brd2601b brd2204c com.silabs.board.none"/>
     <properties key="partCompatibility" value=".*efm32gg11b.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
