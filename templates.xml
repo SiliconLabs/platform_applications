@@ -21,7 +21,7 @@
     <properties key="solutionReferenceId" value="platform_trng.SimplicityStudio.platform_trng.slcp"/>
     <properties key="projectFilePaths" value="platform_trng/SimplicityStudio/platform_trng.slcp"/>
     <properties key="readmeFiles" value="platform_trng/README.md"/>
-    <properties key="boardCompatibility" value="brd2204a brd2204c com.silabs.board.none"/>
+    <properties key="boardCompatibility" value="brd2601b brd2204c com.silabs.board.none"/>
     <properties key="partCompatibility" value=".*efm32gg11b.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
@@ -1024,6 +1024,21 @@
     <properties key="readmeFiles" value="platform_peripheral_hfrco_cal_polled/readme.md"/>
     <properties key="boardCompatibility" value="brd2503a brd2504a brd2505a brd2506a com.silabs.board.none"/>
     <properties key="partCompatibility" value=".*efm32pg22.* .*efm32pg23.* .*efm32pg26.* .*efm32pg28.*"/>
+    <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
+    <properties key="toolchainCompatibility" value="gcc iar segger"/>
+    <properties key="category" value="Example|MCU Example"/>
+    <properties key="quality" value="EXPERIMENTAL"/>
+    <properties key="stockConfigCompatibility" value="com.silabs.ss.framework.project.toolchain.core.default"/>
+    <properties key="filters" value="Device\ Type|SoC MCU|32-bit\ MCU Project\ Difficulty|Beginner"/>
+  </descriptors>
+  <descriptors name="platform_i2c_fast_plus_mode" label="Platform - I2C Fast Plus Mode" description="This project demonstrates the I2C communication in fast plus mode between 2 EFR32xG2x boards.">
+    <properties key="namespace" value="template.uc"/>
+    <properties key="keywords" value="universal\ configurator"/>
+    <properties key="solutionReferenceId" value="platform_i2c_fast_plus_mode.SimplicityStudio.platform_i2c_fast_plus_mode.slcp"/>
+    <properties key="projectFilePaths" value="platform_i2c_fast_plus_mode/SimplicityStudio/platform_i2c_fast_plus_mode.slcp"/>
+    <properties key="readmeFiles" value="platform_i2c_fast_plus_mode/README.md"/>
+    <properties key="boardCompatibility" value="brd2601b brd2703a brd4108a brd4314a com.silabs.board.none"/>
+    <properties key="partCompatibility" value=".*bgm22.* .*bg22.* .*efr32mg24.*"/>
     <properties key="ideCompatibility" value="generic-template iar-embedded-workbench makefile-ide simplicity-ide visual-studio-code"/>
     <properties key="toolchainCompatibility" value="gcc iar segger"/>
     <properties key="category" value="Example|MCU Example"/>

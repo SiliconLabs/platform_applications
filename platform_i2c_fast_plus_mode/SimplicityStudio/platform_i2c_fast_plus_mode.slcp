@@ -1,0 +1,51 @@
+project_name: platform_i2c_fast_plus_mode
+package: platform
+label: Platform - I2C Fast Plus Mode
+description: |
+  This project demonstrates the I2C communication in fast plus mode between 2 EFR32xG2x boards.
+category: Example|Platform
+quality: experimental
+
+filter:
+  - name: Device Type
+    value: [SoC]
+  - name: MCU
+    value: [32-bit MCU]
+  - name: Project Difficulty
+    value: [Beginner]
+
+readme:
+- path: ../README.md
+
+source:
+  - path: ../src/main.c
+  - path: ../src/app.c
+
+include:
+  - path: ../inc
+    file_list:
+        - path: app.h
+
+component:
+- id: sl_system
+- id: device_init
+- id: emlib_i2c
+- instance: [btn0]
+  id: simple_button
+
+define:
+- name: DEBUG_EFM
+
+other_file:
+  - path: ../image/create_follower.png
+    directory: "image"
+  - path: ../image/create_leader.png
+    directory: "image"
+  - path: ../image/test.png
+    directory: "image"
+
+ui_hints:
+  highlight:
+    - path: README.md
+      focus: true
+
